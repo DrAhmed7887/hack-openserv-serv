@@ -9,6 +9,8 @@ SERV's answer is advice for a human: it never changes the disposition, `full_sup
 | c04_uncertain_source_insufficient | OB-4 | uncertain | supported | yes | "Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs." | 503 / 78 |
 | c07_combined | OB-4 | uncertain | supported | yes | "measure cardiac size on radiographs" | 503 / 90 |
 
+**Under the current rules (since 10 Nov, PR #4) neither answer is accepted:** a `supported` quote must name the study type, and neither quote names chest-xr. The `Accepted` column above is what the rules of the time said. The replay page shows the current verdict.
+
 Cost: read it from the SERV console usage page (prices per model are in the SERV models docs).
 ## What this run shows (read by the builder, 10 Nov 2026)
 
@@ -17,5 +19,7 @@ Cost: read it from the SERV console usage page (prices per model are in the SERV
 - **The guard held.** In both audits OB-4 stays `uncertain`, `full_support` stays false and completeness stays `gaps_found`. The advisory is attached with `human_confirmation_required: true`. This is the case the advisory-only design exists for: a plausible, well-quoted model answer that a human must check before anyone edits the catalog.
 - **Cost:** 1,006 input + 168 output tokens in total. At the SERV models page price for `gpt-6-luna` ($0.13 / $0.65 per million) that is about $0.0002; the console balance is the real figure.
 - Two cases, one obligation, one model: this says nothing about SERV's accuracy in general.
+
+- **Under the rules since 10 Nov (PR #4)** this answer is **not accepted**: a `supported` quote must name the study type, and "measure cardiac size on radiographs" does not name chest-xr. The rule came from the larger live batches in `eval/SERV_BATCH.md`, where it was checked on held-out wording.
 
 (This section is written by hand; `scripts/serv_live_run.py` regenerates the table above it.)

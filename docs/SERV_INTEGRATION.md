@@ -59,13 +59,14 @@ Tests build chat-completion-shaped dicts with `"fixture": true` and `finish_reas
 3. Missing credentials fail closed with a non-zero exit and an explicit "not run" status.
 4. `ServClient` (fixtures) cannot return an unlabelled response. Only `LiveServClient` can produce an executed result, marked with a module-private provenance object that does not survive copying, so no caller can label a result as live-executed by writing `executed: true`.
 5. A quote that is a trivial substring of the source is not accepted as verbatim support.
+6. A `supported` quote must name the study's modality as a whole word, or the advice is not accepted.
 
-## Not done, and who unblocks it
+## Status of the open questions (10 Nov 2026)
 
-| Item | Needs |
+| Item | Status |
 |---|---|
-| Real request/response check, including whether the model honours `response_format` | OpenServ account and API key (Ahmed) |
-| Whether authenticated calls are free to a participant | Ahmed reading the console balance; the docs show no free allowance |
-| A live HTTP transport | Written only after the two items above, with its own tests; explicit go from Ahmed |
-| SERV-drafted report repair text | Same, plus physician/operator sign-off on wording rules |
+| Real request/response check, including whether the model honours `response_format` | **Done.** 50 live requests on `gpt-6-luna`; all 50 came back finished, with a verdict from the schema (`docs/SERV_RUN.md`, `eval/results/serv_batch_v*.json`) |
+| Cost to a participant | Requests are paid from the participant's SERV credit balance; the console usage page holds the exact figure |
+| A live HTTP transport | **Done:** `LiveServClient` (stdlib HTTPS, redirects refused, key never stored or printed), with its own tests |
+| SERV-drafted report repair text | Not built. It would need physician/operator sign-off on wording rules first |
 | Whether `serv_shadow_agent` could validate a drafted report | Not testable offline: its pass/revise outcome is shown in a console report, not in the response, so it could not be audit evidence anyway |

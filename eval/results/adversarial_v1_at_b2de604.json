@@ -1,0 +1,226 @@
+{
+  "broken": {
+    "by_type": {
+      "call_omitted": {
+        "expected": "supported_omitted + unsupported_claim",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "citation_wrong": {
+        "expected": "receipt_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "disclosure_contradicts": {
+        "expected": "disclosure_contradicts_support",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "execution_failed": {
+        "expected": "receipt failed",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "modality_swapped": {
+        "expected": "unsupported",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "output_edited": {
+        "expected": "output_digest_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "receipt_missing": {
+        "expected": "receipt missing",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "receipt_other_tool": {
+        "expected": "tool_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "source_negated": {
+        "expected": "uncertain: negation_near_quote",
+        "false_full_support": 10,
+        "flagged": 0,
+        "n": 10,
+        "right_reason": 0
+      },
+      "source_tampered": {
+        "expected": "uncertain: source_hash_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "statement_dropped": {
+        "expected": "report gap: add_cited_claim",
+        "false_full_support": 10,
+        "flagged": 0,
+        "n": 10,
+        "right_reason": 0
+      },
+      "wrong_study": {
+        "expected": "arg_invalid:study_id",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      }
+    },
+    "false_full_support": 20,
+    "flagged": 100,
+    "n": 120,
+    "right_reason": 100
+  },
+  "clean": {
+    "false_alarms": [],
+    "full_support": 30,
+    "n": 30
+  },
+  "code_digest": "ed460da87114c233",
+  "failures": [
+    {
+      "break": "source_negated",
+      "case_id": "eval-0100",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0101",
+      "completeness": "full_support",
+      "obligation": "OB-2"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0102",
+      "completeness": "full_support",
+      "obligation": "OB-3"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0103",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0104",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0105",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0106",
+      "completeness": "full_support",
+      "obligation": "OB-2"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0107",
+      "completeness": "full_support",
+      "obligation": "OB-2"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0108",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "source_negated",
+      "case_id": "eval-0109",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0120",
+      "completeness": "full_support",
+      "obligation": "OB-3"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0121",
+      "completeness": "full_support",
+      "obligation": "OB-2"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0122",
+      "completeness": "full_support",
+      "obligation": "OB-2"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0123",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0124",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0125",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0126",
+      "completeness": "full_support",
+      "obligation": "OB-3"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0127",
+      "completeness": "full_support",
+      "obligation": "OB-2"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0128",
+      "completeness": "full_support",
+      "obligation": "OB-2"
+    },
+    {
+      "break": "statement_dropped",
+      "case_id": "eval-0129",
+      "completeness": "full_support",
+      "obligation": "OB-1"
+    }
+  ],
+  "n_clean": 30,
+  "n_per_break": 10,
+  "schema": "contract-audit-eval/v1",
+  "seed": 20261110
+}

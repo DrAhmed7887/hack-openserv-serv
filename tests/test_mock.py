@@ -24,9 +24,9 @@ def test_embedded_data_is_exactly_what_the_offline_modules_produce():
     assert embedded() == builder().payload()
 
 
-def test_mock_is_marked_not_connected_and_names_all_five_screens():
+def test_page_is_labelled_a_replay_that_calls_no_server_and_names_all_five_screens():
     text = HTML.read_text(encoding="utf-8")
-    assert "DESIGN MOCK — NOT CONNECTED" in text
+    assert "REPLAY OF REAL OUTPUT" in text and "This page calls no server" in text
     for step in ("catalog", "study", "coverage", "repair", "export"):
         assert f'id="step-{step}"' in text
 
@@ -38,10 +38,31 @@ def test_mock_makes_no_network_requests_and_loads_nothing_external():
         assert api not in text
 
 
-def test_mock_never_shows_a_serv_result_or_trace():
+def test_serv_appears_only_as_recorded_advice_that_cannot_change_the_result():
     text = HTML.read_text(encoding="utf-8")
-    assert "SERV result" not in text and "step_trace" not in text
-    assert "SERV response" not in text.replace("No SERV response", "")
+    assert "step_trace" not in text and "recorded live run" in text and "SERV cannot change it" in text
+    p = builder().payload()
+    uncertain = {k for k, o in p["audit"]["obligations"].items() if o["disposition"] == "uncertain"}
+    assert set(p["serv_recorded"]) and set(p["serv_recorded"]) <= uncertain
+    rec = json.loads((ROOT / "docs" / "serv_run" / "c07_combined.json").read_text(encoding="utf-8"))
+    for oid, r in p["serv_recorded"].items():
+        assert (r["verdict"], r["quote"]) == (rec["serv_advisory"][oid]["verdict"], rec["serv_advisory"][oid]["quote"])
+    # the recorded answer quotes no study type, so the current rules do not accept it
+    assert p["serv_recorded"]["OB-4"]["accepted_now"] is False
+    assert p["serv_recorded"]["OB-4"]["reasons_now"] == ["quote_does_not_name_modality"]
+
+
+def test_every_number_on_the_first_screen_comes_from_the_committed_eval_results():
+    adv = json.loads((ROOT / "eval" / "results" / "adversarial_v1.json").read_text(encoding="utf-8"))
+    v2 = json.loads((ROOT / "eval" / "results" / "serv_batch_v2.json").read_text(encoding="utf-8"))["summary"]
+    e = builder().payload()["eval"]
+    assert (e["broken"], e["flagged_right"], e["passed_as_complete"]) == (
+        adv["broken"]["n"], adv["broken"]["right_reason"], adv["broken"]["false_full_support"])
+    assert (e["clean"], e["clean_passed"]) == (adv["clean"]["n"], adv["clean"]["full_support"])
+    assert (e["serv_over"], e["serv_over_of"], e["serv_over_accepted"]) == (
+        v2["over_reach"]["n"], v2["over_reach"]["of"], v2["over_reach"]["accepted_now"])
+    assert (e["serv_accepted"], e["serv_accepted_right"]) == (
+        v2["accepted_advice_now"]["n"], v2["accepted_advice_now"]["match_designed"])
 
 
 def test_payload_is_labelled_fixture_and_synthetic():

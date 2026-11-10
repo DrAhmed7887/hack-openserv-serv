@@ -1,0 +1,105 @@
+{
+  "broken": {
+    "by_type": {
+      "call_omitted": {
+        "expected": "supported_omitted + unsupported_claim",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "citation_wrong": {
+        "expected": "receipt_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "disclosure_contradicts": {
+        "expected": "disclosure_contradicts_support",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "execution_failed": {
+        "expected": "receipt failed",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "modality_swapped": {
+        "expected": "unsupported",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "output_edited": {
+        "expected": "output_digest_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "receipt_missing": {
+        "expected": "receipt missing",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "receipt_other_tool": {
+        "expected": "tool_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "source_negated": {
+        "expected": "uncertain: negation_near_quote",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "source_tampered": {
+        "expected": "uncertain: source_hash_mismatch",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "statement_dropped": {
+        "expected": "report gap: add_cited_claim",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      },
+      "wrong_study": {
+        "expected": "arg_invalid:study_id",
+        "false_full_support": 0,
+        "flagged": 10,
+        "n": 10,
+        "right_reason": 10
+      }
+    },
+    "false_full_support": 0,
+    "flagged": 120,
+    "n": 120,
+    "right_reason": 120
+  },
+  "clean": {
+    "false_alarms": [],
+    "full_support": 30,
+    "n": 30
+  },
+  "code_digest": "2a8cfe191369986e",
+  "failures": [],
+  "n_clean": 30,
+  "n_per_break": 10,
+  "schema": "contract-audit-eval/v1",
+  "seed": 20261110
+}
