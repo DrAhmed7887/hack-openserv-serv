@@ -1,6 +1,6 @@
 # SERV integration boundary
 
-**Status: designed and unit-tested against fixtures. Never executed against SERV.** No account was created, no key was requested or read, no terms were accepted, and no request was sent. Evidence rows are in the private research pack; public-doc facts are summarised in `docs/EVIDENCE_SUMMARY.md`.
+**Status: live transport built and tested offline (injected HTTP plus a loopback server). Not yet executed against SERV:** the run waits for the owner's API key. When it has run, `docs/SERV_RUN.md` records exactly what came back. Evidence rows are in the private research pack; public-doc facts are summarised in `docs/EVIDENCE_SUMMARY.md`.
 
 ## Interface, as documented publicly (read 2026-11-10, no sign-in)
 
@@ -32,10 +32,21 @@ Consequences: the audit's own step record is produced by this repo's code and la
 | Situation | Result |
 |---|---|
 | No key | Exit 3. Audit JSON still printed with `serv.status = "not_configured"`, `executed = false`. Stderr: "SERV was not run". |
-| Key present | Exit 4, `serv.status = "live_transport_not_implemented"`, `executed = false`. Nothing is sent, because this spike ships no live transport. The key value is never printed. |
+| Key present, no `--serv-model` | Exit 4, `serv.status = "model_not_chosen"`, `executed = false`. Nothing is sent; the model is never guessed. |
+| Key and `--serv-model` | One HTTPS request per **uncertain** obligation via `LiveServClient`. Each answer is attached as `serv_advisory` (human confirmation required); `serv = {status: executed, executed: true, fixture: false, model}`. Disposition, `full_support` and completeness are unchanged. Exit code as without `--serv` (0, or 1 with `--fail-on-gaps`). |
+| Request fails (HTTP error, timeout, non-JSON, response labelled fixture) | Exit 5, `serv.status = "call_failed"`, the plain audit is still printed, stderr carries the HTTP status and upstream error type. The key is never printed. |
 | Neither | Default `serv.status = "not_run"`. |
 
 The words "SERV result" and any step trace never appear in output.
+
+## Live transport (`LiveServClient`, `urllib_post`)
+
+- Standard library only (`urllib`), 30 s timeout, 1 MB response cap, https only (plain http only for 127.0.0.1 in tests).
+- The key is added to the `Authorization` header at send time; it is not in the request body, the result, `repr` or any error message.
+- A live response carrying a `fixture` label is refused.
+- The same `parse_interpretation` rules apply: strict verdict enum, quote verbatim in the source and above the length floor.
+- Usage tokens from the response are kept in the advisory; cost is read from the SERV console.
+- Run it on the fixture set: `SERV_API_KEY="$(security find-generic-password -s SERV_API_KEY -w)" python3 scripts/serv_live_run.py --model gpt-6-luna`.
 
 ## Fixture responses
 
@@ -46,7 +57,7 @@ Tests build chat-completion-shaped dicts with `"fixture": true` and `finish_reas
 1. No SERV output can set or raise `full_support`.
 2. A SERV quote that is not verbatim in the source is rejected.
 3. Missing credentials fail closed with a non-zero exit and an explicit "not run" status.
-4. No transport can return an unlabelled response, and no caller can label a result as live-executed.
+4. `ServClient` (fixtures) cannot return an unlabelled response. Only `LiveServClient` can produce an executed result, marked with a module-private provenance object that does not survive copying, so no caller can label a result as live-executed by writing `executed: true`.
 5. A quote that is a trivial substring of the source is not accepted as verbatim support.
 
 ## Not done, and who unblocks it
