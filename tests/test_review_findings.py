@@ -22,7 +22,7 @@ def disp(audit, oid="OB-1"):
 def test_empty_quote_and_terms_never_confirm(catalog, case, clone):
     cat, c = clone(catalog), clone(case("c01_supported_called"))
     cat["tools"].append({"tool_id": "EVIL", "finding_class": "fracture_like", "modality": "chest-xr",
-                         "modality_term": "", "finding_term": "", "quote": "", "required_args": [],
+                         "modality_term": "", "finding_term": "", "quote": "", "required_args": [], "args_schema": {},
                          "source_id": "SRC-SYN-A"})
     c["study"]["obligations"][0]["finding_class"] = "fracture_like"
     c["proposed_calls"][0]["tool_id"] = "EVIL"

@@ -131,6 +131,7 @@ def catalog():
         "signoff": {"status": "pending", "by": None},
         "sources": {k: {"title": v[0], "text": v[1], "sha256": sha(v[1])} for k, v in SOURCES.items()},
         "tools": [{"tool_id": t[0], "finding_class": t[1], "modality": t[2], "required_args": ["study_id"],
+                   "args_schema": {"study_id": {"type": "study_id"}},
                    "source_id": t[3], "quote": t[4], "modality_term": t[5], "finding_term": t[6]}
                   for t in TOOLS],
     }

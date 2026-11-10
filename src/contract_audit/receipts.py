@@ -25,12 +25,18 @@ def check_receipt(call, receipts):
         reasons.append("unrecognised_executor")
     if receipt["tool_id"] != call["tool_id"]:
         reasons.append("tool_mismatch")
-    if receipt["output_sha256"] != output_digest(receipt["output"]):
-        reasons.append("output_digest_mismatch")
+    try:
+        digest = output_digest(receipt["output"])
+    except (RecursionError, TypeError, ValueError):
+        reasons.append("output_not_digestable")
+    else:
+        if receipt["output_sha256"] != digest:
+            reasons.append("output_digest_mismatch")
     if receipt["status"] not in ("ok", "error"):
         reasons.append("unknown_status")
     if reasons:
         return {"status": "invalid", "receipt_id": receipt["receipt_id"], "reasons": reasons}
     if receipt["status"] == "error":
         return {"status": "failed", "receipt_id": receipt["receipt_id"], "reasons": ["execution_error"]}
-    return {"status": "valid", "receipt_id": receipt["receipt_id"], "reasons": []}
+    return {"status": "valid", "receipt_id": receipt["receipt_id"], "reasons": [],
+            "tool_id": receipt["tool_id"], "output_sha256": receipt["output_sha256"]}

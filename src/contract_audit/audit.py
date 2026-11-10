@@ -16,10 +16,20 @@ NOTICES = (
 )
 
 
+def _check_serv_block(serv):
+    """Only a not-run status block is accepted here. Live execution cannot be asserted by a caller."""
+    if not isinstance(serv, dict) or serv.get("executed") is not False or serv.get("fixture") is not False \
+            or not isinstance(serv.get("status"), str):
+        raise ValueError("serv must be a status block with executed false and fixture false "
+                         "(a SERV advisory is attached afterwards with attach_advisory)")
+
+
 def build_audit(catalog, case, serv=None):
     """Build the audit. `serv` is a status block from the SERV boundary; default says it was not run."""
     validate_catalog(catalog)
     validate_case(case)
+    if serv is not None:
+        _check_serv_block(serv)
     obligations, call_results = assess_obligations(
         catalog, case["study"], case["proposed_calls"], case["receipts"])
     report = reconcile_report(obligations, case["draft_report"])
@@ -31,7 +41,7 @@ def build_audit(catalog, case, serv=None):
         "catalog_id": catalog["catalog_id"],
         "synthetic": bool(case.get("synthetic")) and bool(catalog.get("synthetic")),
         "signoff": {"status": "pending"},
-        "serv": serv or {"status": "not_run", "executed": False, "fixture": False},
+        "serv": serv if serv is not None else {"status": "not_run", "executed": False, "fixture": False},
         "notices": list(NOTICES),
         "study": {"study_id": case["study"]["study_id"], "modality": case["study"]["modality"]},
         "obligations": obligations,

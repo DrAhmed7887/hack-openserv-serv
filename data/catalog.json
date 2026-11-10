@@ -40,6 +40,11 @@
   "synthetic": true,
   "tools": [
     {
+      "args_schema": {
+        "study_id": {
+          "type": "study_id"
+        }
+      },
       "finding_class": "nodule_like",
       "finding_term": "nodule-like",
       "modality": "chest-xr",
@@ -52,6 +57,11 @@
       "tool_id": "SYN-NODULE-1"
     },
     {
+      "args_schema": {
+        "study_id": {
+          "type": "study_id"
+        }
+      },
       "finding_class": "effusion_like",
       "finding_term": "effusion-like",
       "modality": "chest-xr",
@@ -64,6 +74,11 @@
       "tool_id": "SYN-EFFUSION-1"
     },
     {
+      "args_schema": {
+        "study_id": {
+          "type": "study_id"
+        }
+      },
       "finding_class": "fracture_like",
       "finding_term": "fracture-like",
       "modality": "extremity-xr",
@@ -76,6 +91,11 @@
       "tool_id": "SYN-FRACTURE-1"
     },
     {
+      "args_schema": {
+        "study_id": {
+          "type": "study_id"
+        }
+      },
       "finding_class": "cardiac_size",
       "finding_term": "cardiac size",
       "modality": "chest-xr",
@@ -88,6 +108,11 @@
       "tool_id": "SYN-CARDIAC-1"
     },
     {
+      "args_schema": {
+        "study_id": {
+          "type": "study_id"
+        }
+      },
       "finding_class": "tube_position_like",
       "finding_term": "tube-position-like",
       "modality": "chest-xr",
@@ -100,6 +125,11 @@
       "tool_id": "SYN-LINE-1"
     },
     {
+      "args_schema": {
+        "study_id": {
+          "type": "study_id"
+        }
+      },
       "finding_class": "lung_volume_like",
       "finding_term": "lung-volume-like",
       "modality": "chest-xr",

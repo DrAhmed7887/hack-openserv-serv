@@ -19,6 +19,15 @@ SYSTEM_PROMPT = (
 
 VERDICTS = ["supported", "unsupported", "uncertain"]
 
+# Floor for what counts as a quote: an engineering minimum so "a" or "the" cannot pass as verbatim support.
+# It is not a semantic check; a human still confirms any advisory.
+MIN_QUOTE_WORDS = 3
+MIN_QUOTE_CHARS = 12
+
+
+def _meaningful_quote(quote):
+    return len(quote.split()) >= MIN_QUOTE_WORDS and len(quote.strip()) >= MIN_QUOTE_CHARS
+
 
 class NotConfigured(RuntimeError):
     """No SERV credentials: SERV was not run."""
@@ -43,8 +52,8 @@ def load_config(environ):
 
 def build_request(model, obligation, modality, source_id, source_text):
     """Build (never send) a chat-completions request. The key is added at send time, not here."""
-    if not model:
-        raise ValueError("model is required: pick one from the SERV model catalog; it is not guessed here")
+    if not isinstance(model, str) or not model.strip():
+        raise ValueError("model is required: a non-blank name from the SERV model catalog; it is not guessed here")
     user = {"obligation": obligation, "study_modality": modality,
             "source_id": source_id, "source_text": source_text}
     schema = {
@@ -96,9 +105,9 @@ def parse_interpretation(response, source_text):
     if not isinstance(quote, str):
         result["reasons"].append("quote_not_string")
         return result
-    result["quote_in_source"] = bool(quote) and quote in source_text
+    result["quote_in_source"] = _meaningful_quote(quote) and quote in source_text
     if verdict in ("supported", "unsupported") and not result["quote_in_source"]:
-        result["reasons"].append("quote_not_in_source")
+        result["reasons"].append("quote_not_in_source" if _meaningful_quote(quote) else "quote_too_short")
     result["accepted"] = not result["reasons"]
     return result
 
@@ -107,23 +116,26 @@ class ServClient:
     """Builds the request and validates the response. The transport is injected.
 
     There is no default transport: with transport=None every call raises LiveTransportNotImplemented.
-    A non-live transport may only return responses labelled "fixture": true.
+    Any transport may only return responses labelled "fixture": true, and results are never "executed":
+    this spike ships no live transport, so a caller cannot switch live mode on (live=True is refused).
     """
 
     def __init__(self, config, transport=None, live=False):
         if not isinstance(config, ServConfig):
             raise NotConfigured("a ServConfig from load_config() is required; SERV was not run")
-        self._config, self._transport, self._live = config, transport, live
+        if live:
+            raise LiveTransportNotImplemented("live mode cannot be enabled: this spike ships no live transport")
+        self._config, self._transport = config, transport
 
     def interpret(self, model, obligation, modality, source_id, source_text):
         request = build_request(model, obligation, modality, source_id, source_text)
         if self._transport is None:
             raise LiveTransportNotImplemented("no live transport in this spike; no request was sent")
         response = self._transport(request, self._config)
-        if not self._live and not (isinstance(response, dict) and response.get("fixture") is True):
-            raise ValueError("non-live transport returned a response not labelled fixture: true")
+        if not (isinstance(response, dict) and response.get("fixture") is True):
+            raise ValueError("transport returned a response not labelled fixture: true")
         result = parse_interpretation(response, source_text)
-        result["executed"] = self._live and not result["fixture"]
+        result["executed"] = False
         return result
 
 
@@ -135,8 +147,13 @@ def attach_advisory(audit, obligation_id, interpretation):
     """
     if audit["obligations"][obligation_id]["disposition"] != "uncertain":
         raise ValueError("SERV advisory is only attached to uncertain obligations")
-    executed = bool(interpretation.get("executed", False))
-    if not interpretation["fixture"] and not executed:
+    fixture, executed = interpretation.get("fixture"), interpretation.get("executed", False)
+    if fixture is True and executed is True:
+        raise ValueError("fixture and executed are mutually exclusive; refusing to label it")
+    if executed is not False:
+        raise ValueError("executed results are not accepted: this spike has no live transport "
+                         "and a caller cannot attest live execution")
+    if fixture is not True:
         raise ValueError("interpretation is neither fixture nor executed; refusing to label it")
     out = copy.deepcopy(audit)
     out.setdefault("serv_advisory", {})[obligation_id] = {
@@ -144,7 +161,5 @@ def attach_advisory(audit, obligation_id, interpretation):
         "accepted": interpretation["accepted"], "reasons": list(interpretation["reasons"]),
         "human_confirmation_required": True,
     }
-    out["serv"] = {"status": "fixture" if interpretation["fixture"] else "executed",
-                   "executed": executed,
-                   "fixture": interpretation["fixture"]}
+    out["serv"] = {"status": "fixture", "executed": False, "fixture": True}
     return out

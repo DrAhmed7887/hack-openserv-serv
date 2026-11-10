@@ -12,18 +12,26 @@ _CLAIM_ACTION = {
 }
 _OK = ("supported_by_receipt", "limitation_disclosed")
 
+# Every outcome and action label this module can emit; the design mock must label all of them.
+OUTCOMES = ("supported_by_receipt", "limitation_disclosed", "unsupported_claim", "receipt_mismatch",
+            "disclosure_contradicts_support", "unknown_obligation", "invalid_statement")
+ACTIONS = ("run_tool_or_remove", "remove_or_disclose", "qualify_or_remove", "remove_until_valid_receipt",
+           "cite_valid_receipt", "replace_with_cited_claim", "remove_statement", "add_limitation_statement")
+
 
 def _statement_verdict(obligations, statement):
     ob = obligations.get(statement["obligation_id"])
     if ob is None:
         return {"outcome": "unknown_obligation", "action": "remove_statement"}
     if statement["kind"] == "discloses_not_assessed":
+        if ob["full_support"]:
+            return {"outcome": "disclosure_contradicts_support", "action": "replace_with_cited_claim"}
         return {"outcome": "limitation_disclosed", "action": None}
     if statement["kind"] != "claims_assessed":
         return {"outcome": "invalid_statement", "action": "remove_statement"}
     if not ob["full_support"]:
         return {"outcome": "unsupported_claim", "action": _CLAIM_ACTION[ob["disposition"]]}
-    if statement["cites_receipt"] == ob["receipt_id"]:
+    if statement["cites_receipt"] in ob["receipt_ids"]:
         return {"outcome": "supported_by_receipt", "action": None}
     return {"outcome": "receipt_mismatch", "action": "cite_valid_receipt"}
 

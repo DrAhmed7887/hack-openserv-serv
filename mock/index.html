@@ -136,26 +136,51 @@
   "obligations": {
    "OB-1": {
     "call_id": "CALL-1",
+    "calls": [
+     {
+      "call_id": "CALL-1",
+      "reasons": [],
+      "receipt_id": "RCPT-1",
+      "receipt_status": "valid",
+      "status": "valid"
+     }
+    ],
     "capability": "supported",
     "disposition": "supported_called",
     "full_support": true,
     "reasons": [],
     "receipt_id": "RCPT-1",
+    "receipt_ids": [
+     "RCPT-1"
+    ],
     "receipt_status": "valid",
     "tool_id": "SYN-NODULE-1"
    },
    "OB-2": {
     "call_id": null,
+    "calls": [],
     "capability": "supported",
     "disposition": "supported_omitted",
     "full_support": false,
     "reasons": [],
     "receipt_id": null,
+    "receipt_ids": [],
     "receipt_status": "not_applicable",
     "tool_id": "SYN-EFFUSION-1"
    },
    "OB-3": {
     "call_id": null,
+    "calls": [
+     {
+      "call_id": "CALL-3",
+      "reasons": [
+       "modality_mismatch"
+      ],
+      "receipt_id": null,
+      "receipt_status": "not_applicable",
+      "status": "invalid"
+     }
+    ],
     "capability": "unsupported",
     "disposition": "unsupported",
     "full_support": false,
@@ -163,11 +188,23 @@
      "no_catalog_entry"
     ],
     "receipt_id": null,
+    "receipt_ids": [],
     "receipt_status": "not_applicable",
     "tool_id": null
    },
    "OB-4": {
     "call_id": null,
+    "calls": [
+     {
+      "call_id": "CALL-4",
+      "reasons": [
+       "modality_term_not_in_quote"
+      ],
+      "receipt_id": null,
+      "receipt_status": "not_applicable",
+      "status": "unconfirmed"
+     }
+    ],
     "capability": "uncertain",
     "disposition": "uncertain",
     "full_support": false,
@@ -175,11 +212,23 @@
      "modality_term_not_in_quote"
     ],
     "receipt_id": null,
+    "receipt_ids": [],
     "receipt_status": "not_applicable",
     "tool_id": "SYN-CARDIAC-1"
    },
    "OB-5": {
     "call_id": "CALL-5",
+    "calls": [
+     {
+      "call_id": "CALL-5",
+      "reasons": [
+       "no_receipt"
+      ],
+      "receipt_id": null,
+      "receipt_status": "missing",
+      "status": "valid"
+     }
+    ],
     "capability": "supported",
     "disposition": "supported_called",
     "full_support": false,
@@ -187,11 +236,23 @@
      "no_receipt"
     ],
     "receipt_id": null,
+    "receipt_ids": [],
     "receipt_status": "missing",
     "tool_id": "SYN-LINE-1"
    },
    "OB-6": {
     "call_id": "CALL-6",
+    "calls": [
+     {
+      "call_id": "CALL-6",
+      "reasons": [
+       "execution_error"
+      ],
+      "receipt_id": "RCPT-6",
+      "receipt_status": "failed",
+      "status": "valid"
+     }
+    ],
     "capability": "supported",
     "disposition": "supported_called",
     "full_support": false,
@@ -199,6 +260,7 @@
      "execution_error"
     ],
     "receipt_id": "RCPT-6",
+    "receipt_ids": [],
     "receipt_status": "failed",
     "tool_id": "SYN-VOLUME-1"
    }
@@ -470,8 +532,8 @@
   var steps = [["catalog","1 Catalog"],["study","2 Study"],["coverage","3 Matrix"],["repair","4 Repair"],["export","5 Export"]];
   var LABEL = { supported_called:["Supported, called","ok"], supported_omitted:["Supported, omitted","warn"], unsupported:["Unsupported","bad"], uncertain:["Uncertain","info"] };
   var RECEIPT = { valid:["valid","ok"], missing:["missing","bad"], failed:["failed","bad"], invalid:["invalid","bad"], not_applicable:["n/a","info"] };
-  var OUTCOME = { supported_by_receipt:["Backed by receipt","ok"], limitation_disclosed:["Limitation disclosed","ok"], unsupported_claim:["Claim not backed","bad"], receipt_mismatch:["Receipt mismatch","bad"], unknown_obligation:["Unknown obligation","bad"] };
-  var ACTION = { run_tool_or_remove:"Run the tool, or remove the claim", remove_or_disclose:"Remove the claim or disclose the limit", qualify_or_remove:"Qualify the claim, or remove it", remove_until_valid_receipt:"Remove until a valid receipt exists", cite_valid_receipt:"Cite the valid receipt", remove_statement:"Remove the statement", add_limitation_statement:"Add a limitation statement" };
+  var OUTCOME = { supported_by_receipt:["Backed by receipt","ok"], limitation_disclosed:["Limitation disclosed","ok"], unsupported_claim:["Claim not backed","bad"], receipt_mismatch:["Receipt mismatch","bad"], disclosure_contradicts_support:["Disclosure contradicts support","bad"], unknown_obligation:["Unknown obligation","bad"], invalid_statement:["Invalid statement","bad"] };
+  var ACTION = { run_tool_or_remove:"Run the tool, or remove the claim", remove_or_disclose:"Remove the claim or disclose the limit", qualify_or_remove:"Qualify the claim, or remove it", remove_until_valid_receipt:"Remove until a valid receipt exists", cite_valid_receipt:"Cite the valid receipt", replace_with_cited_claim:"Replace with a claim that cites the valid receipt", remove_statement:"Remove the statement", add_limitation_statement:"Add a limitation statement" };
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
   function badge(pair) { return '<span class="badge ' + pair[1] + '">' + esc(pair[0]) + "</span>"; }
   function table(el, head, rows) {
@@ -525,9 +587,17 @@
     window.scrollTo(0, 0);
   }
   nav.innerHTML = steps.map(function (st) { return '<button data-go="' + st[0] + '">' + st[1] + "</button>"; }).join("");
-  document.addEventListener("click", function (e) { var g = e.target.getAttribute && e.target.getAttribute("data-go"); if (g) { show(g); } });
-  var start = location.hash.slice(1);
-  show(steps.some(function (st) { return st[0] === start; }) ? start : "catalog");
+  function route() {
+    var id = location.hash.slice(1);
+    show(steps.some(function (st) { return st[0] === id; }) ? id : steps[0][0]);
+  }
+  document.addEventListener("click", function (e) {
+    var g = e.target.getAttribute && e.target.getAttribute("data-go");
+    if (!g) { return; }
+    if (location.hash.slice(1) !== g) { location.hash = g; } else { route(); }
+  });
+  window.addEventListener("hashchange", route);
+  route();
 })();
 </script>
 </body>

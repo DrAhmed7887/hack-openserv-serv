@@ -56,3 +56,36 @@ def test_obligation_with_no_statement_and_no_full_support_is_a_gap(catalog, case
 def test_unsupported_claim_is_never_rewritten_by_the_reconciler(catalog, case):
     r = reconcile(catalog, case("c02_supported_omitted"))
     assert set(r["statements"]["ST-1"]) == {"outcome", "action"}  # action label only, no generated text
+
+
+# ---- a limitation disclosure contradicts an obligation that is fully supported ----
+def as_disclosure(c, index=0):
+    st = c["draft_report"]["statements"][index]
+    st.update(kind="discloses_not_assessed", cites_receipt=None)
+    return c
+
+
+def test_disclosing_not_assessed_on_a_fully_supported_obligation_is_a_contradiction(catalog, case, clone):
+    r = reconcile(catalog, as_disclosure(clone(case("c01_supported_called"))))
+    assert r["statements"]["ST-1"] == {"outcome": "disclosure_contradicts_support",
+                                       "action": "replace_with_cited_claim"}
+    assert r["report_consistent"] is False
+
+
+@pytest.mark.parametrize("case_id", ["c02_supported_omitted", "c03_unsupported", "c04_uncertain_source_insufficient",
+                                     "c05_missing_receipt", "c06_execution_failure"])
+def test_disclosure_on_an_obligation_without_full_support_stays_accepted(catalog, case, clone, case_id):
+    r = reconcile(catalog, as_disclosure(clone(case(case_id))))
+    assert r["statements"]["ST-1"] == {"outcome": "limitation_disclosed", "action": None}
+    assert r["report_consistent"] is True
+
+
+def test_disclosure_beside_a_valid_cited_claim_still_flags_the_disclosure(catalog, case, clone):
+    c = clone(case("c01_supported_called"))
+    c["draft_report"]["statements"].append(
+        {"statement_id": "ST-2", "obligation_id": "OB-1", "kind": "discloses_not_assessed",
+         "cites_receipt": None, "text": "x"})
+    r = reconcile(catalog, c)
+    assert r["statements"]["ST-1"]["outcome"] == "supported_by_receipt"
+    assert r["statements"]["ST-2"]["outcome"] == "disclosure_contradicts_support"
+    assert r["report_consistent"] is False

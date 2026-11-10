@@ -7,19 +7,33 @@ Nothing in the report is typed by hand except the fixed headings and the limits 
 import hashlib
 import json
 import platform
+import re
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from scrub_paths import scrub  # noqa: E402
 
 from contract_audit.audit import build_audit  # noqa: E402
 from contract_audit.inputs import load_case, load_catalog  # noqa: E402
 
 
 def clean(text):
-    return text.replace(str(ROOT), "<repo>")
+    return scrub(text, str(ROOT))
+
+
+def readme_claimed_total():
+    m = re.search(r"(\d+) tests, offline", (ROOT / "README.md").read_text(encoding="utf-8"))
+    return int(m.group(1)) if m else None
+
+
+def pytest_total(stdout):
+    m = re.search(r"collected (\d+) items", stdout)
+    return int(m.group(1)) if m else None
 
 
 def source_digest():
@@ -71,6 +85,8 @@ def main():
     pytest = subprocess.run([sys.executable, "-m", "pytest", "-v", "-p", "no:cacheprovider"], cwd=ROOT,
                             capture_output=True, text=True)
     rows, table_ok = case_rows()
+    total, claimed = pytest_total(pytest.stdout), readme_claimed_total()
+    totals_ok = total is not None and total == claimed
     out = [
         "# G1 results: Radiology tool-capability contract audit (synthetic mechanism spike)",
         "",
@@ -83,7 +99,7 @@ def main():
         "## Run",
         f"- Python {platform.python_version()}, {platform.system()}",
         f"- Source+data digest (first 16 hex of sha256 over src/ and data/*.json): `{source_digest()}`",
-        f"- pytest exit code: **{pytest.returncode}**",
+        f"- pytest exit code: **{pytest.returncode}**; tests collected: **{total}** (README claims {claimed}: {'match' if totals_ok else 'MISMATCH'})",
         f"- Case table: **{'all 7 PASS' if table_ok and len(rows) == 7 else 'FAILURES PRESENT'}**",
         "",
         "## Case table (actual validator output vs `data/expected/`, written before the validator)",
@@ -104,7 +120,12 @@ def main():
         *red_rows(),
         "",
         "Cycle `12_review_findings` came from an independent read-only review by a separate reviewer agent: 8 findings (a weak catalog entry reaching full support, duplicate ids hiding an obligation or a statement, a null receipt id matching an uncited claim, non-object `args`, malformed nested input crashing, a mislabelled SERV status, a non-string quote). "
-        "Each was reproduced by a failing test first (one case, `study is list`, already passed because an existing check covered it), then fixed.",
+        "Each was reproduced by a failing test first (one case, `study is list`, already passed because an existing check covered it), then fixed. Its RED log was scrubbed of local temp paths in review round 2 (redaction only; the failures are unchanged).",
+        "",
+        "Cycles `13a` to `13n` are review round 2 (a second independent review of commit `aa77601`: 3 blocking findings plus correctness and hardening items). "
+        "RED logs are the real failing runs saved before the change; GREEN logs are the full suite after it. Files named `*.GREEN-attempt1.FAILED.log` and `*.RED-attempt0.IMPORT-ERROR.log` are kept on purpose: "
+        "a first GREEN run that failed (13f: an existing test built a catalog tool without the now-required `args_schema`; 13m: my own test data held sample quotes that were not substrings of the source) and a first RED that was only an ImportError (13n). "
+        "See `docs/KNOWN_LIMITATIONS.md` for the evidence caveats of this round.",
         "",
         "Characterisation tests that pass on first run by design (not RED-first): `tests/test_fixtures_reproducible.py`, "
         "and in `test_capability.py` the guard `test_removing_the_only_confirmed_entry_never_yields_supported`, which protects behaviour added in cycle 1.",
@@ -119,8 +140,9 @@ def main():
     if pytest.stderr.strip():
         out += ["stderr:", "```", clean(pytest.stderr).rstrip(), "```", ""]
     (ROOT / "docs" / "G1_RESULTS.md").write_text("\n".join(out), encoding="utf-8")
-    print("wrote docs/G1_RESULTS.md; pytest exit", pytest.returncode, "; table_ok", table_ok)
-    return 0 if pytest.returncode == 0 and table_ok else 1
+    print("wrote docs/G1_RESULTS.md; pytest exit", pytest.returncode, "; table_ok", table_ok, "; tests", total,
+          "; README claims", claimed)
+    return 0 if pytest.returncode == 0 and table_ok and totals_ok else 1
 
 
 if __name__ == "__main__":

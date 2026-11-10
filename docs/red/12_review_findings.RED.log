@@ -263,7 +263,7 @@ ________ test_malformed_case_is_an_input_error_not_a_crash[calls null] _________
 
 case = <function case.<locals>._load at 0x1081365e0>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu0')
+tmp_path = PosixPath('<tmp>')
 name = 'calls null'
 mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a1f0>
 
@@ -282,7 +282,7 @@ ______ test_malformed_case_is_an_input_error_not_a_crash[call missing id] ______
 
 case = <function case.<locals>._load at 0x108136940>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu1')
+tmp_path = PosixPath('<tmp>')
 name = 'call missing id'
 mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a280>
 
@@ -301,7 +301,7 @@ _ test_malformed_case_is_an_input_error_not_a_crash[receipt missing executor] __
 
 case = <function case.<locals>._load at 0x108136c10>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu2')
+tmp_path = PosixPath('<tmp>')
 name = 'receipt missing executor'
 mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a310>
 
@@ -320,7 +320,7 @@ ___ test_malformed_case_is_an_input_error_not_a_crash[obligation missing id] ___
 
 case = <function case.<locals>._load at 0x1081284c0>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu3')
+tmp_path = PosixPath('<tmp>')
 name = 'obligation missing id'
 mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a3a0>
 
@@ -339,7 +339,7 @@ ______ test_malformed_case_is_an_input_error_not_a_crash[statements null] ______
 
 case = <function case.<locals>._load at 0x1081281f0>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu4')
+tmp_path = PosixPath('<tmp>')
 name = 'statements null'
 mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a430>
 
@@ -358,7 +358,7 @@ ____ test_malformed_case_is_an_input_error_not_a_crash[obligation id list] _____
 
 case = <function case.<locals>._load at 0x108013040>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu5')
+tmp_path = PosixPath('<tmp>')
 name = 'obligation id list'
 mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a4c0>
 
@@ -377,7 +377,7 @@ __ test_malformed_case_is_an_input_error_not_a_crash[statement missing kind] ___
 
 case = <function case.<locals>._load at 0x108128940>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu6')
+tmp_path = PosixPath('<tmp>')
 name = 'statement missing kind'
 mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a550>
 
@@ -396,7 +396,7 @@ __ test_malformed_case_is_an_input_error_not_a_crash[statement missing cites] __
 
 case = <function case.<locals>._load at 0x108128550>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu7')
+tmp_path = PosixPath('<tmp>')
 name = 'statement missing cites'
 mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a5e0>
 
@@ -415,7 +415,7 @@ _ test_malformed_case_is_an_input_error_not_a_crash[receipt output not object] _
 
 case = <function case.<locals>._load at 0x108128670>
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu9')
+tmp_path = PosixPath('<tmp>')
 name = 'receipt output not object'
 mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a700>
 
@@ -434,7 +434,7 @@ ___________________ test_malformed_catalog_is_an_input_error ___________________
 
 catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
 clone = <function deepcopy at 0x10717a310>
-tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_catalog_is_an_i0')
+tmp_path = PosixPath('<tmp>')
 
     def test_malformed_catalog_is_an_input_error(catalog, clone, tmp_path):
         from contract_audit.inputs import load_catalog

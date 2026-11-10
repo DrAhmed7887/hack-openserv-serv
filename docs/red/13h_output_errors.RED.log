@@ -1,0 +1,227 @@
+# RED evidence: 13h_output_errors
+# command: python3 -m pytest tests/test_input_errors.py -q
+# python: Python 3.9.6
+....................FFFFFFF                                              [100%]
+=================================== FAILURES ===================================
+_ test_unwritable_out_path_exits_two_with_a_clear_message[missing parent dir] __
+
+capsys = <_pytest.capture.CaptureFixture object at 0x107ef6b20>
+tmp_path = PosixPath('<tmp>')
+name = 'missing parent dir'
+
+    @pytest.mark.parametrize("name", ["missing parent dir", "path is a directory", "unwritable dir", "parent is a file"])
+    def test_unwritable_out_path_exits_two_with_a_clear_message(capsys, tmp_path, name):
+        if name == "unwritable dir" and os.geteuid() == 0:
+            pytest.skip("root ignores directory permissions")
+>       code, out, err = run_cli(capsys, CATALOG, CASE, "--out", str(bad_out_paths(tmp_path)[name]))
+
+tests/test_input_errors.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:61: in main
+    args.out.write_text(text, encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1275: in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<tmp>')
+name = '<tmp>'
+flags = 16778753, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       FileNotFoundError: [Errno 2] No such file or directory: '<tmp>'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: FileNotFoundError
+_ test_unwritable_out_path_exits_two_with_a_clear_message[path is a directory] _
+
+capsys = <_pytest.capture.CaptureFixture object at 0x107f5f700>
+tmp_path = PosixPath('<tmp>')
+name = 'path is a directory'
+
+    @pytest.mark.parametrize("name", ["missing parent dir", "path is a directory", "unwritable dir", "parent is a file"])
+    def test_unwritable_out_path_exits_two_with_a_clear_message(capsys, tmp_path, name):
+        if name == "unwritable dir" and os.geteuid() == 0:
+            pytest.skip("root ignores directory permissions")
+>       code, out, err = run_cli(capsys, CATALOG, CASE, "--out", str(bad_out_paths(tmp_path)[name]))
+
+tests/test_input_errors.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:61: in main
+    args.out.write_text(text, encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1275: in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<tmp>')
+name = '<tmp>'
+flags = 16778753, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       IsADirectoryError: [Errno 21] Is a directory: '<tmp>'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: IsADirectoryError
+___ test_unwritable_out_path_exits_two_with_a_clear_message[unwritable dir] ____
+
+capsys = <_pytest.capture.CaptureFixture object at 0x107f6cc40>
+tmp_path = PosixPath('<tmp>')
+name = 'unwritable dir'
+
+    @pytest.mark.parametrize("name", ["missing parent dir", "path is a directory", "unwritable dir", "parent is a file"])
+    def test_unwritable_out_path_exits_two_with_a_clear_message(capsys, tmp_path, name):
+        if name == "unwritable dir" and os.geteuid() == 0:
+            pytest.skip("root ignores directory permissions")
+>       code, out, err = run_cli(capsys, CATALOG, CASE, "--out", str(bad_out_paths(tmp_path)[name]))
+
+tests/test_input_errors.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:61: in main
+    args.out.write_text(text, encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1275: in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<tmp>')
+name = '<tmp>'
+flags = 16778753, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       PermissionError: [Errno 13] Permission denied: '<tmp>'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: PermissionError
+__ test_unwritable_out_path_exits_two_with_a_clear_message[parent is a file] ___
+
+capsys = <_pytest.capture.CaptureFixture object at 0x108063d60>
+tmp_path = PosixPath('<tmp>')
+name = 'parent is a file'
+
+    @pytest.mark.parametrize("name", ["missing parent dir", "path is a directory", "unwritable dir", "parent is a file"])
+    def test_unwritable_out_path_exits_two_with_a_clear_message(capsys, tmp_path, name):
+        if name == "unwritable dir" and os.geteuid() == 0:
+            pytest.skip("root ignores directory permissions")
+>       code, out, err = run_cli(capsys, CATALOG, CASE, "--out", str(bad_out_paths(tmp_path)[name]))
+
+tests/test_input_errors.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:61: in main
+    args.out.write_text(text, encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1275: in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<repo>/data/cases/c01_supported_called.json/audit.json')
+name = '<repo>/data/cases/c01_supported_called.json/audit.json'
+flags = 16778753, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       NotADirectoryError: [Errno 20] Not a directory: '<repo>/data/cases/c01_supported_called.json/audit.json'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: NotADirectoryError
+_________________ test_write_failure_beats_the_gaps_exit_code __________________
+
+capsys = <_pytest.capture.CaptureFixture object at 0x1080dd3a0>
+tmp_path = PosixPath('<tmp>')
+
+    def test_write_failure_beats_the_gaps_exit_code(capsys, tmp_path):
+>       code, _, err = run_cli(capsys, CATALOG, DATA / "cases" / "c02_supported_omitted.json",
+                               "--fail-on-gaps", "--out", str(tmp_path / "no" / "audit.json"))
+
+tests/test_input_errors.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:61: in main
+    args.out.write_text(text, encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1275: in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<tmp>')
+name = '<tmp>'
+flags = 16778753, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       FileNotFoundError: [Errno 2] No such file or directory: '<tmp>'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: FileNotFoundError
+_________________ test_write_failure_beats_the_serv_exit_codes _________________
+
+capsys = <_pytest.capture.CaptureFixture object at 0x107f6c340>
+tmp_path = PosixPath('<tmp>')
+
+    def test_write_failure_beats_the_serv_exit_codes(capsys, tmp_path):
+>       code, _, err = run_cli(capsys, CATALOG, CASE, "--serv", "--out", str(tmp_path / "no" / "audit.json"))
+
+tests/test_input_errors.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:61: in main
+    args.out.write_text(text, encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1275: in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<tmp>')
+name = '<tmp>'
+flags = 16778753, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       FileNotFoundError: [Errno 2] No such file or directory: '<tmp>'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: FileNotFoundError
+________________ test_real_process_out_failure_exit_code_is_two ________________
+
+tmp_path = PosixPath('<tmp>')
+
+    def test_real_process_out_failure_exit_code_is_two(tmp_path):
+        env = {k: v for k, v in os.environ.items() if k != "SERV_API_KEY"}
+        env["PYTHONPATH"] = str(DATA.parent / "src")
+        r = subprocess.run([sys.executable, "-m", "contract_audit", "audit", "--catalog", str(CATALOG), "--case",
+                            str(CASE), "--out", str(tmp_path / "no" / "audit.json")],
+                           capture_output=True, text=True, env=env, cwd=str(DATA.parent))
+>       assert r.returncode == 2 and "Traceback" not in r.stderr
+E       AssertionError: assert (1 == 2)
+E        +  where 1 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', .../kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-<user>/pytest-42/test_real_process_out_failure_0/no/audit.json\'\n').returncode
+
+tests/test_input_errors.py:145: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_input_errors.py::test_unwritable_out_path_exits_two_with_a_clear_message[missing parent dir]
+FAILED tests/test_input_errors.py::test_unwritable_out_path_exits_two_with_a_clear_message[path is a directory]
+FAILED tests/test_input_errors.py::test_unwritable_out_path_exits_two_with_a_clear_message[unwritable dir]
+FAILED tests/test_input_errors.py::test_unwritable_out_path_exits_two_with_a_clear_message[parent is a file]
+FAILED tests/test_input_errors.py::test_write_failure_beats_the_gaps_exit_code
+FAILED tests/test_input_errors.py::test_write_failure_beats_the_serv_exit_codes
+FAILED tests/test_input_errors.py::test_real_process_out_failure_exit_code_is_two
+7 failed, 20 passed in 0.52s
+# exit code: 1

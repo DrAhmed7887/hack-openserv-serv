@@ -1,0 +1,422 @@
+# RED evidence: 13l_serv_labels
+# command: python3 -m pytest tests/test_serv_hardening.py -q
+# python: Python 3.9.6
+.FF.FFFF.FF..FFFF.FF.FFFFFFFFF...                                        [100%]
+=================================== FAILURES ===================================
+__________________ test_model_must_be_a_nonblank_string[   ] ___________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+model = '   '
+
+    @pytest.mark.parametrize("model", ["", "   ", "\t\n", None, 5, ["m"], {"m": 1}, b"m"])
+    def test_model_must_be_a_nonblank_string(catalog, model):
+        with pytest.raises(ValueError, match="model"):
+>           build_request(model, {"obligation_id": "OB-4"}, "chest-xr", "SRC-SYN-D", "text")
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:37: Failed
+__________________ test_model_must_be_a_nonblank_string[\t\n] __________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+model = '\t\n'
+
+    @pytest.mark.parametrize("model", ["", "   ", "\t\n", None, 5, ["m"], {"m": 1}, b"m"])
+    def test_model_must_be_a_nonblank_string(catalog, model):
+        with pytest.raises(ValueError, match="model"):
+>           build_request(model, {"obligation_id": "OB-4"}, "chest-xr", "SRC-SYN-D", "text")
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:37: Failed
+___________________ test_model_must_be_a_nonblank_string[5] ____________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+model = 5
+
+    @pytest.mark.parametrize("model", ["", "   ", "\t\n", None, 5, ["m"], {"m": 1}, b"m"])
+    def test_model_must_be_a_nonblank_string(catalog, model):
+        with pytest.raises(ValueError, match="model"):
+>           build_request(model, {"obligation_id": "OB-4"}, "chest-xr", "SRC-SYN-D", "text")
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:37: Failed
+_________________ test_model_must_be_a_nonblank_string[model5] _________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+model = ['m']
+
+    @pytest.mark.parametrize("model", ["", "   ", "\t\n", None, 5, ["m"], {"m": 1}, b"m"])
+    def test_model_must_be_a_nonblank_string(catalog, model):
+        with pytest.raises(ValueError, match="model"):
+>           build_request(model, {"obligation_id": "OB-4"}, "chest-xr", "SRC-SYN-D", "text")
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:37: Failed
+_________________ test_model_must_be_a_nonblank_string[model6] _________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+model = {'m': 1}
+
+    @pytest.mark.parametrize("model", ["", "   ", "\t\n", None, 5, ["m"], {"m": 1}, b"m"])
+    def test_model_must_be_a_nonblank_string(catalog, model):
+        with pytest.raises(ValueError, match="model"):
+>           build_request(model, {"obligation_id": "OB-4"}, "chest-xr", "SRC-SYN-D", "text")
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:37: Failed
+___________________ test_model_must_be_a_nonblank_string[m] ____________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+model = b'm'
+
+    @pytest.mark.parametrize("model", ["", "   ", "\t\n", None, 5, ["m"], {"m": 1}, b"m"])
+    def test_model_must_be_a_nonblank_string(catalog, model):
+        with pytest.raises(ValueError, match="model"):
+>           build_request(model, {"obligation_id": "OB-4"}, "chest-xr", "SRC-SYN-D", "text")
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:37: Failed
+__ test_client_refuses_live_mode_even_with_credentials_and_a_transport[None] ___
+
+transport = None
+
+    @pytest.mark.parametrize("transport", [None, lambda r, c: completion("{}")])
+    def test_client_refuses_live_mode_even_with_credentials_and_a_transport(transport):
+        with pytest.raises(LiveTransportNotImplemented):
+>           ServClient(load_config({"SERV_API_KEY": KEY}), transport, live=True)
+E           Failed: DID NOT RAISE <class 'contract_audit.serv.LiveTransportNotImplemented'>
+
+tests/test_serv_hardening.py:48: Failed
+_ test_client_refuses_live_mode_even_with_credentials_and_a_transport[<lambda>] _
+
+transport = <function <lambda> at 0x10840b790>
+
+    @pytest.mark.parametrize("transport", [None, lambda r, c: completion("{}")])
+    def test_client_refuses_live_mode_even_with_credentials_and_a_transport(transport):
+        with pytest.raises(LiveTransportNotImplemented):
+>           ServClient(load_config({"SERV_API_KEY": KEY}), transport, live=True)
+E           Failed: DID NOT RAISE <class 'contract_audit.serv.LiveTransportNotImplemented'>
+
+tests/test_serv_hardening.py:48: Failed
+_ test_attach_advisory_refuses_forged_or_ambiguous_labels[over0-mutually exclusive] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084a5d30>
+over = {'executed': True, 'fixture': True}, needle = 'mutually exclusive'
+
+    @pytest.mark.parametrize("over,needle", [
+        ({"fixture": True, "executed": True}, "mutually exclusive"),
+        ({"fixture": False, "executed": True}, "no live transport"),
+        ({"fixture": True, "executed": "yes"}, "executed"),
+        ({"fixture": True, "executed": 1}, "executed"),
+        ({"fixture": False, "executed": False}, "neither fixture nor executed"),
+        ({"fixture": "true", "executed": False}, "neither fixture nor executed"),
+        ({"fixture": 1}, "neither fixture nor executed"),
+    ])
+    def test_attach_advisory_refuses_forged_or_ambiguous_labels(catalog, case, over, needle):
+        with pytest.raises(ValueError, match=needle):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over))
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:74: Failed
+_ test_attach_advisory_refuses_forged_or_ambiguous_labels[over1-no live transport] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084a5af0>
+over = {'executed': True, 'fixture': False}, needle = 'no live transport'
+
+    @pytest.mark.parametrize("over,needle", [
+        ({"fixture": True, "executed": True}, "mutually exclusive"),
+        ({"fixture": False, "executed": True}, "no live transport"),
+        ({"fixture": True, "executed": "yes"}, "executed"),
+        ({"fixture": True, "executed": 1}, "executed"),
+        ({"fixture": False, "executed": False}, "neither fixture nor executed"),
+        ({"fixture": "true", "executed": False}, "neither fixture nor executed"),
+        ({"fixture": 1}, "neither fixture nor executed"),
+    ])
+    def test_attach_advisory_refuses_forged_or_ambiguous_labels(catalog, case, over, needle):
+        with pytest.raises(ValueError, match=needle):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over))
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:74: Failed
+___ test_attach_advisory_refuses_forged_or_ambiguous_labels[over2-executed] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084d50d0>
+over = {'executed': 'yes', 'fixture': True}, needle = 'executed'
+
+    @pytest.mark.parametrize("over,needle", [
+        ({"fixture": True, "executed": True}, "mutually exclusive"),
+        ({"fixture": False, "executed": True}, "no live transport"),
+        ({"fixture": True, "executed": "yes"}, "executed"),
+        ({"fixture": True, "executed": 1}, "executed"),
+        ({"fixture": False, "executed": False}, "neither fixture nor executed"),
+        ({"fixture": "true", "executed": False}, "neither fixture nor executed"),
+        ({"fixture": 1}, "neither fixture nor executed"),
+    ])
+    def test_attach_advisory_refuses_forged_or_ambiguous_labels(catalog, case, over, needle):
+        with pytest.raises(ValueError, match=needle):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over))
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:74: Failed
+___ test_attach_advisory_refuses_forged_or_ambiguous_labels[over3-executed] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084d5430>
+over = {'executed': 1, 'fixture': True}, needle = 'executed'
+
+    @pytest.mark.parametrize("over,needle", [
+        ({"fixture": True, "executed": True}, "mutually exclusive"),
+        ({"fixture": False, "executed": True}, "no live transport"),
+        ({"fixture": True, "executed": "yes"}, "executed"),
+        ({"fixture": True, "executed": 1}, "executed"),
+        ({"fixture": False, "executed": False}, "neither fixture nor executed"),
+        ({"fixture": "true", "executed": False}, "neither fixture nor executed"),
+        ({"fixture": 1}, "neither fixture nor executed"),
+    ])
+    def test_attach_advisory_refuses_forged_or_ambiguous_labels(catalog, case, over, needle):
+        with pytest.raises(ValueError, match=needle):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over))
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:74: Failed
+_ test_attach_advisory_refuses_forged_or_ambiguous_labels[over5-neither fixture nor executed] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084d5040>
+over = {'executed': False, 'fixture': 'true'}
+needle = 'neither fixture nor executed'
+
+    @pytest.mark.parametrize("over,needle", [
+        ({"fixture": True, "executed": True}, "mutually exclusive"),
+        ({"fixture": False, "executed": True}, "no live transport"),
+        ({"fixture": True, "executed": "yes"}, "executed"),
+        ({"fixture": True, "executed": 1}, "executed"),
+        ({"fixture": False, "executed": False}, "neither fixture nor executed"),
+        ({"fixture": "true", "executed": False}, "neither fixture nor executed"),
+        ({"fixture": 1}, "neither fixture nor executed"),
+    ])
+    def test_attach_advisory_refuses_forged_or_ambiguous_labels(catalog, case, over, needle):
+        with pytest.raises(ValueError, match=needle):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over))
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:74: Failed
+_ test_attach_advisory_refuses_forged_or_ambiguous_labels[over6-neither fixture nor executed] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084d5af0>, over = {'fixture': 1}
+needle = 'neither fixture nor executed'
+
+    @pytest.mark.parametrize("over,needle", [
+        ({"fixture": True, "executed": True}, "mutually exclusive"),
+        ({"fixture": False, "executed": True}, "no live transport"),
+        ({"fixture": True, "executed": "yes"}, "executed"),
+        ({"fixture": True, "executed": 1}, "executed"),
+        ({"fixture": False, "executed": False}, "neither fixture nor executed"),
+        ({"fixture": "true", "executed": False}, "neither fixture nor executed"),
+        ({"fixture": 1}, "neither fixture nor executed"),
+    ])
+    def test_attach_advisory_refuses_forged_or_ambiguous_labels(catalog, case, over, needle):
+        with pytest.raises(ValueError, match=needle):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over))
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:74: Failed
+____ test_attach_advisory_with_a_missing_fixture_key_is_refused_not_a_crash ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084d5c10>
+
+    def test_attach_advisory_with_a_missing_fixture_key_is_refused_not_a_crash(catalog, case):
+        i = interp(catalog)
+        del i["fixture"]
+        with pytest.raises(ValueError, match="neither fixture nor executed"):
+>           attach_advisory(audit4(catalog, case), "OB-4", i)
+
+tests/test_serv_hardening.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+audit = {'calls': {'CALL-1': {'reasons': ['modality_term_not_in_quote'], 'status': 'unconfirmed'}}, 'case_id': 'c04_uncertain_source_insufficient', 'catalog_id': 'SYN-CATALOG-001', 'completeness': 'gaps_found', ...}
+obligation_id = 'OB-4'
+interpretation = {'accepted': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, 'reasons': [], ...}
+
+    def attach_advisory(audit, obligation_id, interpretation):
+        """Return a copy of the audit with SERV's interpretation attached as advice only.
+    
+        Disposition, full_support, statements and completeness are copied unchanged: SERV cannot
+        override a deterministic result, and a confirmed capability still needs a human edit to the catalog.
+        """
+        if audit["obligations"][obligation_id]["disposition"] != "uncertain":
+            raise ValueError("SERV advisory is only attached to uncertain obligations")
+        executed = bool(interpretation.get("executed", False))
+>       if not interpretation["fixture"] and not executed:
+E       KeyError: 'fixture'
+
+src/contract_audit/serv.py:139: KeyError
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv0] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084fee50>
+serv = {'executed': True, 'fixture': False, 'status': 'executed'}
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv1] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084fe4c0>
+serv = {'executed': True, 'fixture': True, 'status': 'fixture'}
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv2] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084fe5e0>
+serv = {'executed': 'no', 'fixture': False, 'status': 'x'}
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv3] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084fe790>, serv = {'status': 'x'}
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv4] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084fe430>, serv = {}
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[executed] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084fe550>, serv = 'executed'
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv6] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084feee0>, serv = ['a']
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+_ test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[5] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1084feca0>, serv = 5
+
+    @pytest.mark.parametrize("serv", [
+        {"status": "executed", "executed": True, "fixture": False},
+        {"status": "fixture", "executed": True, "fixture": True},
+        {"status": "x", "executed": "no", "fixture": False},
+        {"status": "x"}, {}, "executed", ["a"], 5,
+    ])
+    def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(catalog, case, serv):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"), serv=serv)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_serv_hardening.py:100: Failed
+=========================== short test summary info ============================
+FAILED tests/test_serv_hardening.py::test_model_must_be_a_nonblank_string[   ]
+FAILED tests/test_serv_hardening.py::test_model_must_be_a_nonblank_string[\t\n]
+FAILED tests/test_serv_hardening.py::test_model_must_be_a_nonblank_string[5]
+FAILED tests/test_serv_hardening.py::test_model_must_be_a_nonblank_string[model5]
+FAILED tests/test_serv_hardening.py::test_model_must_be_a_nonblank_string[model6]
+FAILED tests/test_serv_hardening.py::test_model_must_be_a_nonblank_string[m]
+FAILED tests/test_serv_hardening.py::test_client_refuses_live_mode_even_with_credentials_and_a_transport[None]
+FAILED tests/test_serv_hardening.py::test_client_refuses_live_mode_even_with_credentials_and_a_transport[<lambda>]
+FAILED tests/test_serv_hardening.py::test_attach_advisory_refuses_forged_or_ambiguous_labels[over0-mutually exclusive]
+FAILED tests/test_serv_hardening.py::test_attach_advisory_refuses_forged_or_ambiguous_labels[over1-no live transport]
+FAILED tests/test_serv_hardening.py::test_attach_advisory_refuses_forged_or_ambiguous_labels[over2-executed]
+FAILED tests/test_serv_hardening.py::test_attach_advisory_refuses_forged_or_ambiguous_labels[over3-executed]
+FAILED tests/test_serv_hardening.py::test_attach_advisory_refuses_forged_or_ambiguous_labels[over5-neither fixture nor executed]
+FAILED tests/test_serv_hardening.py::test_attach_advisory_refuses_forged_or_ambiguous_labels[over6-neither fixture nor executed]
+FAILED tests/test_serv_hardening.py::test_attach_advisory_with_a_missing_fixture_key_is_refused_not_a_crash
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv0]
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv1]
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv2]
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv3]
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv4]
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[executed]
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[serv6]
+FAILED tests/test_serv_hardening.py::test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed[5]
+23 failed, 10 passed in 0.22s
+# exit code: 1

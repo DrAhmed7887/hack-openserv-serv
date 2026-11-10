@@ -1,0 +1,98 @@
+# RED evidence: 13d_number_args
+# command: python3 -m pytest tests/test_call_args.py -q
+# python: Python 3.9.6
+...................FFFFF..............                                   [100%]
+=================================== FAILURES ===================================
+_________________ test_number_inside_its_bounds_is_valid[0.5] __________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd6670>
+clone = <function deepcopy at 0x105e92310>, value = 0.5
+
+    @pytest.mark.parametrize("value", [0.5, 1, 2.5, 4, 4.0])
+    def test_number_inside_its_bounds_is_valid(catalog, case, clone, value):
+        _, _, r = with_numeric_tool(catalog, case, clone, value)
+>       assert r["status"] == "valid"
+E       AssertionError: assert 'invalid' == 'valid'
+E         
+E         - valid
+E         + invalid
+E         ? ++
+
+tests/test_call_args.py:70: AssertionError
+__________________ test_number_inside_its_bounds_is_valid[1] ___________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106e38ee0>
+clone = <function deepcopy at 0x105e92310>, value = 1
+
+    @pytest.mark.parametrize("value", [0.5, 1, 2.5, 4, 4.0])
+    def test_number_inside_its_bounds_is_valid(catalog, case, clone, value):
+        _, _, r = with_numeric_tool(catalog, case, clone, value)
+>       assert r["status"] == "valid"
+E       AssertionError: assert 'invalid' == 'valid'
+E         
+E         - valid
+E         + invalid
+E         ? ++
+
+tests/test_call_args.py:70: AssertionError
+_________________ test_number_inside_its_bounds_is_valid[2.5] __________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106e38e50>
+clone = <function deepcopy at 0x105e92310>, value = 2.5
+
+    @pytest.mark.parametrize("value", [0.5, 1, 2.5, 4, 4.0])
+    def test_number_inside_its_bounds_is_valid(catalog, case, clone, value):
+        _, _, r = with_numeric_tool(catalog, case, clone, value)
+>       assert r["status"] == "valid"
+E       AssertionError: assert 'invalid' == 'valid'
+E         
+E         - valid
+E         + invalid
+E         ? ++
+
+tests/test_call_args.py:70: AssertionError
+__________________ test_number_inside_its_bounds_is_valid[4] ___________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106e38f70>
+clone = <function deepcopy at 0x105e92310>, value = 4
+
+    @pytest.mark.parametrize("value", [0.5, 1, 2.5, 4, 4.0])
+    def test_number_inside_its_bounds_is_valid(catalog, case, clone, value):
+        _, _, r = with_numeric_tool(catalog, case, clone, value)
+>       assert r["status"] == "valid"
+E       AssertionError: assert 'invalid' == 'valid'
+E         
+E         - valid
+E         + invalid
+E         ? ++
+
+tests/test_call_args.py:70: AssertionError
+_________________ test_number_inside_its_bounds_is_valid[4.0] __________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106e75040>
+clone = <function deepcopy at 0x105e92310>, value = 4.0
+
+    @pytest.mark.parametrize("value", [0.5, 1, 2.5, 4, 4.0])
+    def test_number_inside_its_bounds_is_valid(catalog, case, clone, value):
+        _, _, r = with_numeric_tool(catalog, case, clone, value)
+>       assert r["status"] == "valid"
+E       AssertionError: assert 'invalid' == 'valid'
+E         
+E         - valid
+E         + invalid
+E         ? ++
+
+tests/test_call_args.py:70: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_call_args.py::test_number_inside_its_bounds_is_valid[0.5]
+FAILED tests/test_call_args.py::test_number_inside_its_bounds_is_valid[1] - A...
+FAILED tests/test_call_args.py::test_number_inside_its_bounds_is_valid[2.5]
+FAILED tests/test_call_args.py::test_number_inside_its_bounds_is_valid[4] - A...
+FAILED tests/test_call_args.py::test_number_inside_its_bounds_is_valid[4.0]
+5 failed, 33 passed in 0.15s
+# exit code: 1

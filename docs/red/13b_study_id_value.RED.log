@@ -1,0 +1,275 @@
+# RED evidence: 13b_study_id_value
+# command: python3 -m pytest tests/test_call_args.py -q
+# python: Python 3.9.6
+FFFFFFFFFFFFF.F                                                          [100%]
+=================================== FAILURES ===================================
+_____ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[None] _____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ad80f70>
+clone = <function deepcopy at 0x109e8a310>, value = None
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_______ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae09160>
+clone = <function deepcopy at 0x109e8a310>, value = ''
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+____ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[value2] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae09430>
+clone = <function deepcopy at 0x109e8a310>, value = []
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+____ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[value3] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae095e0>
+clone = <function deepcopy at 0x109e8a310>, value = {}
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+______ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[-5] ______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae09820>
+clone = <function deepcopy at 0x109e8a310>, value = -5
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[1000000000.0] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae09a60>
+clone = <function deepcopy at 0x109e8a310>, value = 1000000000.0
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+______ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[0] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae09ca0>
+clone = <function deepcopy at 0x109e8a310>, value = 0
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_____ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[True] _____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae5a0d0>
+clone = <function deepcopy at 0x109e8a310>, value = True
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[SYN-STUDY-999] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae093a0>
+clone = <function deepcopy at 0x109e8a310>, value = 'SYN-STUDY-999'
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[syn-study-001] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae09670>
+clone = <function deepcopy at 0x109e8a310>, value = 'syn-study-001'
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[ SYN-STUDY-001] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae09820>
+clone = <function deepcopy at 0x109e8a310>, value = ' SYN-STUDY-001'
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+___ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[value11] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ad80ee0>
+clone = <function deepcopy at 0x109e8a310>, value = ['SYN-STUDY-001']
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_____ test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[nan] ______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae5a3a0>
+clone = <function deepcopy at 0x109e8a310>, value = nan
+
+    @pytest.mark.parametrize("value", [None, "", [], {}, -5, 1e9, 0, True, "SYN-STUDY-999", "syn-study-001",
+                                       " SYN-STUDY-001", ["SYN-STUDY-001"], float("nan")])
+    def test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id(catalog, case, clone, value):
+        c, r = call_with(catalog, case, clone, {"study_id": value})
+>       assert r["status"] == "invalid" and "arg_invalid:study_id" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:27: AssertionError
+_____________ test_a_tool_without_an_args_schema_cannot_be_called ______________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ae5a430>
+clone = <function deepcopy at 0x109e8a310>
+
+    def test_a_tool_without_an_args_schema_cannot_be_called(catalog, case, clone):
+        cat = clone(catalog)
+        next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1").pop("args_schema", None)
+        c = case("c01_supported_called")
+        r = only(validate_calls(cat, c["study"], c["proposed_calls"]))
+>       assert r["status"] == "invalid" and "args_schema_missing" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:41: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[None]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[value2]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[value3]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[-5]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[1000000000.0]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[0]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[True]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[SYN-STUDY-999]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[syn-study-001]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[ SYN-STUDY-001]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[value11]
+FAILED tests/test_call_args.py::test_study_id_must_be_a_nonempty_string_equal_to_the_studys_id[nan]
+FAILED tests/test_call_args.py::test_a_tool_without_an_args_schema_cannot_be_called
+14 failed, 1 passed in 0.15s
+# exit code: 1

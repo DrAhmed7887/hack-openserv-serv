@@ -1,0 +1,48 @@
+# RED evidence: 13k_disclosure_contradiction
+# command: python3 -m pytest tests/test_reconcile.py -q
+# python: Python 3.9.6
+.............F.....F                                                     [100%]
+=================================== FAILURES ===================================
+_ test_disclosing_not_assessed_on_a_fully_supported_obligation_is_a_contradiction _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ab7e670>
+clone = <function deepcopy at 0x109c72310>
+
+    def test_disclosing_not_assessed_on_a_fully_supported_obligation_is_a_contradiction(catalog, case, clone):
+        r = reconcile(catalog, as_disclosure(clone(case("c01_supported_called"))))
+>       assert r["statements"]["ST-1"] == {"outcome": "disclosure_contradicts_support",
+                                           "action": "replace_with_cited_claim"}
+E       AssertionError: assert {'action': No...on_disclosed'} == {'action': 'r...icts_support'}
+E         
+E         Differing items:
+E         {'action': None} != {'action': 'replace_with_cited_claim'}
+E         {'outcome': 'limitation_disclosed'} != {'outcome': 'disclosure_contradicts_support'}
+E         Use -v to get more diff
+
+tests/test_reconcile.py:70: AssertionError
+____ test_disclosure_beside_a_valid_cited_claim_still_flags_the_disclosure _____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10abbbdc0>
+clone = <function deepcopy at 0x109c72310>
+
+    def test_disclosure_beside_a_valid_cited_claim_still_flags_the_disclosure(catalog, case, clone):
+        c = clone(case("c01_supported_called"))
+        c["draft_report"]["statements"].append(
+            {"statement_id": "ST-2", "obligation_id": "OB-1", "kind": "discloses_not_assessed",
+             "cites_receipt": None, "text": "x"})
+        r = reconcile(catalog, c)
+        assert r["statements"]["ST-1"]["outcome"] == "supported_by_receipt"
+>       assert r["statements"]["ST-2"]["outcome"] == "disclosure_contradicts_support"
+E       AssertionError: assert 'limitation_disclosed' == 'disclosure_c...dicts_support'
+E         
+E         - disclosure_contradicts_support
+E         + limitation_disclosed
+
+tests/test_reconcile.py:90: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_reconcile.py::test_disclosing_not_assessed_on_a_fully_supported_obligation_is_a_contradiction
+FAILED tests/test_reconcile.py::test_disclosure_beside_a_valid_cited_claim_still_flags_the_disclosure
+2 failed, 18 passed in 0.14s
+# exit code: 1

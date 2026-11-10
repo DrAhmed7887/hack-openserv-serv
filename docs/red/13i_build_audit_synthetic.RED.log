@@ -1,0 +1,323 @@
+# RED evidence: 13i_build_audit_synthetic
+# command: python3 -m pytest tests/test_audit_synthetic_gate.py -q
+# python: Python 3.9.6
+FFFFFFFFFFFFFFFFFFFFF.                                                   [100%]
+=================================== FAILURES ===================================
+___ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[False] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106402160>
+clone = <function deepcopy at 0x1054fa310>, value = False
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+_ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[<object object at 0x105c57840>] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d310>
+clone = <function deepcopy at 0x1054fa310>
+value = <object object at 0x105c57840>
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+____ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[None] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d0d0>
+clone = <function deepcopy at 0x1054fa310>, value = None
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+_____ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[0] ______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d430>
+clone = <function deepcopy at 0x1054fa310>, value = 0
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+_____ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[1] ______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d3a0>
+clone = <function deepcopy at 0x1054fa310>, value = 1
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+___ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true['true'] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d550>
+clone = <function deepcopy at 0x1054fa310>, value = 'true'
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+___ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true['yes'] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d670>
+clone = <function deepcopy at 0x1054fa310>, value = 'yes'
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+_____ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[[]] _____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d820>
+clone = <function deepcopy at 0x1054fa310>, value = []
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+_____ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[{}] _____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1063dff70>
+clone = <function deepcopy at 0x1054fa310>, value = {}
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+___ test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[[True]] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647daf0>
+clone = <function deepcopy at 0x1054fa310>, value = [True]
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_case_not_marked_synthetic_true(catalog, case, clone, value):
+        c = with_flag(case("c01_supported_called"), clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:24: Failed
+__ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[False] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d8b0>
+clone = <function deepcopy at 0x1054fa310>, value = False
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+_ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[<object object at 0x105c57840>] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d5e0>
+clone = <function deepcopy at 0x1054fa310>
+value = <object object at 0x105c57840>
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+__ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[None] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d790>
+clone = <function deepcopy at 0x1054fa310>, value = None
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+____ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[0] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647dd30>
+clone = <function deepcopy at 0x1054fa310>, value = 0
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+____ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[1] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647da60>
+clone = <function deepcopy at 0x1054fa310>, value = 1
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+_ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true['true'] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d9d0>
+clone = <function deepcopy at 0x1054fa310>, value = 'true'
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+__ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true['yes'] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d430>
+clone = <function deepcopy at 0x1054fa310>, value = 'yes'
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+___ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[[]] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d0d0>
+clone = <function deepcopy at 0x1054fa310>, value = []
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+___ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[{}] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647dc10>
+clone = <function deepcopy at 0x1054fa310>, value = {}
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+_ test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[[True]] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647d4c0>
+clone = <function deepcopy at 0x1054fa310>, value = [True]
+
+    @pytest.mark.parametrize("value", NOT_TRUE, ids=repr)
+    def test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true(catalog, case, clone, value):
+        cat = with_flag(catalog, clone, value)
+        with pytest.raises(InputError, match="synthetic"):
+>           build_audit(cat, case("c01_supported_called"))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:31: Failed
+_________________ test_validators_refuse_the_flag_on_their_own _________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10647de50>
+clone = <function deepcopy at 0x1054fa310>
+
+    def test_validators_refuse_the_flag_on_their_own(catalog, case, clone):
+        with pytest.raises(InputError, match="synthetic"):
+>           validate_case(with_flag(case("c01_supported_called"), clone, False))
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_audit_synthetic_gate.py:36: Failed
+=========================== short test summary info ============================
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[False]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[<object object at 0x105c57840>]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[None]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[0]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[1]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true['true']
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true['yes']
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[[]]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[{}]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[[True]]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[False]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[<object object at 0x105c57840>]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[None]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[0]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[1]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true['true']
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true['yes']
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[[]]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[{}]
+FAILED tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[[True]]
+FAILED tests/test_audit_synthetic_gate.py::test_validators_refuse_the_flag_on_their_own
+21 failed, 1 passed in 0.16s
+# exit code: 1

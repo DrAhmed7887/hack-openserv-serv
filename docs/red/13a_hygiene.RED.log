@@ -1,0 +1,24 @@
+# RED evidence: 13a_hygiene
+# command: python3 -m pytest tests/test_repo_hygiene.py -q
+# python: Python 3.9.6
+F.                                                                       [100%]
+=================================== FAILURES ===================================
+______ test_no_local_paths_private_links_or_credentials_in_committed_text ______
+
+    def test_no_local_paths_private_links_or_credentials_in_committed_text():
+        hits = []
+        for path in scanned_files():
+            for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                hits += [f"{path.relative_to(ROOT)}:{number} ({label})"
+                         for label, pattern in FORBIDDEN if pattern.search(line)]
+>       assert hits == []
+E       AssertionError: assert ['docs/red/12...p path)', ...] == []
+E         
+E         Left contains 10 more items, first extra item: 'docs/red/12_review_findings.RED.log:266 (temp path)'
+E         Use -v to get more diff
+
+tests/test_repo_hygiene.py:38: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_repo_hygiene.py::test_no_local_paths_private_links_or_credentials_in_committed_text
+1 failed, 1 passed in 0.18s
+# exit code: 1

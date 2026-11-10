@@ -1,0 +1,160 @@
+# RED evidence: 13j_multiple_calls
+# command: python3 -m pytest tests/test_multiple_calls.py -q
+# python: Python 3.9.6
+FFFFFFFF.F..                                                             [100%]
+=================================== FAILURES ===================================
+__________ test_single_call_shape_is_unchanged_and_lists_its_relation __________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ac40a60>
+
+    def test_single_call_shape_is_unchanged_and_lists_its_relation(catalog, case):
+        o = ob(catalog, case("c01_supported_called"))
+>       assert o["call_id"] == "CALL-1" and o["receipt_id"] == "RCPT-1" and o["receipt_ids"] == ["RCPT-1"]
+E       KeyError: 'receipt_ids'
+
+tests/test_multiple_calls.py:38: KeyError
+________ test_a_later_valid_call_without_a_receipt_blocks_full_support _________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10acf9f70>
+clone = <function deepcopy at 0x109d96310>
+
+    def test_a_later_valid_call_without_a_receipt_blocks_full_support(catalog, case, clone):
+        o = ob(catalog, second_call(clone(case("c01_supported_called")), clone))
+>       assert o["full_support"] is False and o["receipt_status"] == "missing"
+E       assert (True is False)
+
+tests/test_multiple_calls.py:45: AssertionError
+______ test_a_later_valid_call_with_a_failed_receipt_blocks_full_support _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10acbf0d0>
+clone = <function deepcopy at 0x109d96310>
+
+    def test_a_later_valid_call_with_a_failed_receipt_blocks_full_support(catalog, case, clone):
+        c = second_call(clone(case("c01_supported_called")), clone,
+                        {"status": "error", "output": {"result_code": "MOCK-ERROR", "region_id": "R-002"}})
+        o = ob(catalog, c)
+>       assert o["full_support"] is False and o["receipt_status"] == "failed"
+E       assert (True is False)
+
+tests/test_multiple_calls.py:55: AssertionError
+_____ test_an_earlier_unreceipted_call_does_not_hide_a_later_valid_receipt _____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10acbf280>
+clone = <function deepcopy at 0x109d96310>
+
+    def test_an_earlier_unreceipted_call_does_not_hide_a_later_valid_receipt(catalog, case, clone):
+        c = clone(case("c01_supported_called"))
+        c["receipts"] = []
+        c = second_call(c, clone)
+        c["receipts"] = [dict(case("c01_supported_called")["receipts"][0], call_id="CALL-2", receipt_id="RCPT-2")]
+        o = ob(catalog, c)
+        assert o["full_support"] is False and o["receipt_status"] == "missing"
+>       assert by_call(o)["CALL-2"]["receipt_id"] == "RCPT-2" and by_call(o)["CALL-2"]["receipt_status"] == "valid"
+
+tests/test_multiple_calls.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+o = {'call_id': 'CALL-1', 'capability': 'supported', 'disposition': 'supported_called', 'full_support': False, ...}
+
+    def by_call(o):
+>       return {e["call_id"]: e for e in o["calls"]}
+E       KeyError: 'calls'
+
+tests/test_multiple_calls.py:33: KeyError
+_ test_two_valid_calls_with_identical_outputs_are_full_support_and_both_listed _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10acbf040>
+clone = <function deepcopy at 0x109d96310>
+
+    def test_two_valid_calls_with_identical_outputs_are_full_support_and_both_listed(catalog, case, clone):
+        c = second_call(clone(case("c01_supported_called")), clone, {})
+        o = ob(catalog, c)
+        assert o["full_support"] is True and o["receipt_status"] == "valid"
+>       assert o["receipt_ids"] == ["RCPT-1", "RCPT-2"] and len(o["calls"]) == 2
+E       KeyError: 'receipt_ids'
+
+tests/test_multiple_calls.py:74: KeyError
+____ test_two_valid_receipts_from_one_tool_with_different_outputs_conflict _____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10acbf670>
+clone = <function deepcopy at 0x109d96310>
+
+    def test_two_valid_receipts_from_one_tool_with_different_outputs_conflict(catalog, case, clone):
+        c = second_call(clone(case("c01_supported_called")), clone,
+                        {"output": {"result_code": "MOCK-OK", "region_id": "R-777"}})
+        o = ob(catalog, c)
+>       assert o["full_support"] is False and o["receipt_status"] == "invalid"
+E       assert (True is False)
+
+tests/test_multiple_calls.py:81: AssertionError
+_______ test_an_extra_invalid_call_is_listed_but_does_not_remove_support _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10ac40a60>
+clone = <function deepcopy at 0x109d96310>
+
+    def test_an_extra_invalid_call_is_listed_but_does_not_remove_support(catalog, case, clone):
+        c = second_call(clone(case("c01_supported_called")), clone, args={})
+        o = ob(catalog, c)
+        assert o["full_support"] is True
+>       assert by_call(o)["CALL-2"]["status"] == "invalid" and by_call(o)["CALL-2"]["receipt_status"] == "not_applicable"
+
+tests/test_multiple_calls.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+o = {'call_id': 'CALL-1', 'capability': 'supported', 'disposition': 'supported_called', 'full_support': True, ...}
+
+    def by_call(o):
+>       return {e["call_id"]: e for e in o["calls"]}
+E       KeyError: 'calls'
+
+tests/test_multiple_calls.py:33: KeyError
+___________ test_unsupported_obligation_still_lists_its_invalid_call ___________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10acbf430>
+
+    def test_unsupported_obligation_still_lists_its_invalid_call(catalog, case):
+        o = build_audit(catalog, case("c03_unsupported"))["obligations"]["OB-3"]
+>       assert [e["status"] for e in o["calls"]] == ["invalid"] and o["receipt_ids"] == []
+E       KeyError: 'calls'
+
+tests/test_multiple_calls.py:96: KeyError
+_ test_a_claim_may_cite_any_valid_receipt_of_its_obligation[RCPT-2-supported_by_receipt] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10acbf820>
+clone = <function deepcopy at 0x109d96310>, cite = 'RCPT-2'
+outcome = 'supported_by_receipt'
+
+    @pytest.mark.parametrize("cite,outcome", [("RCPT-1", "supported_by_receipt"), ("RCPT-2", "supported_by_receipt"),
+                                              ("RCPT-9", "receipt_mismatch"), (None, "receipt_mismatch")])
+    def test_a_claim_may_cite_any_valid_receipt_of_its_obligation(catalog, case, clone, cite, outcome):
+        c = second_call(clone(case("c01_supported_called")), clone, {})
+        c["draft_report"]["statements"][0]["cites_receipt"] = cite
+        a = build_audit(catalog, c)
+>       assert a["statements"]["ST-1"]["outcome"] == outcome
+E       AssertionError: assert 'receipt_mismatch' == 'supported_by_receipt'
+E         
+E         - supported_by_receipt
+E         + receipt_mismatch
+
+tests/test_multiple_calls.py:105: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_multiple_calls.py::test_single_call_shape_is_unchanged_and_lists_its_relation
+FAILED tests/test_multiple_calls.py::test_a_later_valid_call_without_a_receipt_blocks_full_support
+FAILED tests/test_multiple_calls.py::test_a_later_valid_call_with_a_failed_receipt_blocks_full_support
+FAILED tests/test_multiple_calls.py::test_an_earlier_unreceipted_call_does_not_hide_a_later_valid_receipt
+FAILED tests/test_multiple_calls.py::test_two_valid_calls_with_identical_outputs_are_full_support_and_both_listed
+FAILED tests/test_multiple_calls.py::test_two_valid_receipts_from_one_tool_with_different_outputs_conflict
+FAILED tests/test_multiple_calls.py::test_an_extra_invalid_call_is_listed_but_does_not_remove_support
+FAILED tests/test_multiple_calls.py::test_unsupported_obligation_still_lists_its_invalid_call
+FAILED tests/test_multiple_calls.py::test_a_claim_may_cite_any_valid_receipt_of_its_obligation[RCPT-2-supported_by_receipt]
+9 failed, 3 passed in 0.18s
+# exit code: 1

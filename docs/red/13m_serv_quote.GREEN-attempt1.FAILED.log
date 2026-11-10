@@ -1,0 +1,85 @@
+# GREEN evidence: 13m_serv_quote
+# command: python3 -m pytest tests -q
+# python: Python 3.9.6
+........................................................................ [ 19%]
+........................................................................ [ 39%]
+........................................................................ [ 58%]
+........................................................................ [ 78%]
+............................................................FF...F...FF. [ 97%]
+..F.....                                                                 [100%]
+=================================== FAILURES ===================================
+________ test_a_short_substring_is_not_a_verbatim_quote[supported-   ] _________
+
+verdict = 'supported', quote = '   '
+
+    @pytest.mark.parametrize("quote", ["a", "o", " ", "   ", "the", "size", "SYN-CARDIAC-1", "on radiographs", "is a"])
+    @pytest.mark.parametrize("verdict", ["supported", "unsupported"])
+    def test_a_short_substring_is_not_a_verbatim_quote(verdict, quote):
+>       assert quote in SRC  # every one of these IS a substring: that is the defect being closed
+E       AssertionError: assert '   ' in 'SYNTHETIC SPECIFICATION D (fictional, engineering test only). Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs.'
+
+tests/test_serv_hardening.py:122: AssertionError
+________ test_a_short_substring_is_not_a_verbatim_quote[supported-the] _________
+
+verdict = 'supported', quote = 'the'
+
+    @pytest.mark.parametrize("quote", ["a", "o", " ", "   ", "the", "size", "SYN-CARDIAC-1", "on radiographs", "is a"])
+    @pytest.mark.parametrize("verdict", ["supported", "unsupported"])
+    def test_a_short_substring_is_not_a_verbatim_quote(verdict, quote):
+>       assert quote in SRC  # every one of these IS a substring: that is the defect being closed
+E       AssertionError: assert 'the' in 'SYNTHETIC SPECIFICATION D (fictional, engineering test only). Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs.'
+
+tests/test_serv_hardening.py:122: AssertionError
+________ test_a_short_substring_is_not_a_verbatim_quote[supported-is a] ________
+
+verdict = 'supported', quote = 'is a'
+
+    @pytest.mark.parametrize("quote", ["a", "o", " ", "   ", "the", "size", "SYN-CARDIAC-1", "on radiographs", "is a"])
+    @pytest.mark.parametrize("verdict", ["supported", "unsupported"])
+    def test_a_short_substring_is_not_a_verbatim_quote(verdict, quote):
+>       assert quote in SRC  # every one of these IS a substring: that is the defect being closed
+E       AssertionError: assert 'is a' in 'SYNTHETIC SPECIFICATION D (fictional, engineering test only). Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs.'
+
+tests/test_serv_hardening.py:122: AssertionError
+_______ test_a_short_substring_is_not_a_verbatim_quote[unsupported-   ] ________
+
+verdict = 'unsupported', quote = '   '
+
+    @pytest.mark.parametrize("quote", ["a", "o", " ", "   ", "the", "size", "SYN-CARDIAC-1", "on radiographs", "is a"])
+    @pytest.mark.parametrize("verdict", ["supported", "unsupported"])
+    def test_a_short_substring_is_not_a_verbatim_quote(verdict, quote):
+>       assert quote in SRC  # every one of these IS a substring: that is the defect being closed
+E       AssertionError: assert '   ' in 'SYNTHETIC SPECIFICATION D (fictional, engineering test only). Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs.'
+
+tests/test_serv_hardening.py:122: AssertionError
+_______ test_a_short_substring_is_not_a_verbatim_quote[unsupported-the] ________
+
+verdict = 'unsupported', quote = 'the'
+
+    @pytest.mark.parametrize("quote", ["a", "o", " ", "   ", "the", "size", "SYN-CARDIAC-1", "on radiographs", "is a"])
+    @pytest.mark.parametrize("verdict", ["supported", "unsupported"])
+    def test_a_short_substring_is_not_a_verbatim_quote(verdict, quote):
+>       assert quote in SRC  # every one of these IS a substring: that is the defect being closed
+E       AssertionError: assert 'the' in 'SYNTHETIC SPECIFICATION D (fictional, engineering test only). Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs.'
+
+tests/test_serv_hardening.py:122: AssertionError
+_______ test_a_short_substring_is_not_a_verbatim_quote[unsupported-is a] _______
+
+verdict = 'unsupported', quote = 'is a'
+
+    @pytest.mark.parametrize("quote", ["a", "o", " ", "   ", "the", "size", "SYN-CARDIAC-1", "on radiographs", "is a"])
+    @pytest.mark.parametrize("verdict", ["supported", "unsupported"])
+    def test_a_short_substring_is_not_a_verbatim_quote(verdict, quote):
+>       assert quote in SRC  # every one of these IS a substring: that is the defect being closed
+E       AssertionError: assert 'is a' in 'SYNTHETIC SPECIFICATION D (fictional, engineering test only). Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs.'
+
+tests/test_serv_hardening.py:122: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_serv_hardening.py::test_a_short_substring_is_not_a_verbatim_quote[supported-   ]
+FAILED tests/test_serv_hardening.py::test_a_short_substring_is_not_a_verbatim_quote[supported-the]
+FAILED tests/test_serv_hardening.py::test_a_short_substring_is_not_a_verbatim_quote[supported-is a]
+FAILED tests/test_serv_hardening.py::test_a_short_substring_is_not_a_verbatim_quote[unsupported-   ]
+FAILED tests/test_serv_hardening.py::test_a_short_substring_is_not_a_verbatim_quote[unsupported-the]
+FAILED tests/test_serv_hardening.py::test_a_short_substring_is_not_a_verbatim_quote[unsupported-is a]
+6 failed, 362 passed in 0.73s
+# exit code: 1

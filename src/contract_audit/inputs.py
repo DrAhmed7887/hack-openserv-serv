@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 
 
 class InputError(ValueError):
@@ -17,10 +18,14 @@ def _read(path):
         text = path.read_text(encoding="utf-8")
     except OSError as exc:
         raise InputError(f"cannot read {path}: {exc.strerror or exc}") from exc
+    except UnicodeDecodeError as exc:
+        raise InputError(f"{path} is not valid UTF-8: {exc.reason} at byte {exc.start}") from exc
     try:
         data = json.loads(text)
     except json.JSONDecodeError as exc:
         raise InputError(f"{path} is not valid JSON: {exc}") from exc
+    except RecursionError as exc:
+        raise InputError(f"{path} is nested too deeply to read") from exc
     if not isinstance(data, dict):
         raise InputError(f"{path}: top level must be a JSON object")
     return data
@@ -60,6 +65,44 @@ def _strings(obj, keys, where, allow_none=()):
             raise InputError(f"{where}: '{key}' must be a non-empty string")
 
 
+def is_finite_number(value):
+    """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+# Argument spec types and the numeric keys each one requires. Bounds are engineering limits of a
+# synthetic mock tool, chosen by the catalog author; nothing here is a clinical threshold.
+_SPEC_NUMBERS = {
+    "study_id": (),
+    "number": ("min", "max"),
+    "number_list": ("item_min", "item_max", "max_total"),
+}
+_SPEC_ORDERED = {"number": ("min", "max"), "number_list": ("item_min", "item_max")}
+
+
+def _validate_spec(spec, where):
+    spec = _object(spec, where)
+    kind = spec.get("type")
+    if kind not in _SPEC_NUMBERS:
+        raise InputError(f"{where}: 'type' must be one of {sorted(_SPEC_NUMBERS)}")
+    numbers = _SPEC_NUMBERS[kind]
+    counts = ("max_items",) if kind == "number_list" else ()
+    extra = set(spec) - {"type", *numbers, *counts}
+    if extra:
+        raise InputError(f"{where}: unexpected key '{sorted(extra)[0]}' for type '{kind}'")
+    for key in numbers:
+        if not is_finite_number(spec.get(key)):
+            raise InputError(f"{where}: '{key}' must be a finite number (no bool, NaN or Infinity)")
+    for key in counts:
+        value = spec.get(key)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 1:
+            raise InputError(f"{where}: '{key}' must be a positive integer")
+    if kind in _SPEC_ORDERED:
+        low, high = _SPEC_ORDERED[kind]
+        if spec[low] > spec[high]:
+            raise InputError(f"{where}: '{low}' must not exceed '{high}'")
+
+
 def _unique(rows, key, where):
     seen = set()
     for row in rows:
@@ -69,7 +112,8 @@ def _unique(rows, key, where):
 
 
 def validate_catalog(data):
-    """Structural checks only (types, required keys, unique ids). Raises InputError."""
+    """Synthetic flag, then structural checks (types, required keys, unique ids). Raises InputError."""
+    _require_synthetic(data, "catalog")
     _require(data, _CATALOG_KEYS, "catalog")
     sources = _object(data["sources"], "catalog sources")
     for sid, src in sources.items():
@@ -79,13 +123,21 @@ def validate_catalog(data):
         where = f"catalog tools[{i}]"
         _strings(tool, ("tool_id", "finding_class", "modality", "source_id", "quote",
                         "modality_term", "finding_term"), where)
+        _require(tool, ("required_args", "args_schema"), where)
         if not isinstance(tool["required_args"], list) or not all(isinstance(a, str) for a in tool["required_args"]):
             raise InputError(f"{where}: 'required_args' must be a list of strings")
+        schema = _object(tool["args_schema"], f"{where} args_schema")
+        for name, spec in schema.items():
+            _validate_spec(spec, f"{where} args_schema[{name}]")
+        for name in tool["required_args"]:
+            if name not in schema:
+                raise InputError(f"{where}: required arg '{name}' has no entry in args_schema")
     _unique(tools, "tool_id", "catalog tools")
 
 
 def validate_case(data):
-    """Structural checks only (types, required keys, unique ids). Raises InputError."""
+    """Synthetic flag, then structural checks (types, required keys, unique ids). Raises InputError."""
+    _require_synthetic(data, "case")
     _require(data, _CASE_KEYS, "case")
     study = _object(data["study"], "case study")
     _strings(study, ("study_id", "modality"), "case study")

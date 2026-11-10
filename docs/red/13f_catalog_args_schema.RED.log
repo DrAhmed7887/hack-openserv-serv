@@ -1,0 +1,506 @@
+# RED evidence: 13f_catalog_args_schema
+# command: python3 -m pytest tests/test_catalog_schema.py -q
+# python: Python 3.9.6
+FFFFFFFFFFFFFFFFFFFFFFFFFF.....                                          [100%]
+=================================== FAILURES ===================================
+______ test_malformed_args_schema_is_an_input_error[args_schema is list] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'args_schema is list'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+______ test_malformed_args_schema_is_an_input_error[args_schema missing] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'args_schema missing'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+________ test_malformed_args_schema_is_an_input_error[args_schema null] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'args_schema null'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+__ test_malformed_args_schema_is_an_input_error[list item_min above item_max] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>
+name = 'list item_min above item_max'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+______ test_malformed_args_schema_is_an_input_error[list max_items bool] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'list max_items bool'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+______ test_malformed_args_schema_is_an_input_error[list max_items float] ______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'list max_items float'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+______ test_malformed_args_schema_is_an_input_error[list max_items zero] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'list max_items zero'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_________ test_malformed_args_schema_is_an_input_error[list nan total] _________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'list nan total'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+________ test_malformed_args_schema_is_an_input_error[list no item_max] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'list no item_max'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_______ test_malformed_args_schema_is_an_input_error[list no max_total] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'list no max_total'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_______ test_malformed_args_schema_is_an_input_error[number bool bound] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'number bool bound'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+________ test_malformed_args_schema_is_an_input_error[number inf bound] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'number inf bound'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+______ test_malformed_args_schema_is_an_input_error[number min above max] ______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'number min above max'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+________ test_malformed_args_schema_is_an_input_error[number nan bound] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'number nan bound'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_________ test_malformed_args_schema_is_an_input_error[number no max] __________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'number no max'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_________ test_malformed_args_schema_is_an_input_error[number no min] __________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'number no min'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+______ test_malformed_args_schema_is_an_input_error[number string bound] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'number string bound'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+___ test_malformed_args_schema_is_an_input_error[required arg not in schema] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'required arg not in schema'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_____ test_malformed_args_schema_is_an_input_error[required_args missing] ______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'required_args missing'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+
+tests/test_catalog_schema.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+data = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+
+    def validate_catalog(data):
+        """Structural checks only (types, required keys, unique ids). Raises InputError."""
+        _require(data, _CATALOG_KEYS, "catalog")
+        sources = _object(data["sources"], "catalog sources")
+        for sid, src in sources.items():
+            _strings(_object(src, f"catalog sources[{sid}]"), ("text", "sha256"), f"catalog sources[{sid}]")
+        tools = _items(data["tools"], "catalog tools")
+        for i, tool in enumerate(tools):
+            where = f"catalog tools[{i}]"
+            _strings(tool, ("tool_id", "finding_class", "modality", "source_id", "quote",
+                            "modality_term", "finding_term"), where)
+>           if not isinstance(tool["required_args"], list) or not all(isinstance(a, str) for a in tool["required_args"]):
+E           KeyError: 'required_args'
+
+src/contract_audit/inputs.py:82: KeyError
+_________ test_malformed_args_schema_is_an_input_error[spec is string] _________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'spec is string'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+__________ test_malformed_args_schema_is_an_input_error[spec no type] __________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'spec no type'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_______ test_malformed_args_schema_is_an_input_error[spec unknown type] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>, name = 'spec unknown type'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_ test_malformed_args_schema_is_an_input_error[study_id spec with extra keys] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>
+name = 'study_id spec with extra keys'
+
+    @pytest.mark.parametrize("name", sorted(BAD))
+    def test_malformed_args_schema_is_an_input_error(catalog, clone, name):
+        mutate, needle = BAD[name]
+        cat = clone(catalog)
+        mutate(cat)
+        with pytest.raises(InputError, match=needle):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_catalog_schema.py:61: Failed
+_____________ test_malformed_schema_from_a_file_is_an_input_error ______________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1056c6310>
+tmp_path = PosixPath('<tmp>')
+
+    def test_malformed_schema_from_a_file_is_an_input_error(catalog, clone, tmp_path):
+        cat = clone(catalog)
+        del tool0(cat)["required_args"]
+        p = tmp_path / "cat.json"
+        p.write_text(json.dumps(cat), encoding="utf-8")
+        with pytest.raises(InputError, match="required_args"):
+>           load_catalog(p)
+
+tests/test_catalog_schema.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:119: in load_catalog
+    validate_catalog(data)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+data = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+
+    def validate_catalog(data):
+        """Structural checks only (types, required keys, unique ids). Raises InputError."""
+        _require(data, _CATALOG_KEYS, "catalog")
+        sources = _object(data["sources"], "catalog sources")
+        for sid, src in sources.items():
+            _strings(_object(src, f"catalog sources[{sid}]"), ("text", "sha256"), f"catalog sources[{sid}]")
+        tools = _items(data["tools"], "catalog tools")
+        for i, tool in enumerate(tools):
+            where = f"catalog tools[{i}]"
+            _strings(tool, ("tool_id", "finding_class", "modality", "source_id", "quote",
+                            "modality_term", "finding_term"), where)
+>           if not isinstance(tool["required_args"], list) or not all(isinstance(a, str) for a in tool["required_args"]):
+E           KeyError: 'required_args'
+
+src/contract_audit/inputs.py:82: KeyError
+_ test_validate_calls_fails_closed_on_a_malformed_spec_without_crashing[spec0] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10669fca0>
+clone = <function deepcopy at 0x1056c6310>, spec = {'type': 'number'}
+
+    @pytest.mark.parametrize("spec", [{"type": "number"}, {"type": "number", "min": 0}, {"type": "number_list"},
+                                      {"type": "number", "min": float("nan"), "max": 1}, "number", None])
+    def test_validate_calls_fails_closed_on_a_malformed_spec_without_crashing(catalog, case, clone, spec):
+        cat, c = clone(catalog), clone(case("c01_supported_called"))
+        t = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        t["required_args"] = ["study_id", "x"]
+        t["args_schema"] = {"study_id": {"type": "study_id"}, "x": spec}
+        c["proposed_calls"][0]["args"] = {"study_id": "SYN-STUDY-001", "x": 1}
+>       r = validate_calls(cat, c["study"], c["proposed_calls"])[0]
+
+tests/test_catalog_schema.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/calls.py:80: in validate_calls
+    reasons += _arg_reasons(arg, schema[arg], value, study)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'x', spec = {'type': 'number'}, value = 1
+study = {'modality': 'chest-xr', 'obligations': [{'finding_class': 'nodule_like', 'obligation_id': 'OB-1'}], 'study_id': 'SYN-STUDY-001'}
+
+    def _arg_reasons(name, spec, value, study):
+        """Reasons one argument value is not acceptable under its schema spec. Unknown spec types fail closed."""
+        kind = spec.get("type") if isinstance(spec, dict) else None
+        if kind == "study_id":
+            ok = isinstance(value, str) and bool(value) and value == study["study_id"]
+        elif kind == "number":
+>           ok = _is_number(value) and spec["min"] <= value <= spec["max"]
+E           KeyError: 'min'
+
+src/contract_audit/calls.py:34: KeyError
+_ test_validate_calls_fails_closed_on_a_malformed_spec_without_crashing[spec1] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10669f280>
+clone = <function deepcopy at 0x1056c6310>, spec = {'min': 0, 'type': 'number'}
+
+    @pytest.mark.parametrize("spec", [{"type": "number"}, {"type": "number", "min": 0}, {"type": "number_list"},
+                                      {"type": "number", "min": float("nan"), "max": 1}, "number", None])
+    def test_validate_calls_fails_closed_on_a_malformed_spec_without_crashing(catalog, case, clone, spec):
+        cat, c = clone(catalog), clone(case("c01_supported_called"))
+        t = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        t["required_args"] = ["study_id", "x"]
+        t["args_schema"] = {"study_id": {"type": "study_id"}, "x": spec}
+        c["proposed_calls"][0]["args"] = {"study_id": "SYN-STUDY-001", "x": 1}
+>       r = validate_calls(cat, c["study"], c["proposed_calls"])[0]
+
+tests/test_catalog_schema.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/calls.py:80: in validate_calls
+    reasons += _arg_reasons(arg, schema[arg], value, study)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'x', spec = {'min': 0, 'type': 'number'}, value = 1
+study = {'modality': 'chest-xr', 'obligations': [{'finding_class': 'nodule_like', 'obligation_id': 'OB-1'}], 'study_id': 'SYN-STUDY-001'}
+
+    def _arg_reasons(name, spec, value, study):
+        """Reasons one argument value is not acceptable under its schema spec. Unknown spec types fail closed."""
+        kind = spec.get("type") if isinstance(spec, dict) else None
+        if kind == "study_id":
+            ok = isinstance(value, str) and bool(value) and value == study["study_id"]
+        elif kind == "number":
+>           ok = _is_number(value) and spec["min"] <= value <= spec["max"]
+E           KeyError: 'max'
+
+src/contract_audit/calls.py:34: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[args_schema is list]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[args_schema missing]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[args_schema null]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[list item_min above item_max]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[list max_items bool]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[list max_items float]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[list max_items zero]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[list nan total]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[list no item_max]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[list no max_total]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[number bool bound]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[number inf bound]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[number min above max]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[number nan bound]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[number no max]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[number no min]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[number string bound]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[required arg not in schema]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[required_args missing]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[spec is string]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[spec no type]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[spec unknown type]
+FAILED tests/test_catalog_schema.py::test_malformed_args_schema_is_an_input_error[study_id spec with extra keys]
+FAILED tests/test_catalog_schema.py::test_malformed_schema_from_a_file_is_an_input_error
+FAILED tests/test_catalog_schema.py::test_validate_calls_fails_closed_on_a_malformed_spec_without_crashing[spec0]
+FAILED tests/test_catalog_schema.py::test_validate_calls_fails_closed_on_a_malformed_spec_without_crashing[spec1]
+26 failed, 5 passed in 0.24s
+# exit code: 1

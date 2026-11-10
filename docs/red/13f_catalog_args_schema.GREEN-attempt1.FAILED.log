@@ -1,0 +1,46 @@
+# GREEN evidence: 13f_catalog_args_schema
+# command: python3 -m pytest tests -q
+# python: Python 3.9.6
+........................................................................ [ 29%]
+........................................................................ [ 59%]
+................................................F....................... [ 88%]
+............................                                             [100%]
+=================================== FAILURES ===================================
+___________________ test_empty_quote_and_terms_never_confirm ___________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10adde0d0>
+clone = <function deepcopy at 0x109f52310>
+
+    def test_empty_quote_and_terms_never_confirm(catalog, case, clone):
+        cat, c = clone(catalog), clone(case("c01_supported_called"))
+        cat["tools"].append({"tool_id": "EVIL", "finding_class": "fracture_like", "modality": "chest-xr",
+                             "modality_term": "", "finding_term": "", "quote": "", "required_args": [],
+                             "source_id": "SRC-SYN-A"})
+        c["study"]["obligations"][0]["finding_class"] = "fracture_like"
+        c["proposed_calls"][0]["tool_id"] = "EVIL"
+        c["receipts"] = []
+>       a = build_audit(cat, c)
+
+tests/test_review_findings.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/audit.py:21: in build_audit
+    validate_catalog(catalog)
+src/contract_audit/inputs.py:121: in validate_catalog
+    _require(tool, ("required_args", "args_schema"), where)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obj = {'finding_class': 'fracture_like', 'finding_term': '', 'modality': 'chest-xr', 'modality_term': '', ...}
+keys = ('required_args', 'args_schema'), where = 'catalog tools[6]'
+
+    def _require(obj, keys, where):
+        for key in keys:
+            if key not in obj:
+>               raise InputError(f"{where}: missing required key '{key}'")
+E               contract_audit.inputs.InputError: catalog tools[6]: missing required key 'args_schema'
+
+src/contract_audit/inputs.py:33: InputError
+=========================== short test summary info ============================
+FAILED tests/test_review_findings.py::test_empty_quote_and_terms_never_confirm
+1 failed, 243 passed in 0.48s
+# exit code: 1

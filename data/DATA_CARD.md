@@ -16,7 +16,17 @@ The catalog is an engineering stand-in for the mechanism spike. It does not desc
 
 ## Fields
 
-Catalog tool: `tool_id`, `finding_class`, `modality` (the catalog author's claimed mapping), `required_args`, `source_id`, `quote` (must appear verbatim in the source text), `modality_term` and `finding_term`. A mapping is *confirmed* only if the quote is non-empty and verbatim in an unchanged source, both terms appear inside the quote, `modality_term` equals the entry's `modality`, and `finding_term` equals the entry's `finding_class` ignoring case, hyphens and underscores. Anything else is *not confirmed*, so the obligation is `uncertain`.
+Catalog tool: `tool_id`, `finding_class`, `modality` (the catalog author's claimed mapping), `required_args`, `args_schema`, `source_id`, `quote` (must appear verbatim in the source text), `modality_term` and `finding_term`. A mapping is *confirmed* only if the quote is non-empty and verbatim in an unchanged source, both terms appear inside the quote, `modality_term` equals the entry's `modality`, and `finding_term` equals the entry's `finding_class` ignoring case, hyphens and underscores. Anything else is *not confirmed*, so the obligation is `uncertain`.
+
+Argument schema (`args_schema`, required for every tool; `required_args` must all appear in it): a map from argument name to a spec. A call is `valid` only if every required argument is present, every supplied argument is in the schema (anything else is `unknown_arg:<name>`), and every value satisfies its spec (otherwise `arg_invalid:<name>`). Spec types:
+
+| `type` | Required keys | A value is valid when |
+|---|---|---|
+| `study_id` | none | it is a non-empty string exactly equal to the case's `study.study_id` |
+| `number` | `min`, `max` | it is a finite int or float (no `bool`, `NaN`, `Infinity`, string) with `min <= value <= max` |
+| `number_list` | `max_items`, `item_min`, `item_max`, `max_total` | it is a non-empty list of at most `max_items` finite numbers, each within `[item_min, item_max]`, whose sum is finite and at most `max_total` |
+
+Every shipped tool takes only `study_id`. The `number` and `number_list` types exist so numeric and list inputs cannot be modelled without bounds; they are exercised by test-only catalog tools in `tests/test_call_args.py`. Their bounds are **engineering limits chosen by the catalog author for a synthetic mock tool. They are not clinical thresholds and do not measure anything real.** A catalog whose spec is unbounded, non-finite, inverted or of an unknown type is refused at load.
 
 Case: `study.modality`; `study.obligations[]` (`obligation_id`, `finding_class`: a placeholder label, not a clinical requirement); `proposed_calls[]` (`call_id`, `tool_id`, `obligation_id`, `args`); `receipts[]` (`receipt_id`, `call_id`, `tool_id`, `executor` = `mock-tool`, `fixture: true`, `status` ok|error, `output`, `output_sha256`); `draft_report.statements[]` (`kind` = `claims_assessed` | `discloses_not_assessed`, `cites_receipt`).
 

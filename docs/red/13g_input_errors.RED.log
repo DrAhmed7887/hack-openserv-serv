@@ -1,0 +1,426 @@
+# RED evidence: 13g_input_errors
+# command: python3 -m pytest tests/test_input_errors.py -q
+# python: Python 3.9.6
+F.F.F.F.F.F.F.F...FF                                                     [100%]
+=================================== FAILURES ===================================
+_ test_unreadable_or_pathological_file_is_an_input_error[load_case-deeply nested json] _
+
+tmp_path = PosixPath('<tmp>')
+loader = <function load_case at 0x108632e50>, name = 'deeply nested json'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    @pytest.mark.parametrize("loader", [load_case, load_catalog])
+    def test_unreadable_or_pathological_file_is_an_input_error(tmp_path, loader, name):
+        data, needle = BAD_FILES[name]
+        with pytest.raises(InputError, match=needle):
+>           loader(write_bytes(tmp_path, "f.json", data))
+
+tests/test_input_errors.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:170: in load_case
+    data = _read(path)
+src/contract_audit/inputs.py:22: in _read
+    data = json.loads(text)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x107d5ec40>
+s = '{"synthetic": true, "x": [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[...]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+E           RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:353: RecursionError
+_ test_unreadable_or_pathological_file_is_an_input_error[load_case-invalid utf-8] _
+
+tmp_path = PosixPath('<tmp>')
+loader = <function load_case at 0x108632e50>, name = 'invalid utf-8'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    @pytest.mark.parametrize("loader", [load_case, load_catalog])
+    def test_unreadable_or_pathological_file_is_an_input_error(tmp_path, loader, name):
+        data, needle = BAD_FILES[name]
+        with pytest.raises(InputError, match=needle):
+>           loader(write_bytes(tmp_path, "f.json", data))
+
+tests/test_input_errors.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:170: in load_case
+    data = _read(path)
+src/contract_audit/inputs.py:18: in _read
+    text = path.read_text(encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1257: in read_text
+    return f.read()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x108740850>
+input = b'{"synthetic": true, "a": "\xff\xfe"}', final = True
+
+    def decode(self, input, final=False):
+        # decode input (taking the buffer into account)
+        data = self.buffer + input
+>       (result, consumed) = self._buffer_decode(data, self.errors, final)
+E       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 26: invalid start byte
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/codecs.py:322: UnicodeDecodeError
+_ test_unreadable_or_pathological_file_is_an_input_error[load_catalog-deeply nested json] _
+
+tmp_path = PosixPath('<tmp>')
+loader = <function load_catalog at 0x108632dc0>, name = 'deeply nested json'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    @pytest.mark.parametrize("loader", [load_case, load_catalog])
+    def test_unreadable_or_pathological_file_is_an_input_error(tmp_path, loader, name):
+        data, needle = BAD_FILES[name]
+        with pytest.raises(InputError, match=needle):
+>           loader(write_bytes(tmp_path, "f.json", data))
+
+tests/test_input_errors.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:163: in load_catalog
+    data = _read(path)
+src/contract_audit/inputs.py:22: in _read
+    data = json.loads(text)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x107d5ec40>
+s = '{"synthetic": true, "x": [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[...]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+E           RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:353: RecursionError
+_ test_unreadable_or_pathological_file_is_an_input_error[load_catalog-invalid utf-8] _
+
+tmp_path = PosixPath('<tmp>')
+loader = <function load_catalog at 0x108632dc0>, name = 'invalid utf-8'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    @pytest.mark.parametrize("loader", [load_case, load_catalog])
+    def test_unreadable_or_pathological_file_is_an_input_error(tmp_path, loader, name):
+        data, needle = BAD_FILES[name]
+        with pytest.raises(InputError, match=needle):
+>           loader(write_bytes(tmp_path, "f.json", data))
+
+tests/test_input_errors.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:163: in load_catalog
+    data = _read(path)
+src/contract_audit/inputs.py:18: in _read
+    text = path.read_text(encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1257: in read_text
+    return f.read()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x10894fac0>
+input = b'{"synthetic": true, "a": "\xff\xfe"}', final = True
+
+    def decode(self, input, final=False):
+        # decode input (taking the buffer into account)
+        data = self.buffer + input
+>       (result, consumed) = self._buffer_decode(data, self.errors, final)
+E       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 26: invalid start byte
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/codecs.py:322: UnicodeDecodeError
+_ test_cli_exits_two_without_traceback_on_a_bad_case_file[deeply nested json] __
+
+capsys = <_pytest.capture.CaptureFixture object at 0x108624d90>
+tmp_path = PosixPath('<tmp>')
+name = 'deeply nested json'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    def test_cli_exits_two_without_traceback_on_a_bad_case_file(capsys, tmp_path, name):
+>       code, out, err = run_cli(capsys, CATALOG, write_bytes(tmp_path, "f.json", BAD_FILES[name][0]))
+
+tests/test_input_errors.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:51: in main
+    catalog, case = load_catalog(args.catalog), load_case(args.case)
+src/contract_audit/inputs.py:170: in load_case
+    data = _read(path)
+src/contract_audit/inputs.py:22: in _read
+    data = json.loads(text)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x107d5ec40>
+s = '{"synthetic": true, "x": [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[...]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+E           RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:353: RecursionError
+____ test_cli_exits_two_without_traceback_on_a_bad_case_file[invalid utf-8] ____
+
+capsys = <_pytest.capture.CaptureFixture object at 0x1088282e0>
+tmp_path = PosixPath('<tmp>')
+name = 'invalid utf-8'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    def test_cli_exits_two_without_traceback_on_a_bad_case_file(capsys, tmp_path, name):
+>       code, out, err = run_cli(capsys, CATALOG, write_bytes(tmp_path, "f.json", BAD_FILES[name][0]))
+
+tests/test_input_errors.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:51: in main
+    catalog, case = load_catalog(args.catalog), load_case(args.case)
+src/contract_audit/inputs.py:170: in load_case
+    data = _read(path)
+src/contract_audit/inputs.py:18: in _read
+    text = path.read_text(encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1257: in read_text
+    return f.read()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x1087a6460>
+input = b'{"synthetic": true, "a": "\xff\xfe"}', final = True
+
+    def decode(self, input, final=False):
+        # decode input (taking the buffer into account)
+        data = self.buffer + input
+>       (result, consumed) = self._buffer_decode(data, self.errors, final)
+E       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 26: invalid start byte
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/codecs.py:322: UnicodeDecodeError
+_ test_cli_exits_two_without_traceback_on_a_bad_catalog_file[deeply nested json] _
+
+capsys = <_pytest.capture.CaptureFixture object at 0x10863e400>
+tmp_path = PosixPath('<tmp>')
+name = 'deeply nested json'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    def test_cli_exits_two_without_traceback_on_a_bad_catalog_file(capsys, tmp_path, name):
+>       code, out, err = run_cli(capsys, write_bytes(tmp_path, "f.json", BAD_FILES[name][0]), CASE)
+
+tests/test_input_errors.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:51: in main
+    catalog, case = load_catalog(args.catalog), load_case(args.case)
+src/contract_audit/inputs.py:163: in load_catalog
+    data = _read(path)
+src/contract_audit/inputs.py:22: in _read
+    data = json.loads(text)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x107d5ec40>
+s = '{"synthetic": true, "x": [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[...]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+E           RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:353: RecursionError
+__ test_cli_exits_two_without_traceback_on_a_bad_catalog_file[invalid utf-8] ___
+
+capsys = <_pytest.capture.CaptureFixture object at 0x1086af640>
+tmp_path = PosixPath('<tmp>')
+name = 'invalid utf-8'
+
+    @pytest.mark.parametrize("name", sorted(BAD_FILES))
+    def test_cli_exits_two_without_traceback_on_a_bad_catalog_file(capsys, tmp_path, name):
+>       code, out, err = run_cli(capsys, write_bytes(tmp_path, "f.json", BAD_FILES[name][0]), CASE)
+
+tests/test_input_errors.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_input_errors.py:47: in run_cli
+    code = main(["audit", "--catalog", str(catalog), "--case", str(case), *extra], environ={})
+src/contract_audit/cli.py:51: in main
+    catalog, case = load_catalog(args.catalog), load_case(args.case)
+src/contract_audit/inputs.py:163: in load_catalog
+    data = _read(path)
+src/contract_audit/inputs.py:18: in _read
+    text = path.read_text(encoding="utf-8")
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1257: in read_text
+    return f.read()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x108831bb0>
+input = b'{"synthetic": true, "a": "\xff\xfe"}', final = True
+
+    def decode(self, input, final=False):
+        # decode input (taking the buffer into account)
+        data = self.buffer + input
+>       (result, consumed) = self._buffer_decode(data, self.errors, final)
+E       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 26: invalid start byte
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/codecs.py:322: UnicodeDecodeError
+______ test_real_process_exit_code_is_two_not_one_for_a_crash_prone_file _______
+
+tmp_path = PosixPath('<tmp>')
+
+    def test_real_process_exit_code_is_two_not_one_for_a_crash_prone_file(tmp_path):
+        env = {k: v for k, v in os.environ.items() if k != "SERV_API_KEY"}
+        env["PYTHONPATH"] = str(DATA.parent / "src")
+        cmd = [sys.executable, "-m", "contract_audit", "audit", "--catalog", str(CATALOG), "--case"]
+        for name in ("invalid utf-8", "deeply nested json"):
+            r = subprocess.run(cmd + [str(write_bytes(tmp_path, "f.json", BAD_FILES[name][0]))],
+                               capture_output=True, text=True, env=env, cwd=str(DATA.parent))
+>           assert r.returncode == 2 and "Traceback" not in r.stderr, name
+E           AssertionError: invalid utf-8
+E           assert (1 == 2)
+E            +  where 1 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...self.errors, final)\nUnicodeDecodeError: \'utf-8\' codec can\'t decode byte 0xff in position 26: invalid start byte\n').returncode
+
+tests/test_input_errors.py:85: AssertionError
+___ test_receipt_output_too_deep_to_digest_is_an_invalid_receipt_not_a_crash ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1086c1f70>
+clone = <function deepcopy at 0x10775a310>
+
+    def test_receipt_output_too_deep_to_digest_is_an_invalid_receipt_not_a_crash(catalog, case, clone):
+        c = clone(case("c01_supported_called"))
+        node = out = {}
+        for _ in range(50_000):
+            node["a"] = {}
+            node = node["a"]
+        c["receipts"][0]["output"] = out
+>       r = check_receipt(c["proposed_calls"][0], c["receipts"])
+
+tests/test_input_errors.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/receipts.py:28: in check_receipt
+    if receipt["output_sha256"] != output_digest(receipt["output"]):
+src/contract_audit/receipts.py:11: in output_digest
+    canonical = json.dumps(output, sort_keys=True, separators=(",", ":"))
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py:234: in dumps
+    return cls(
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py:199: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.encoder.JSONEncoder object at 0x10861bb80>
+o = {'a': {'a': {'a': {'a': {'a': {'a': {...}}}}}}}, _one_shot = True
+
+    def iterencode(self, o, _one_shot=False):
+        """Encode the given object and yield each string
+        representation as available.
+    
+        For example::
+    
+            for chunk in JSONEncoder().iterencode(bigobject):
+                mysocket.write(chunk)
+    
+        """
+        if self.check_circular:
+            markers = {}
+        else:
+            markers = None
+        if self.ensure_ascii:
+            _encoder = encode_basestring_ascii
+        else:
+            _encoder = encode_basestring
+    
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+            # Check for specials.  Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on the
+            # internals.
+    
+            if o != o:
+                text = 'NaN'
+            elif o == _inf:
+                text = 'Infinity'
+            elif o == _neginf:
+                text = '-Infinity'
+            else:
+                return _repr(o)
+    
+            if not allow_nan:
+                raise ValueError(
+                    "Out of range float values are not JSON compliant: " +
+                    repr(o))
+    
+            return text
+    
+    
+        if (_one_shot and c_make_encoder is not None
+                and self.indent is None):
+            _iterencode = c_make_encoder(
+                markers, self.default, _encoder, self.indent,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, self.allow_nan)
+        else:
+            _iterencode = _make_iterencode(
+                markers, self.default, _encoder, self.indent, floatstr,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, _one_shot)
+>       return _iterencode(o, 0)
+E       RecursionError: maximum recursion depth exceeded while encoding a JSON object
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py:257: RecursionError
+=========================== short test summary info ============================
+FAILED tests/test_input_errors.py::test_unreadable_or_pathological_file_is_an_input_error[load_case-deeply nested json]
+FAILED tests/test_input_errors.py::test_unreadable_or_pathological_file_is_an_input_error[load_case-invalid utf-8]
+FAILED tests/test_input_errors.py::test_unreadable_or_pathological_file_is_an_input_error[load_catalog-deeply nested json]
+FAILED tests/test_input_errors.py::test_unreadable_or_pathological_file_is_an_input_error[load_catalog-invalid utf-8]
+FAILED tests/test_input_errors.py::test_cli_exits_two_without_traceback_on_a_bad_case_file[deeply nested json]
+FAILED tests/test_input_errors.py::test_cli_exits_two_without_traceback_on_a_bad_case_file[invalid utf-8]
+FAILED tests/test_input_errors.py::test_cli_exits_two_without_traceback_on_a_bad_catalog_file[deeply nested json]
+FAILED tests/test_input_errors.py::test_cli_exits_two_without_traceback_on_a_bad_catalog_file[invalid utf-8]
+FAILED tests/test_input_errors.py::test_real_process_exit_code_is_two_not_one_for_a_crash_prone_file
+FAILED tests/test_input_errors.py::test_receipt_output_too_deep_to_digest_is_an_invalid_receipt_not_a_crash
+10 failed, 10 passed in 0.40s
+# exit code: 1

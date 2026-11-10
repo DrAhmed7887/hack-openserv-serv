@@ -27,13 +27,13 @@ PYTHONPATH=src python3 -m contract_audit audit \
   --catalog data/catalog.json --case data/cases/c01_supported_called.json --fail-on-gaps
 ```
 
-Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2` bad or non-synthetic input, `3` `--serv` without credentials, `4` `--serv` with credentials but no live transport. Inputs not marked `"synthetic": true` are refused.
+Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2` bad or non-synthetic input, malformed catalog or file (invalid UTF-8, too deeply nested, missing `required_args` or `args_schema`) or an unwritable `--out` path (no traceback; never confused with `1`), `3` `--serv` without credentials, `4` `--serv` with credentials but no live transport. Inputs not marked `"synthetic": true` are refused.
 
 ## Test it
 
 ```bash
 python3 -m pip install -r requirements-dev.txt   # pytest only
-python3 -m pytest -q                              # 148 tests, offline
+python3 -m pytest -q                              # 378 tests, offline (a few mock-routing tests need node and skip without it)
 python3 scripts/make_g1_results.py                # re-runs everything, rewrites docs/G1_RESULTS.md
 python3 scripts/build_mock.py                     # re-embeds fixture output in mock/index.html
 ```
@@ -49,12 +49,14 @@ Measured results and the RED-before-GREEN logs: `docs/G1_RESULTS.md`, `docs/red/
 | `docs/USER_FLOW.md`, `mock/index.html` | G2 flow and a static **DESIGN MOCK — NOT CONNECTED** (open the file in a browser) |
 | `docs/SERV_INTEGRATION.md` | Documented SERV interface, the boundary, what is unverified |
 | `docs/G1_RESULTS.md` | Actual test log and case table |
+| `docs/KNOWN_LIMITATIONS.md` | Limits of the validator and caveats on the evidence in `docs/red/` |
 
 ## Known boundaries (read these)
 
 - **SERV is unverified and unrun.** The request builder follows the public docs read on 2026-11-10. There is no live transport. Credentials absent: fail closed. Credentials present: still no call. The audit never prints a "SERV result" or a SERV step trace, because none was produced.
 - **Fixtures are not evidence about real tools.** The catalog is fictional (`SYN-*`), its source texts are invented, and no public source validates the mapping. Passing fixture tests prove the mechanism, not clinical accuracy and not SERV performance.
 - **Physician/operator sign-off is pending** for what counts as an assessment obligation and for any capability interpretation. No clinical rule here is signed.
+- **Call arguments are validated by value** against the catalog's `args_schema` (own `study_id`, bounded numbers, bounded lists with a summed limit). Those bounds are engineering limits of synthetic mock tools, not clinical thresholds (`data/DATA_CARD.md`).
 - **Receipts are mock-tool receipts**: a digest check detects edited output, not a forged receipt.
 - **Capability matching is a deliberate strict string rule** (non-empty quote verbatim in an unchanged source, naming the entry's own modality and finding class). It will say `uncertain` for wording a human would accept. That is the safe direction; interpreting such cases is the job reserved for an authenticated SERV step, advisory only.
 - No images, DICOM, diagnosis or real patient data anywhere.

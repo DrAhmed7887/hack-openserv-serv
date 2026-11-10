@@ -1,0 +1,154 @@
+# RED evidence: 13n_mock_routing
+# command: python3 -m pytest tests/test_mock.py -q
+# python: Python 3.9.6
+.....FFFFFFFF.FF.                                                        [100%]
+=================================== FAILURES ===================================
+__________________ test_clicking_a_step_updates_the_url_hash ___________________
+
+    @needs_node
+    def test_clicking_a_step_updates_the_url_hash():
+        [steps] = routing([{"initial": "", "actions": [{"click": "coverage"}, {"click": "repair"}]}])
+        assert [s["visible"] for s in steps] == [["catalog"], ["coverage"], ["repair"]]
+>       assert [s["hash"] for s in steps][1:] == ["#coverage", "#repair"]
+E       AssertionError: assert ['', ''] == ['#coverage', '#repair']
+E         
+E         At index 0 diff: '' != '#coverage'
+E         Use -v to get more diff
+
+tests/test_mock.py:78: AssertionError
+________________ test_back_and_forward_show_the_step_in_the_url ________________
+
+    @needs_node
+    def test_back_and_forward_show_the_step_in_the_url():
+        [steps] = routing([{"initial": "#study", "actions": [{"hash": "#coverage"}, {"hash": "#study"}, {"hash": "#export"}]}])
+>       assert [s["visible"] for s in steps] == [["study"], ["coverage"], ["study"], ["export"]]
+E       AssertionError: assert [['study'], [...'], ['study']] == [['study'], [...], ['export']]
+E         
+E         At index 1 diff: ['study'] != ['coverage']
+E         Use -v to get more diff
+
+tests/test_mock.py:84: AssertionError
+_ test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#] _
+
+bad = '#'
+
+    @needs_node
+    @pytest.mark.parametrize("bad", ["#", "#nope", "#__proto__", "#constructor", "#catalog%20", "#../x"])
+    def test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible(bad):
+        [steps] = routing([{"initial": bad, "actions": [{"hash": "#coverage"}, {"hash": bad}]}])
+>       assert [s["visible"] for s in steps] == [["catalog"], ["coverage"], ["catalog"]]
+E       AssertionError: assert [['catalog'],..., ['catalog']] == [['catalog'],..., ['catalog']]
+E         
+E         At index 1 diff: ['catalog'] != ['coverage']
+E         Use -v to get more diff
+
+tests/test_mock.py:91: AssertionError
+_ test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#nope] _
+
+bad = '#nope'
+
+    @needs_node
+    @pytest.mark.parametrize("bad", ["#", "#nope", "#__proto__", "#constructor", "#catalog%20", "#../x"])
+    def test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible(bad):
+        [steps] = routing([{"initial": bad, "actions": [{"hash": "#coverage"}, {"hash": bad}]}])
+>       assert [s["visible"] for s in steps] == [["catalog"], ["coverage"], ["catalog"]]
+E       AssertionError: assert [['catalog'],..., ['catalog']] == [['catalog'],..., ['catalog']]
+E         
+E         At index 1 diff: ['catalog'] != ['coverage']
+E         Use -v to get more diff
+
+tests/test_mock.py:91: AssertionError
+_ test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#__proto__] _
+
+bad = '#__proto__'
+
+    @needs_node
+    @pytest.mark.parametrize("bad", ["#", "#nope", "#__proto__", "#constructor", "#catalog%20", "#../x"])
+    def test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible(bad):
+        [steps] = routing([{"initial": bad, "actions": [{"hash": "#coverage"}, {"hash": bad}]}])
+>       assert [s["visible"] for s in steps] == [["catalog"], ["coverage"], ["catalog"]]
+E       AssertionError: assert [['catalog'],..., ['catalog']] == [['catalog'],..., ['catalog']]
+E         
+E         At index 1 diff: ['catalog'] != ['coverage']
+E         Use -v to get more diff
+
+tests/test_mock.py:91: AssertionError
+_ test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#constructor] _
+
+bad = '#constructor'
+
+    @needs_node
+    @pytest.mark.parametrize("bad", ["#", "#nope", "#__proto__", "#constructor", "#catalog%20", "#../x"])
+    def test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible(bad):
+        [steps] = routing([{"initial": bad, "actions": [{"hash": "#coverage"}, {"hash": bad}]}])
+>       assert [s["visible"] for s in steps] == [["catalog"], ["coverage"], ["catalog"]]
+E       AssertionError: assert [['catalog'],..., ['catalog']] == [['catalog'],..., ['catalog']]
+E         
+E         At index 1 diff: ['catalog'] != ['coverage']
+E         Use -v to get more diff
+
+tests/test_mock.py:91: AssertionError
+_ test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#catalog%20] _
+
+bad = '#catalog%20'
+
+    @needs_node
+    @pytest.mark.parametrize("bad", ["#", "#nope", "#__proto__", "#constructor", "#catalog%20", "#../x"])
+    def test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible(bad):
+        [steps] = routing([{"initial": bad, "actions": [{"hash": "#coverage"}, {"hash": bad}]}])
+>       assert [s["visible"] for s in steps] == [["catalog"], ["coverage"], ["catalog"]]
+E       AssertionError: assert [['catalog'],..., ['catalog']] == [['catalog'],..., ['catalog']]
+E         
+E         At index 1 diff: ['catalog'] != ['coverage']
+E         Use -v to get more diff
+
+tests/test_mock.py:91: AssertionError
+_ test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#../x] _
+
+bad = '#../x'
+
+    @needs_node
+    @pytest.mark.parametrize("bad", ["#", "#nope", "#__proto__", "#constructor", "#catalog%20", "#../x"])
+    def test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible(bad):
+        [steps] = routing([{"initial": bad, "actions": [{"hash": "#coverage"}, {"hash": bad}]}])
+>       assert [s["visible"] for s in steps] == [["catalog"], ["coverage"], ["catalog"]]
+E       AssertionError: assert [['catalog'],..., ['catalog']] == [['catalog'],..., ['catalog']]
+E         
+E         At index 1 diff: ['catalog'] != ['coverage']
+E         Use -v to get more diff
+
+tests/test_mock.py:91: AssertionError
+______________________ test_mock_has_a_hashchange_handler ______________________
+
+    def test_mock_has_a_hashchange_handler():
+>       assert "hashchange" in HTML.read_text(encoding="utf-8")
+E       assert 'hashchange' in '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,...show(steps.some(function (st) { return st[0] === start; }) ? start : "catalog");\n})();\n</script>\n</body>\n</html>\n'
+E        +  where '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,...show(steps.some(function (st) { return st[0] === start; }) ? start : "catalog");\n})();\n</script>\n</body>\n</html>\n' = read_text(encoding='utf-8')
+E        +    where read_text = PosixPath('<repo>/mock/index.html').read_text
+
+tests/test_mock.py:101: AssertionError
+_______ test_every_reconciler_outcome_and_action_has_a_label_in_the_mock _______
+
+    def test_every_reconciler_outcome_and_action_has_a_label_in_the_mock():
+>       assert mock_map("OUTCOME") == set(OUTCOMES)
+E       AssertionError: assert {'limitation_...ported_claim'} == {'disclosure_...igation', ...}
+E         
+E         Extra items in the right set:
+E         'invalid_statement'
+E         'disclosure_contradicts_support'
+E         Use -v to get more diff
+
+tests/test_mock.py:111: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_mock.py::test_clicking_a_step_updates_the_url_hash - Assert...
+FAILED tests/test_mock.py::test_back_and_forward_show_the_step_in_the_url - A...
+FAILED tests/test_mock.py::test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#]
+FAILED tests/test_mock.py::test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#nope]
+FAILED tests/test_mock.py::test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#__proto__]
+FAILED tests/test_mock.py::test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#constructor]
+FAILED tests/test_mock.py::test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#catalog%20]
+FAILED tests/test_mock.py::test_an_unknown_hash_falls_back_to_the_first_step_and_exactly_one_step_is_visible[#../x]
+FAILED tests/test_mock.py::test_mock_has_a_hashchange_handler - assert 'hashc...
+FAILED tests/test_mock.py::test_every_reconciler_outcome_and_action_has_a_label_in_the_mock
+10 failed, 7 passed in 0.98s
+# exit code: 1

@@ -1,0 +1,79 @@
+# RED evidence: 13c_unknown_args
+# command: python3 -m pytest tests/test_call_args.py -q
+# python: Python 3.9.6
+...............FFFF                                                      [100%]
+=================================== FAILURES ===================================
+____________ test_arguments_outside_the_schema_are_refused[extra0] _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1060b1ca0>
+clone = <function deepcopy at 0x1051a2310>, extra = {'extra': 1}
+
+    @pytest.mark.parametrize("extra", [{"extra": 1}, {"study_ID": "SYN-STUDY-001"}, {"": None}])
+    def test_arguments_outside_the_schema_are_refused(catalog, case, clone, extra):
+        _, r = call_with(catalog, case, clone, dict({"study_id": "SYN-STUDY-001"}, **extra))
+        key = next(iter(extra))
+>       assert r["status"] == "invalid" and f"unknown_arg:{key}" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:48: AssertionError
+____________ test_arguments_outside_the_schema_are_refused[extra1] _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1060e5280>
+clone = <function deepcopy at 0x1051a2310>
+extra = {'study_ID': 'SYN-STUDY-001'}
+
+    @pytest.mark.parametrize("extra", [{"extra": 1}, {"study_ID": "SYN-STUDY-001"}, {"": None}])
+    def test_arguments_outside_the_schema_are_refused(catalog, case, clone, extra):
+        _, r = call_with(catalog, case, clone, dict({"study_id": "SYN-STUDY-001"}, **extra))
+        key = next(iter(extra))
+>       assert r["status"] == "invalid" and f"unknown_arg:{key}" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:48: AssertionError
+____________ test_arguments_outside_the_schema_are_refused[extra2] _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1060e5160>
+clone = <function deepcopy at 0x1051a2310>, extra = {'': None}
+
+    @pytest.mark.parametrize("extra", [{"extra": 1}, {"study_ID": "SYN-STUDY-001"}, {"": None}])
+    def test_arguments_outside_the_schema_are_refused(catalog, case, clone, extra):
+        _, r = call_with(catalog, case, clone, dict({"study_id": "SYN-STUDY-001"}, **extra))
+        key = next(iter(extra))
+>       assert r["status"] == "invalid" and f"unknown_arg:{key}" in r["reasons"]
+E       AssertionError: assert ('valid' == 'invalid'
+E         
+E         - invalid
+E         ? --
+E         + valid)
+
+tests/test_call_args.py:48: AssertionError
+______ test_missing_required_arg_is_still_reported_alongside_a_bad_extra _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1060e5a60>
+clone = <function deepcopy at 0x1051a2310>
+
+    def test_missing_required_arg_is_still_reported_alongside_a_bad_extra(catalog, case, clone):
+        _, r = call_with(catalog, case, clone, {"other": 1})
+>       assert "missing_arg:study_id" in r["reasons"] and "unknown_arg:other" in r["reasons"]
+E       AssertionError: assert ('missing_arg:study_id' in ['missing_arg:study_id'] and 'unknown_arg:other' in ['missing_arg:study_id'])
+
+tests/test_call_args.py:53: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_call_args.py::test_arguments_outside_the_schema_are_refused[extra0]
+FAILED tests/test_call_args.py::test_arguments_outside_the_schema_are_refused[extra1]
+FAILED tests/test_call_args.py::test_arguments_outside_the_schema_are_refused[extra2]
+FAILED tests/test_call_args.py::test_missing_required_arg_is_still_reported_alongside_a_bad_extra
+4 failed, 15 passed in 0.13s
+# exit code: 1

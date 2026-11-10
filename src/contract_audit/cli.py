@@ -11,6 +11,7 @@ from .audit import build_audit
 from .inputs import InputError, load_case, load_catalog
 from .serv import NotConfigured, load_config
 
+# EXIT_BAD_INPUT covers unreadable or malformed input files and an unwritable --out path: never a crash.
 EXIT_OK, EXIT_GAPS, EXIT_BAD_INPUT, EXIT_SERV_NOT_CONFIGURED, EXIT_SERV_NO_TRANSPORT = 0, 1, 2, 3, 4
 
 
@@ -58,7 +59,11 @@ def main(argv=None, environ=None):
     audit = build_audit(catalog, case, serv=serv)
     text = json.dumps(audit, indent=2, sort_keys=True) + "\n"
     if args.out:
-        args.out.write_text(text, encoding="utf-8")
+        try:
+            args.out.write_text(text, encoding="utf-8")
+        except OSError as exc:
+            print(f"error: cannot write {args.out}: {exc.strerror or exc}", file=sys.stderr)
+            return EXIT_BAD_INPUT
     else:
         sys.stdout.write(text)
     if message:

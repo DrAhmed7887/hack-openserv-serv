@@ -13,11 +13,16 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pytest -q
-      - name: CLI is offline, deterministic and fails closed on gaps
+      - name: CLI is offline, deterministic, and exit codes are distinct (0 ok, 1 gaps, 2 bad input or IO)
         run: |
           export PYTHONPATH=src
           python -m contract_audit audit --catalog data/catalog.json --case data/cases/c01_supported_called.json --fail-on-gaps > /dev/null
-          if python -m contract_audit audit --catalog data/catalog.json --case data/cases/c02_supported_omitted.json --fail-on-gaps > /dev/null; then echo "expected gaps to fail"; exit 1; fi
+          code=0; python -m contract_audit audit --catalog data/catalog.json --case data/cases/c02_supported_omitted.json --fail-on-gaps > /dev/null || code=$?
+          if [ "$code" -ne 1 ]; then echo "expected exit 1 (gaps found), got $code"; exit 1; fi
+          code=0; python -m contract_audit audit --catalog data/catalog.json --case data/cases/does_not_exist.json > /dev/null 2>&1 || code=$?
+          if [ "$code" -ne 2 ]; then echo "expected exit 2 (bad input), got $code"; exit 1; fi
+          code=0; python -m contract_audit audit --catalog data/catalog.json --case data/cases/c01_supported_called.json --out /nonexistent-dir/audit.json > /dev/null 2>&1 || code=$?
+          if [ "$code" -ne 2 ]; then echo "expected exit 2 (unwritable --out), got $code"; exit 1; fi
       - name: Mock is in sync with the validator
         run: |
           python scripts/build_mock.py
