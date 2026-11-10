@@ -1,14 +1,25 @@
-"""Explicit SERV Reasoning boundary. Nothing in this module makes a network call.
+"""Explicit SERV Reasoning boundary.
 
 Interface facts come from the public docs read on 2026-11-10 (see docs/SERV_INTEGRATION.md).
 Missing credentials fail closed: no SERV output is ever produced without a configured key.
+Only LiveServClient sends a request; ServClient stays fixture-only. A SERV answer is advice:
+it never changes a disposition or full_support.
 """
 from __future__ import annotations
 
 import copy
 import json
+import urllib.error
+import urllib.parse
+import urllib.request
 
 ENDPOINT = "https://inference-api.openserv.ai/v1/chat/completions"
+TIMEOUT_SECONDS = 30
+MAX_RESPONSE_BYTES = 1_000_000
+
+# Module-private provenance marker. Only LiveServClient sets it, and it does not survive a copy through
+# JSON, so a caller cannot attest live execution by writing "executed": true into a dict.
+_LIVE_TOKEN = object()
 
 SYSTEM_PROMPT = (
     "You compare a tool-capability description against a study obligation. "
@@ -78,7 +89,53 @@ def build_request(model, obligation, modality, source_id, source_text):
 
 
 class LiveTransportNotImplemented(RuntimeError):
-    """This spike deliberately ships no live HTTP transport. No call was made."""
+    """ServClient ships no live HTTP transport (use LiveServClient). No call was made."""
+
+
+class ServCallFailed(RuntimeError):
+    """A live SERV request failed. Carries the HTTP status when there is one; never the key."""
+
+    def __init__(self, message, status=None):
+        super().__init__(message)
+        self.status = status
+
+
+def _allowed_url(url):
+    parts = urllib.parse.urlsplit(url)
+    return parts.scheme == "https" or (parts.scheme == "http" and parts.hostname in ("127.0.0.1", "localhost"))
+
+
+def urllib_post(url, headers, body, timeout):
+    """POST JSON with the standard library and return the parsed JSON object.
+
+    https only (plain http is allowed for loopback, which the tests use). Errors carry the status and the
+    upstream error type, never the request headers.
+    """
+    if not _allowed_url(url):
+        raise ServCallFailed("refusing to send: SERV requests must use https")
+    req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), headers=headers, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310 (scheme checked above)
+            raw = resp.read(MAX_RESPONSE_BYTES + 1)
+    except urllib.error.HTTPError as exc:
+        detail = ""
+        try:
+            err = json.loads(exc.read(10_000) or b"{}").get("error", {})
+            detail = f": {err.get('type', '')} {err.get('message', '')}".rstrip()
+        except (ValueError, AttributeError):
+            pass
+        raise ServCallFailed(f"HTTP {exc.code} from SERV{detail}", status=exc.code) from None
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        raise ServCallFailed(f"SERV request did not complete: {getattr(exc, 'reason', exc)}") from None
+    if len(raw) > MAX_RESPONSE_BYTES:
+        raise ServCallFailed("SERV response larger than the 1 MB limit")
+    try:
+        data = json.loads(raw)
+    except ValueError:
+        raise ServCallFailed("SERV response is not JSON") from None
+    if not isinstance(data, dict):
+        raise ServCallFailed("SERV response is not a JSON object")
+    return data
 
 
 def parse_interpretation(response, source_text):
@@ -139,27 +196,67 @@ class ServClient:
         return result
 
 
+class LiveServClient:
+    """Sends one chat-completions request per interpretation. The HTTP function is injected for tests.
+
+    The key is added to the Authorization header at send time and never stored in the request body or
+    the result. A response labelled "fixture" is refused: a live call must come back as a live answer.
+    """
+
+    def __init__(self, config, http=urllib_post, timeout=TIMEOUT_SECONDS):
+        if not isinstance(config, ServConfig):
+            raise NotConfigured("a ServConfig from load_config() is required; SERV was not run")
+        self._config, self._http, self._timeout = config, http, timeout
+
+    def __repr__(self):
+        return "LiveServClient(config=<hidden>)"
+
+    __str__ = __repr__
+
+    def interpret(self, model, obligation, modality, source_id, source_text):
+        request = build_request(model, obligation, modality, source_id, source_text)
+        headers = {"Authorization": f"Bearer {self._config.api_key}", "Content-Type": "application/json"}
+        response = self._http(request["url"], headers, request["body"], self._timeout)
+        if not isinstance(response, dict) or "fixture" in response:
+            raise ServCallFailed("live SERV response carried a fixture label or was not an object; refused")
+        result = parse_interpretation(response, source_text)
+        usage = response.get("usage") if isinstance(response.get("usage"), dict) else {}
+        result.update(executed=True, fixture=False, live_token=_LIVE_TOKEN,
+                      model=str(response.get("model") or model),
+                      usage={k: usage[k] for k in ("prompt_tokens", "completion_tokens", "total_tokens")
+                             if isinstance(usage.get(k), int)})
+        return result
+
+
 def attach_advisory(audit, obligation_id, interpretation):
     """Return a copy of the audit with SERV's interpretation attached as advice only.
 
     Disposition, full_support, statements and completeness are copied unchanged: SERV cannot
     override a deterministic result, and a confirmed capability still needs a human edit to the catalog.
+    Executed results are accepted only straight from LiveServClient (module-private provenance marker).
     """
     if audit["obligations"][obligation_id]["disposition"] != "uncertain":
         raise ValueError("SERV advisory is only attached to uncertain obligations")
     fixture, executed = interpretation.get("fixture"), interpretation.get("executed", False)
     if fixture is True and executed is True:
         raise ValueError("fixture and executed are mutually exclusive; refusing to label it")
-    if executed is not False:
-        raise ValueError("executed results are not accepted: this spike has no live transport "
+    live = executed is True and fixture is False and interpretation.get("live_token") is _LIVE_TOKEN
+    if executed is not False and not live:
+        raise ValueError("executed results are accepted only from LiveServClient: no live transport token, "
                          "and a caller cannot attest live execution")
-    if fixture is not True:
+    if not live and fixture is not True:
         raise ValueError("interpretation is neither fixture nor executed; refusing to label it")
     out = copy.deepcopy(audit)
-    out.setdefault("serv_advisory", {})[obligation_id] = {
+    advisory = {
         "verdict": interpretation["verdict"], "quote": interpretation["quote"],
         "accepted": interpretation["accepted"], "reasons": list(interpretation["reasons"]),
         "human_confirmation_required": True,
     }
-    out["serv"] = {"status": "fixture", "executed": False, "fixture": True}
+    if live:
+        advisory["usage"] = dict(interpretation.get("usage", {}))
+        out["serv"] = {"status": "executed", "executed": True, "fixture": False,
+                       "model": interpretation["model"]}
+    else:
+        out["serv"] = {"status": "fixture", "executed": False, "fixture": True}
+    out.setdefault("serv_advisory", {})[obligation_id] = advisory
     return out

@@ -1,6 +1,6 @@
 # Radiology tool-capability contract audit
 
-> **Status: G1 mechanism spike plus a G2 design mock. Not a clinical product.** Synthetic data only. SERV Reasoning has **not been run**: no account, no key, no call. Product name not yet chosen (neutral descriptor used).
+> **Status: G1 mechanism spike plus a G2 design mock. Not a clinical product.** Synthetic data only. SERV Reasoning: live transport built and tested offline; **the live run waits for the API key** (`docs/SERV_RUN.md` will record it). Product name not yet chosen (neutral descriptor used).
 
 An engineer wires specialist tools into a reporting agent and gets a report that looks complete. This audit asks why it looks complete. It separates four situations per required assessment:
 
@@ -22,18 +22,22 @@ Why this shape: the motivating arXiv paper ([2611.09836](https://arxiv.org/abs/2
 PYTHONPATH=src python3 -m contract_audit audit \
   --catalog data/catalog.json --case data/cases/c07_combined.json
 
+# with SERV advice on uncertain obligations (key from Keychain; costs SERV credits)
+SERV_API_KEY="$(security find-generic-password -s SERV_API_KEY -w)" PYTHONPATH=src python3 -m contract_audit audit \
+  --catalog data/catalog.json --case data/cases/c04_uncertain_source_insufficient.json --serv --serv-model gpt-6-luna
+
 # exit 1 unless completeness is full_support
 PYTHONPATH=src python3 -m contract_audit audit \
   --catalog data/catalog.json --case data/cases/c01_supported_called.json --fail-on-gaps
 ```
 
-Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2` bad or non-synthetic input, malformed catalog or file (invalid UTF-8, too deeply nested, missing `required_args` or `args_schema`) or an unwritable `--out` path (no traceback; never confused with `1`), `3` `--serv` without credentials, `4` `--serv` with credentials but no live transport. Inputs not marked `"synthetic": true` are refused.
+Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2` bad or non-synthetic input, malformed catalog or file (invalid UTF-8, too deeply nested, missing `required_args` or `args_schema`) or an unwritable `--out` path (no traceback; never confused with `1`), `3` `--serv` without credentials, `4` `--serv` with credentials but no `--serv-model`, `5` the SERV request failed (audit still printed). Inputs not marked `"synthetic": true` are refused.
 
 ## Test it
 
 ```bash
 python3 -m pip install -r requirements-dev.txt   # pytest only
-python3 -m pytest -q                              # 378 tests, offline (a few mock-routing tests need node and skip without it)
+python3 -m pytest -q                              # 397 tests, offline (a few mock-routing tests need node and skip without it)
 python3 scripts/make_g1_results.py                # re-runs everything, rewrites docs/G1_RESULTS.md
 python3 scripts/build_mock.py                     # re-embeds fixture output in mock/index.html
 ```
@@ -53,7 +57,7 @@ Measured results and the RED-before-GREEN logs: `docs/G1_RESULTS.md`, `docs/red/
 
 ## Known boundaries (read these)
 
-- **SERV is unverified and unrun.** The request builder follows the public docs read on 2026-11-10. There is no live transport. Credentials absent: fail closed. Credentials present: still no call. The audit never prints a "SERV result" or a SERV step trace, because none was produced.
+- **SERV is advice, never a decision.** `--serv --serv-model <id>` sends one request per uncertain obligation (`LiveServClient`, stdlib HTTPS) and attaches the answer as `serv_advisory`, which needs human confirmation and cannot change any disposition or `full_support`. Credentials or model absent: fail closed, no call. The request follows the public docs read on 2026-11-10; no SERV step trace is documented, so none is printed.
 - **Fixtures are not evidence about real tools.** The catalog is fictional (`SYN-*`), its source texts are invented, and no public source validates the mapping. Passing fixture tests prove the mechanism, not clinical accuracy and not SERV performance.
 - **Physician/operator sign-off is pending** for what counts as an assessment obligation and for any capability interpretation. No clinical rule here is signed.
 - **Call arguments are validated by value** against the catalog's `args_schema` (own `study_id`, bounded numbers, bounded lists with a summed limit). Those bounds are engineering limits of synthetic mock tools, not clinical thresholds (`data/DATA_CARD.md`).

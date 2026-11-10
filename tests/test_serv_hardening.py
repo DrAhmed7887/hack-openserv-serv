@@ -101,7 +101,8 @@ def test_build_audit_refuses_a_serv_block_that_claims_execution_or_is_malformed(
 
 
 @pytest.mark.parametrize("serv", [None, {"status": "not_configured", "executed": False, "fixture": False},
-                                  {"status": "live_transport_not_implemented", "executed": False, "fixture": False}])
+                                  {"status": "model_not_chosen", "executed": False, "fixture": False},
+                                  {"status": "call_failed", "executed": False, "fixture": False}])
 def test_build_audit_accepts_the_not_run_blocks_the_cli_produces(catalog, case, serv):
     a = build_audit(catalog, case("c01_supported_called"), serv=serv)
     assert a["serv"]["executed"] is False and a["serv"]["fixture"] is False

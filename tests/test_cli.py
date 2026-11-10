@@ -83,12 +83,12 @@ def test_serv_flag_without_key_fails_closed(capsys):
     assert "SERV result" not in out + err and "serv_advisory" not in audit
 
 
-def test_serv_flag_with_key_still_makes_no_call_in_this_spike(capsys):
+def test_serv_flag_with_key_but_no_model_makes_no_call(capsys):
     code, out, err = run(["audit", "--catalog", CATALOG, "--case", case_path("c04_uncertain_source_insufficient"),
                           "--serv"], capsys, environ={"SERV_API_KEY": "test-not-a-real-key-123"})
     audit = json.loads(out)
     assert code == 4
-    assert audit["serv"] == {"status": "live_transport_not_implemented", "executed": False, "fixture": False}
+    assert audit["serv"] == {"status": "model_not_chosen", "executed": False, "fixture": False}
     assert "test-not-a-real-key-123" not in out + err
 
 

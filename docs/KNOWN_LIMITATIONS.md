@@ -1,6 +1,6 @@
 # Known limitations and evidence caveats
 
-Status: synthetic G1/G2 precursor. Blocked for live SERV compliance. SERV has not been run: no account, no key, no call.
+Status: synthetic G1/G2 precursor. Live SERV transport built and tested offline; the live run waits for the API key (see `docs/SERV_RUN.md` once it exists).
 
 ## What the validator does not do
 
@@ -9,7 +9,7 @@ Status: synthetic G1/G2 precursor. Blocked for live SERV compliance. SERV has no
 - **Receipts detect edits, not forgery.** The digest is not a signature. Receipt output content is not interpreted, and a receipt whose `call_id` matches no valid call is ignored (not reported).
 - **Capability matching is a strict string rule** and report text is not inspected.
 - **Conflicting outputs are detected only by digest.** Two valid receipts from the same tool for one obligation with different digests block full support (`conflicting_outputs`); receipts from different tools are not compared.
-- **The SERV quote floor is a minimum, not a semantic check.** A 3-word, 12-character verbatim stretch of the source is accepted as a quote; a human still confirms every advisory. There is no live transport and none was added.
+- **The SERV quote floor is a minimum, not a semantic check.** A 3-word, 12-character verbatim stretch of the source is accepted as a quote; a human still confirms every advisory. The live transport applies the same floor.
 - **Exit codes.** `2` covers unreadable or malformed input files, a malformed catalog, and an unwritable `--out`. An unexpected internal error is still an uncaught Python exception (exit 1 with a traceback). That is not expected from any input tested here, but it is not guarded by a catch-all, on purpose: a catch-all would hide bugs.
 
 ## Evidence caveats for review round 2 (cycles `13a` to `13n`, `docs/red/`)
