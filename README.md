@@ -1,6 +1,6 @@
 # Radiology tool-capability contract audit
 
-> **Status: G1 mechanism spike plus a G2 design mock. Not a clinical product.** Synthetic data only. SERV Reasoning: live transport built and tested offline; **the live run waits for the API key** (`docs/SERV_RUN.md` will record it). Product name not yet chosen (neutral descriptor used).
+> **Status: G1 mechanism spike plus a G2 design mock. Not a clinical product.** Synthetic data only. SERV Reasoning: **run live on 10 Nov 2026** (`gpt-6-luna`, 2 requests); results and what they show in `docs/SERV_RUN.md`. Product name not yet chosen (neutral descriptor used).
 
 An engineer wires specialist tools into a reporting agent and gets a report that looks complete. This audit asks why it looks complete. It separates four situations per required assessment:
 

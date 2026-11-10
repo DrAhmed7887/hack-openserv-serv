@@ -1,0 +1,233 @@
+{
+  "calls": {
+    "CALL-1": {
+      "reasons": [],
+      "status": "valid"
+    },
+    "CALL-3": {
+      "reasons": [
+        "modality_mismatch"
+      ],
+      "status": "invalid"
+    },
+    "CALL-4": {
+      "reasons": [
+        "modality_term_not_in_quote"
+      ],
+      "status": "unconfirmed"
+    },
+    "CALL-5": {
+      "reasons": [],
+      "status": "valid"
+    },
+    "CALL-6": {
+      "reasons": [],
+      "status": "valid"
+    }
+  },
+  "case_id": "c07_combined",
+  "catalog_id": "SYN-CATALOG-001",
+  "completeness": "gaps_found",
+  "notices": [
+    "Synthetic fixture data only. No images, DICOM, patients or real devices.",
+    "Catalog is fictional. Physician/operator sign-off is pending.",
+    "Full support means: confirmed catalog entry, valid call and valid mock receipt. It is not a clinical or SERV performance claim."
+  ],
+  "obligations": {
+    "OB-1": {
+      "call_id": "CALL-1",
+      "calls": [
+        {
+          "call_id": "CALL-1",
+          "reasons": [],
+          "receipt_id": "RCPT-1",
+          "receipt_status": "valid",
+          "status": "valid"
+        }
+      ],
+      "capability": "supported",
+      "disposition": "supported_called",
+      "full_support": true,
+      "reasons": [],
+      "receipt_id": "RCPT-1",
+      "receipt_ids": [
+        "RCPT-1"
+      ],
+      "receipt_status": "valid",
+      "tool_id": "SYN-NODULE-1"
+    },
+    "OB-2": {
+      "call_id": null,
+      "calls": [],
+      "capability": "supported",
+      "disposition": "supported_omitted",
+      "full_support": false,
+      "reasons": [],
+      "receipt_id": null,
+      "receipt_ids": [],
+      "receipt_status": "not_applicable",
+      "tool_id": "SYN-EFFUSION-1"
+    },
+    "OB-3": {
+      "call_id": null,
+      "calls": [
+        {
+          "call_id": "CALL-3",
+          "reasons": [
+            "modality_mismatch"
+          ],
+          "receipt_id": null,
+          "receipt_status": "not_applicable",
+          "status": "invalid"
+        }
+      ],
+      "capability": "unsupported",
+      "disposition": "unsupported",
+      "full_support": false,
+      "reasons": [
+        "no_catalog_entry"
+      ],
+      "receipt_id": null,
+      "receipt_ids": [],
+      "receipt_status": "not_applicable",
+      "tool_id": null
+    },
+    "OB-4": {
+      "call_id": null,
+      "calls": [
+        {
+          "call_id": "CALL-4",
+          "reasons": [
+            "modality_term_not_in_quote"
+          ],
+          "receipt_id": null,
+          "receipt_status": "not_applicable",
+          "status": "unconfirmed"
+        }
+      ],
+      "capability": "uncertain",
+      "disposition": "uncertain",
+      "full_support": false,
+      "reasons": [
+        "modality_term_not_in_quote"
+      ],
+      "receipt_id": null,
+      "receipt_ids": [],
+      "receipt_status": "not_applicable",
+      "tool_id": "SYN-CARDIAC-1"
+    },
+    "OB-5": {
+      "call_id": "CALL-5",
+      "calls": [
+        {
+          "call_id": "CALL-5",
+          "reasons": [
+            "no_receipt"
+          ],
+          "receipt_id": null,
+          "receipt_status": "missing",
+          "status": "valid"
+        }
+      ],
+      "capability": "supported",
+      "disposition": "supported_called",
+      "full_support": false,
+      "reasons": [
+        "no_receipt"
+      ],
+      "receipt_id": null,
+      "receipt_ids": [],
+      "receipt_status": "missing",
+      "tool_id": "SYN-LINE-1"
+    },
+    "OB-6": {
+      "call_id": "CALL-6",
+      "calls": [
+        {
+          "call_id": "CALL-6",
+          "reasons": [
+            "execution_error"
+          ],
+          "receipt_id": "RCPT-6",
+          "receipt_status": "failed",
+          "status": "valid"
+        }
+      ],
+      "capability": "supported",
+      "disposition": "supported_called",
+      "full_support": false,
+      "reasons": [
+        "execution_error"
+      ],
+      "receipt_id": "RCPT-6",
+      "receipt_ids": [],
+      "receipt_status": "failed",
+      "tool_id": "SYN-VOLUME-1"
+    }
+  },
+  "report_gaps": {
+    "OB-6": "add_limitation_statement"
+  },
+  "schema": "contract-audit/v0",
+  "serv": {
+    "executed": true,
+    "fixture": false,
+    "model": "gpt-6-luna",
+    "status": "executed"
+  },
+  "serv_advisory": {
+    "OB-4": {
+      "accepted": true,
+      "human_confirmation_required": true,
+      "quote": "measure cardiac size on radiographs",
+      "reasons": [],
+      "usage": {
+        "completion_tokens": 90,
+        "prompt_tokens": 503,
+        "total_tokens": 593
+      },
+      "verdict": "supported"
+    }
+  },
+  "signoff": {
+    "status": "pending"
+  },
+  "statements": {
+    "ST-1": {
+      "action": null,
+      "outcome": "supported_by_receipt"
+    },
+    "ST-2": {
+      "action": "run_tool_or_remove",
+      "outcome": "unsupported_claim"
+    },
+    "ST-3": {
+      "action": null,
+      "outcome": "limitation_disclosed"
+    },
+    "ST-4": {
+      "action": "qualify_or_remove",
+      "outcome": "unsupported_claim"
+    },
+    "ST-5": {
+      "action": "remove_until_valid_receipt",
+      "outcome": "unsupported_claim"
+    }
+  },
+  "study": {
+    "modality": "chest-xr",
+    "study_id": "SYN-STUDY-001"
+  },
+  "summary": {
+    "by_disposition": {
+      "supported_called": 3,
+      "supported_omitted": 1,
+      "uncertain": 1,
+      "unsupported": 1
+    },
+    "fully_supported": 1,
+    "obligations": 6,
+    "report_consistent": false
+  },
+  "synthetic": true
+}
