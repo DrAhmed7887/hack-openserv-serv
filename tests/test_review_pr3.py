@@ -95,7 +95,7 @@ def test_a_different_catalog_with_the_same_id_is_refused(catalog, case, clone, e
 
 def test_the_same_catalog_reloaded_still_attaches(catalog, case):
     reloaded = json.loads(CATALOG.read_text(encoding="utf-8"))
-    interp = {"fixture": True, "verdict": "supported", "quote": "measure cardiac size on radiographs", "reasons": []}
+    interp = {"fixture": True, "verdict": "unsupported", "quote": "measure cardiac size on radiographs", "reasons": []}
     out = attach_advisory(audit4(catalog, case), "OB-4", interp, copy.deepcopy(reloaded))
     assert out["serv_advisory"]["OB-4"]["accepted"] is True
 

@@ -277,10 +277,17 @@ def _own_source_text(audit, obligation_id, catalog):
         raise ValueError(f"no catalog source text for the tool of {obligation_id!r}") from None
 
 
-def _recheck(interpretation, source_text):
+def _names_modality(quote, modality):
+    """The modality as a whole word, case-insensitive: 'ct' does not match inside 'subject'."""
+    return re.search(rf"(?<![\w-]){re.escape(modality)}(?![\w-])", quote, re.IGNORECASE) is not None
+
+
+def _recheck(interpretation, source_text, modality):
     """Re-derive acceptance from verdict and quote against the obligation's own source.
 
-    A caller can only make acceptance stricter (its reasons are kept), never looser.
+    A caller can only make acceptance stricter (its reasons are kept), never looser. A 'supported' quote must
+    also name the study's modality: the general capability sentence is verbatim in a spec that never settles
+    the study type, so quoting it proves nothing (live batch v1, eval/SERV_BATCH.md).
     """
     try:
         verdict, quote, reasons = interpretation["verdict"], interpretation["quote"], interpretation["reasons"]
@@ -300,6 +307,8 @@ def _recheck(interpretation, source_text):
             own.append("quote_too_short")
         elif quote not in source_text:
             own.append("quote_not_in_source")
+        elif verdict == "supported" and not _names_modality(quote, modality):
+            own.append("quote_does_not_name_modality")
     return verdict, quote, list(dict.fromkeys([*reasons, *own]))
 
 
@@ -325,7 +334,10 @@ def attach_advisory(audit, obligation_id, interpretation, catalog):
                          "and a caller cannot attest live execution")
     if not live and fixture is not True:
         raise ValueError("interpretation is neither fixture nor executed; refusing to label it")
-    verdict, quote, reasons = _recheck(interpretation, source_text)
+    modality = (audit.get("study") or {}).get("modality")
+    if not isinstance(modality, str) or not modality:
+        raise ValueError("the audit has no study modality to check the quote against")
+    verdict, quote, reasons = _recheck(interpretation, source_text, modality)
     out = copy.deepcopy(audit)
     advisory = {
         "verdict": verdict, "quote": quote, "accepted": not reasons, "reasons": reasons,
