@@ -1,0 +1,6 @@
+# GREEN evidence: 19_serv_quote_relevance
+# command: python3 -m pytest tests/test_serv_quote_relevance.py -q
+# python: Python 3.9.6
+.......                                                                  [100%]
+7 passed in 0.17s
+# exit code: 0

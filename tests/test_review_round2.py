@@ -186,7 +186,9 @@ def advisory(catalog, case, interp):
 
 def test_a_correct_advisory_is_still_accepted(catalog, case):
     adv = advisory(catalog, case, fixture_interp(catalog))
-    assert adv["accepted"] is True and adv["reasons"] == [] and adv["human_confirmation_required"] is True
+    # the quote is verbatim but does not name chest-xr, so since the relevance rule it is not accepted as support
+    assert adv["accepted"] is False and adv["reasons"] == ["quote_does_not_name_modality"]
+    assert adv["human_confirmation_required"] is True
 
 
 def test_caller_set_acceptance_is_recomputed_not_trusted(catalog, case):
@@ -205,7 +207,7 @@ def test_quote_is_checked_against_the_obligations_own_source(catalog, case):
 
 def test_caller_reasons_can_only_make_acceptance_stricter(catalog, case):
     adv = advisory(catalog, case, dict(fixture_interp(catalog), reasons=["finish_reason_not_stop"], accepted=True))
-    assert adv["accepted"] is False and adv["reasons"] == ["finish_reason_not_stop"]
+    assert adv["accepted"] is False and adv["reasons"][0] == "finish_reason_not_stop"
 
 
 @pytest.mark.parametrize("verdict", ["CONFIRMED", "Supported", "", 1])

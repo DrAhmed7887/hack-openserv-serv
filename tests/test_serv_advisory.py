@@ -1,3 +1,4 @@
+import hashlib
 import json
 
 import pytest
@@ -90,9 +91,14 @@ def audit(catalog, case):
     return build_audit(catalog, case("c04_uncertain_source_insufficient"))
 
 
-def test_advisory_cannot_change_disposition_support_or_completeness(catalog, case):
-    before = audit(catalog, case)
-    after = attach_advisory(before, "OB-4", good(catalog, verdict="supported"), catalog)
+def test_advisory_cannot_change_disposition_support_or_completeness(catalog, case, clone):
+    # even an ACCEPTED 'supported' advisory (its quote names chest-xr) leaves the deterministic result alone
+    cat = clone(catalog)
+    src = cat["sources"]["SRC-SYN-D"]
+    src["text"] += " Intended study type: chest-xr."
+    src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+    before = audit(cat, case)
+    after = attach_advisory(before, "OB-4", good(cat, verdict="supported", quote="Intended study type: chest-xr."), cat)
     assert after["obligations"] == before["obligations"]
     assert after["completeness"] == before["completeness"] == "gaps_found"
     assert after["statements"] == before["statements"]

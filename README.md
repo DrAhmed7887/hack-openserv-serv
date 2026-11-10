@@ -37,7 +37,7 @@ Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2`
 
 ```bash
 python3 -m pip install -r requirements-dev.txt   # pytest only
-python3 -m pytest -q                              # 501 tests, offline (a few mock-routing tests need node and skip without it)
+python3 -m pytest -q                              # 508 tests, offline (a few mock-routing tests need node and skip without it)
 python3 scripts/make_g1_results.py                # re-runs everything, rewrites docs/G1_RESULTS.md
 python3 scripts/build_mock.py                     # re-embeds fixture output in mock/index.html
 ```
