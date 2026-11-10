@@ -1,6 +1,6 @@
 # Radiology tool-capability contract audit
 
-**A reporting agent's draft can read as finished and still be wrong.** On 120 seeded broken reports that each look complete, the audit flags all 120 for the right reason and passes none as complete; 30 of 30 clean reports pass ([eval/RESULTS.md](eval/RESULTS.md)). Where its strict rule can only say "uncertain", it asks **SERV Reasoning**, and SERV's answer stays advice: in a held-out live batch SERV over-reached on 8 of 16 specs, and the guard accepted none of those 8 ([eval/SERV_BATCH.md](eval/SERV_BATCH.md)).
+**A reporting agent's draft can read as finished and still be wrong.** On 120 seeded broken reports that each look complete, the audit flags all 120 for the right reason and passes none as complete; 30 of 30 clean reports pass (synthetic cases; the expected signal for each break was written before the run: [eval/RESULTS.md](eval/RESULTS.md)). Where its strict rule can only say "uncertain", it asks **SERV Reasoning**, and SERV's answer stays advice: in a held-out live batch SERV over-reached on 8 of 16 specs, and the guard accepted none of those 8 ([eval/SERV_BATCH.md](eval/SERV_BATCH.md)).
 
 ![How the audit decides: inputs, capability, calls, receipts, coverage, report, audit JSON; uncertain obligations go to SERV Reasoning as advice only](docs/workflow.svg)
 

@@ -9,6 +9,8 @@ SERV's answer is advice for a human: it never changes the disposition, `full_sup
 | c04_uncertain_source_insufficient | OB-4 | uncertain | supported | yes | "Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs." | 503 / 78 |
 | c07_combined | OB-4 | uncertain | supported | yes | "measure cardiac size on radiographs" | 503 / 90 |
 
+**Under the current rules (since 10 Nov, PR #4) neither answer is accepted:** a `supported` quote must name the study type, and neither quote names chest-xr. The `Accepted` column above is what the rules of the time said. The replay page shows the current verdict.
+
 Cost: read it from the SERV console usage page (prices per model are in the SERV models docs).
 ## What this run shows (read by the builder, 10 Nov 2026)
 

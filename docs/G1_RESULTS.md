@@ -99,7 +99,7 @@ tests/test_audit.py::test_summary_counts_the_four_dispositions PASSED    [  1%]
 tests/test_audit.py::test_full_support_never_reported_without_a_valid_receipt_for_every_obligation PASSED [  2%]
 tests/test_audit.py::test_study_with_no_obligations_is_never_full_support PASSED [  2%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[False] PASSED [  2%]
-tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[<object object at 0x10b169880>] PASSED [  2%]
+tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[<object object at 0x1066e9880>] PASSED [  2%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[None] PASSED [  2%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[0] PASSED [  3%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[1] PASSED [  3%]
@@ -109,7 +109,7 @@ tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_m
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[{}] PASSED [  4%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[[True]] PASSED [  4%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[False] PASSED [  4%]
-tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[<object object at 0x10b169880>] PASSED [  4%]
+tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[<object object at 0x1066e9880>] PASSED [  4%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[None] PASSED [  4%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[0] PASSED [  5%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[1] PASSED [  5%]
@@ -606,5 +606,5 @@ tests/test_workflow_diagram.py::test_every_step_names_a_module_that_exists PASSE
 tests/test_workflow_diagram.py::test_committed_svgs_match_the_generator_and_load_nothing_external[workflow.svg] PASSED [ 99%]
 tests/test_workflow_diagram.py::test_committed_svgs_match_the_generator_and_load_nothing_external[workflow_4x5.svg] PASSED [100%]
 
-============================= 519 passed in 6.63s ==============================
+============================= 519 passed in 6.41s ==============================
 ```
