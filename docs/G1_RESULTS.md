@@ -59,8 +59,8 @@ Each production behaviour had a failing run saved before it was implemented (`do
 | `13l_serv_labels` | 23 failed, 10 passed in 0.22s | E           Failed: DID NOT RAISE <class 'ValueError'> | 345 passed in 0.65s |
 | `13m_serv_quote` | 18 failed, 38 passed in 0.22s | E       assert (True is False) | 366 passed in 0.64s |
 | `13n_mock_routing` | 10 failed, 7 passed in 0.98s | E       AssertionError: assert ['', ''] == ['#coverage', '#repair'] | 378 passed in 1.34s |
-| `14_serv_live` | 1 error in 0.26s | E   ImportError: cannot import name 'LiveServClient' from 'contract_audit.serv' (<repo>/sr | 18 passed in 1.74s |
-| `14b_serv_review_fixes` | 5 failed, 18 passed in 4.02s | E       AssertionError: assert (501 == 302) | 23 passed in 3.80s |
+| `14_serv_live` | 1 error in 0.73s | E   ImportError: cannot import name 'LiveServClient' from 'contract_audit.serv' (<repo>/sr | 18 passed in 1.74s |
+| `14b_serv_review_fixes` | 5 failed, 18 passed in 4.83s | E       AssertionError: assert (501 == 302) | 23 passed in 4.09s |
 
 Cycle `12_review_findings` came from an independent read-only review by a separate reviewer agent: 8 findings (a weak catalog entry reaching full support, duplicate ids hiding an obligation or a statement, a null receipt id matching an uncited claim, non-object `args`, malformed nested input crashing, a mislabelled SERV status, a non-string quote). Each was reproduced by a failing test first (one case, `study is list`, already passed because an existing check covered it), then fixed. Its RED log was scrubbed of local temp paths in review round 2 (redaction only; the failures are unchanged).
 
@@ -93,7 +93,7 @@ tests/test_audit.py::test_summary_counts_the_four_dispositions PASSED    [  2%]
 tests/test_audit.py::test_full_support_never_reported_without_a_valid_receipt_for_every_obligation PASSED [  2%]
 tests/test_audit.py::test_study_with_no_obligations_is_never_full_support PASSED [  2%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[False] PASSED [  3%]
-tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[<object object at 0x10b0e7780>] PASSED [  3%]
+tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[<object object at 0x10a573780>] PASSED [  3%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[None] PASSED [  3%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[0] PASSED [  3%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[1] PASSED [  4%]
@@ -103,7 +103,7 @@ tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_m
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[{}] PASSED [  5%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_case_not_marked_synthetic_true[[True]] PASSED [  5%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[False] PASSED [  5%]
-tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[<object object at 0x10b0e7780>] PASSED [  5%]
+tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[<object object at 0x10a573780>] PASSED [  5%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[None] PASSED [  6%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[0] PASSED [  6%]
 tests/test_audit_synthetic_gate.py::test_direct_build_audit_refuses_a_catalog_not_marked_synthetic_true[1] PASSED [  6%]
@@ -350,7 +350,7 @@ tests/test_reconcile.py::test_disclosure_on_an_obligation_without_full_support_s
 tests/test_reconcile.py::test_disclosure_on_an_obligation_without_full_support_stays_accepted[c05_missing_receipt] PASSED [ 66%]
 tests/test_reconcile.py::test_disclosure_on_an_obligation_without_full_support_stays_accepted[c06_execution_failure] PASSED [ 66%]
 tests/test_reconcile.py::test_disclosure_beside_a_valid_cited_claim_still_flags_the_disclosure PASSED [ 67%]
-tests/test_repo_hygiene.py::test_no_local_paths_private_links_or_credentials_in_committed_text PASSED [ 67%]
+tests/test_repo_hygiene.py::test_no_local_paths_private_links_or_credentials_in_committed_text FAILED [ 67%]
 tests/test_repo_hygiene.py::test_scrub_replaces_repo_home_and_temp_paths PASSED [ 67%]
 tests/test_review_findings.py::test_empty_quote_and_terms_never_confirm PASSED [ 67%]
 tests/test_review_findings.py::test_finding_term_must_match_the_entrys_finding_class PASSED [ 68%]
@@ -477,100 +477,34 @@ tests/test_serv_live.py::test_urllib_post_returns_parsed_json PASSED     [ 98%]
 tests/test_serv_live.py::test_urllib_post_raises_with_status_on_http_error PASSED [ 98%]
 tests/test_serv_live.py::test_urllib_post_refuses_non_json PASSED        [ 98%]
 tests/test_serv_live.py::test_urllib_post_only_allows_https_or_loopback PASSED [ 98%]
-tests/test_serv_live.py::test_urllib_post_does_not_follow_redirects_or_forward_the_key FAILED [ 99%]
+tests/test_serv_live.py::test_urllib_post_does_not_follow_redirects_or_forward_the_key PASSED [ 99%]
 tests/test_serv_live.py::test_upstream_error_text_is_redacted_capped_and_stripped PASSED [ 99%]
 tests/test_serv_live.py::test_deeply_nested_json_is_a_call_failure_not_a_crash PASSED [ 99%]
 tests/test_serv_live.py::test_plain_http_localhost_name_is_refused PASSED [ 99%]
 tests/test_serv_live.py::test_cli_maps_catalog_lookup_errors_to_serv_failure PASSED [100%]
 
 =================================== FAILURES ===================================
-________ test_urllib_post_does_not_follow_redirects_or_forward_the_key _________
+______ test_no_local_paths_private_links_or_credentials_in_committed_text ______
 
-url = 'http://127.0.0.1:64570/v1/chat/completions'
-headers = {'Authorization': 'Bearer sk-test-not-a-real-key-0000000000', 'Content-Type': 'application/json'}
-body = {}, timeout = 5
+    def test_no_local_paths_private_links_or_credentials_in_committed_text():
+        hits = []
+        for path in scanned_files():
+            for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                hits += [f"{path.relative_to(ROOT)}:{number} ({label})"
+                         for label, pattern in FORBIDDEN if pattern.search(line)]
+>       assert hits == []
+E       AssertionError: assert ['docs/G1_RES...(credential)'] == []
+E         
+E         Left contains one more item: 'docs/G1_RESULTS.md:490 (credential)'
+E         
+E         Full diff:
+E         - []
+E         + [
+E         +     'docs/G1_RESULTS.md:490 (credential)',
+E         + ]
 
-    def urllib_post(url, headers, body, timeout):
-        """POST JSON with the standard library and return the parsed JSON object.
-    
-        https only (plain http is allowed for loopback, which the tests use). Errors carry the status and the
-        upstream error type, never the request headers.
-        """
-        if not _allowed_url(url):
-            raise ServCallFailed("refusing to send: SERV requests must use https")
-        req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), headers=headers, method="POST")
-        try:
->           with _OPENER.open(req, timeout=timeout) as resp:  # scheme checked above; redirects refused
-
-src/contract_audit/serv.py:143: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py:523: in open
-    response = meth(req, response)
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py:632: in http_response
-    response = self.parent.error(
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py:561: in error
-    return self._call_chain(*args)
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py:494: in _call_chain
-    result = func(*args)
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <urllib.request.HTTPDefaultErrorHandler object at 0x10b3ece20>
-req = <urllib.request.Request object at 0x1101c2340>
-fp = <http.client.HTTPResponse object at 0x10b3e37f0>, code = 302, msg = 'Found'
-hdrs = <http.client.HTTPMessage object at 0x1101caca0>
-
-    def http_error_default(self, req, fp, code, msg, hdrs):
->       raise HTTPError(req.full_url, code, msg, hdrs, fp)
-E       urllib.error.HTTPError: HTTP Error 302: Found
-
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py:641: HTTPError
-
-During handling of the above exception, another exception occurred:
-
-local_server = 'http://127.0.0.1:64569/v1/chat/completions'
-
-    def test_urllib_post_does_not_follow_redirects_or_forward_the_key(local_server):
-        _Handler.seen = {}
-        _Redirector.target = local_server
-        red = _serve(_Redirector)
-        try:
-            with pytest.raises(ServCallFailed) as exc:
->               urllib_post(f"http://127.0.0.1:{red.server_port}/v1/chat/completions",
-                            {"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}, {}, 5)
-
-tests/test_serv_live.py:254: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-src/contract_audit/serv.py:148: in urllib_post
-    err = json.loads(exc.read(10_000) or b"{}").get("error", {})
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/tempfile.py:474: in func_wrapper
-    return func(*args, **kwargs)
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py:459: in read
-    n = self.readinto(b)
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py:503: in readinto
-    n = self.fp.readinto(b)
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <socket.SocketIO object at 0x10b57e6d0>, b = <memory at 0x10b543700>
-
-    def readinto(self, b):
-        """Read up to len(b) bytes into the writable buffer *b* and return
-        the number of bytes read.  If the socket is non-blocking and no bytes
-        are available, None is returned.
-    
-        If *b* is non-empty, a 0 return value indicates that the connection
-        was shutdown at the other end.
-        """
-        self._checkClosed()
-        self._checkReadable()
-        if self._timeout_occurred:
-            raise OSError("cannot read from timed out object")
-        while True:
-            try:
->               return self._sock.recv_into(b)
-E               ConnectionResetError: [Errno 54] Connection reset by peer
-
-/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py:704: ConnectionResetError
+tests/test_repo_hygiene.py:38: AssertionError
 =========================== short test summary info ============================
-FAILED tests/test_serv_live.py::test_urllib_post_does_not_follow_redirects_or_forward_the_key
-======================== 1 failed, 401 passed in 5.51s =========================
+FAILED tests/test_repo_hygiene.py::test_no_local_paths_private_links_or_credentials_in_committed_text
+======================== 1 failed, 401 passed in 6.89s =========================
 ```

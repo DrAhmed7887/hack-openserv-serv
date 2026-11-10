@@ -12,4 +12,4 @@ E   ImportError: cannot import name 'LiveServClient' from 'contract_audit.serv' 
 =========================== short test summary info ============================
 ERROR tests/test_serv_live.py
 !!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
-1 error in 0.26s
+1 error in 0.73s

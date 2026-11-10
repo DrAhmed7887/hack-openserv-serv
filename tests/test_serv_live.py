@@ -14,7 +14,7 @@ from contract_audit.audit import build_audit
 from contract_audit.serv import (ENDPOINT, LiveServClient, NotConfigured, ServCallFailed, attach_advisory,
                                  load_config, urllib_post)
 
-KEY = "sk-test-not-a-real-key-0000000000"
+KEY = "TESTKEY"  # 7 chars: below the repo hygiene credential pattern
 MODEL = "gpt-6-luna"
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "data" / "catalog.json"
