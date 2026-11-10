@@ -1,0 +1,214 @@
+# RED evidence: 16_negation
+# command: python3 -m pytest tests/test_negation.py -q
+# python: Python 3.9.6
+FFFFFFFFF...F                                                            [100%]
+=================================== FAILURES ===================================
+_ test_negation_just_before_the_quote_is_not_confirmed[Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+text = 'Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.'
+
+    @pytest.mark.parametrize("text", [
+        "Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.",
+        "Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.",
+        "This tool cannot flag nodule-like findings on chest-xr studies.",
+        "It will never flag nodule-like findings on chest-xr studies.",
+        "SYN-NODULE-1 doesn’t flag nodule-like findings on chest-xr studies.",  # curly apostrophe
+        "Not in scope: flag nodule-like findings on chest-xr studies.",
+    ])
+    def test_negation_just_before_the_quote_is_not_confirmed(catalog, clone, text):
+        cat, tool = with_source(catalog, clone, text)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:38: AssertionError
+_ test_negation_just_before_the_quote_is_not_confirmed[Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+text = 'Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.'
+
+    @pytest.mark.parametrize("text", [
+        "Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.",
+        "Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.",
+        "This tool cannot flag nodule-like findings on chest-xr studies.",
+        "It will never flag nodule-like findings on chest-xr studies.",
+        "SYN-NODULE-1 doesn’t flag nodule-like findings on chest-xr studies.",  # curly apostrophe
+        "Not in scope: flag nodule-like findings on chest-xr studies.",
+    ])
+    def test_negation_just_before_the_quote_is_not_confirmed(catalog, clone, text):
+        cat, tool = with_source(catalog, clone, text)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:38: AssertionError
+_ test_negation_just_before_the_quote_is_not_confirmed[This tool cannot flag nodule-like findings on chest-xr studies.] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+text = 'This tool cannot flag nodule-like findings on chest-xr studies.'
+
+    @pytest.mark.parametrize("text", [
+        "Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.",
+        "Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.",
+        "This tool cannot flag nodule-like findings on chest-xr studies.",
+        "It will never flag nodule-like findings on chest-xr studies.",
+        "SYN-NODULE-1 doesn’t flag nodule-like findings on chest-xr studies.",  # curly apostrophe
+        "Not in scope: flag nodule-like findings on chest-xr studies.",
+    ])
+    def test_negation_just_before_the_quote_is_not_confirmed(catalog, clone, text):
+        cat, tool = with_source(catalog, clone, text)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:38: AssertionError
+_ test_negation_just_before_the_quote_is_not_confirmed[It will never flag nodule-like findings on chest-xr studies.] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+text = 'It will never flag nodule-like findings on chest-xr studies.'
+
+    @pytest.mark.parametrize("text", [
+        "Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.",
+        "Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.",
+        "This tool cannot flag nodule-like findings on chest-xr studies.",
+        "It will never flag nodule-like findings on chest-xr studies.",
+        "SYN-NODULE-1 doesn’t flag nodule-like findings on chest-xr studies.",  # curly apostrophe
+        "Not in scope: flag nodule-like findings on chest-xr studies.",
+    ])
+    def test_negation_just_before_the_quote_is_not_confirmed(catalog, clone, text):
+        cat, tool = with_source(catalog, clone, text)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:38: AssertionError
+_ test_negation_just_before_the_quote_is_not_confirmed[SYN-NODULE-1 doesn\u2019t flag nodule-like findings on chest-xr studies.] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+text = 'SYN-NODULE-1 doesn’t flag nodule-like findings on chest-xr studies.'
+
+    @pytest.mark.parametrize("text", [
+        "Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.",
+        "Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.",
+        "This tool cannot flag nodule-like findings on chest-xr studies.",
+        "It will never flag nodule-like findings on chest-xr studies.",
+        "SYN-NODULE-1 doesn’t flag nodule-like findings on chest-xr studies.",  # curly apostrophe
+        "Not in scope: flag nodule-like findings on chest-xr studies.",
+    ])
+    def test_negation_just_before_the_quote_is_not_confirmed(catalog, clone, text):
+        cat, tool = with_source(catalog, clone, text)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:38: AssertionError
+_ test_negation_just_before_the_quote_is_not_confirmed[Not in scope: flag nodule-like findings on chest-xr studies.] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+text = 'Not in scope: flag nodule-like findings on chest-xr studies.'
+
+    @pytest.mark.parametrize("text", [
+        "Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.",
+        "Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.",
+        "This tool cannot flag nodule-like findings on chest-xr studies.",
+        "It will never flag nodule-like findings on chest-xr studies.",
+        "SYN-NODULE-1 doesn’t flag nodule-like findings on chest-xr studies.",  # curly apostrophe
+        "Not in scope: flag nodule-like findings on chest-xr studies.",
+    ])
+    def test_negation_just_before_the_quote_is_not_confirmed(catalog, clone, text):
+        cat, tool = with_source(catalog, clone, text)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:38: AssertionError
+_ test_negation_inside_the_quote_is_not_confirmed[does not flag nodule-like findings on chest-xr studies] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+quote = 'does not flag nodule-like findings on chest-xr studies'
+
+    @pytest.mark.parametrize("quote", [
+        "does not flag nodule-like findings on chest-xr studies",
+        "flag nodule-like findings on chest-xr studies except portable films",
+        "never flag nodule-like findings on chest-xr studies",
+    ])
+    def test_negation_inside_the_quote_is_not_confirmed(catalog, clone, quote):
+        cat, tool = with_source(catalog, clone, f"Tool SYN-NODULE-1: it will {quote}.", quote=quote)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:49: AssertionError
+_ test_negation_inside_the_quote_is_not_confirmed[flag nodule-like findings on chest-xr studies except portable films] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+quote = 'flag nodule-like findings on chest-xr studies except portable films'
+
+    @pytest.mark.parametrize("quote", [
+        "does not flag nodule-like findings on chest-xr studies",
+        "flag nodule-like findings on chest-xr studies except portable films",
+        "never flag nodule-like findings on chest-xr studies",
+    ])
+    def test_negation_inside_the_quote_is_not_confirmed(catalog, clone, quote):
+        cat, tool = with_source(catalog, clone, f"Tool SYN-NODULE-1: it will {quote}.", quote=quote)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:49: AssertionError
+_ test_negation_inside_the_quote_is_not_confirmed[never flag nodule-like findings on chest-xr studies] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1073bc310>
+quote = 'never flag nodule-like findings on chest-xr studies'
+
+    @pytest.mark.parametrize("quote", [
+        "does not flag nodule-like findings on chest-xr studies",
+        "flag nodule-like findings on chest-xr studies except portable films",
+        "never flag nodule-like findings on chest-xr studies",
+    ])
+    def test_negation_inside_the_quote_is_not_confirmed(catalog, clone, quote):
+        cat, tool = with_source(catalog, clone, f"Tool SYN-NODULE-1: it will {quote}.", quote=quote)
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_negation.py:49: AssertionError
+_____________ test_a_negated_capability_never_reaches_full_support _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x108274af0>
+clone = <function deepcopy at 0x1073bc310>
+
+    def test_a_negated_capability_never_reaches_full_support(catalog, case, clone):
+        cat, _ = with_source(catalog, clone, "Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.")
+        a = build_audit(cat, case("c01_supported_called"))
+>       assert a["obligations"]["OB-1"]["disposition"] == "uncertain"
+E       AssertionError: assert 'supported_called' == 'uncertain'
+E         
+E         - uncertain
+E         + supported_called
+
+tests/test_negation.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_negation.py::test_negation_just_before_the_quote_is_not_confirmed[Tool SYN-NODULE-1 does not flag nodule-like findings on chest-xr studies.]
+FAILED tests/test_negation.py::test_negation_just_before_the_quote_is_not_confirmed[Tool SYN-NODULE-1 is not validated to flag nodule-like findings on chest-xr studies.]
+FAILED tests/test_negation.py::test_negation_just_before_the_quote_is_not_confirmed[This tool cannot flag nodule-like findings on chest-xr studies.]
+FAILED tests/test_negation.py::test_negation_just_before_the_quote_is_not_confirmed[It will never flag nodule-like findings on chest-xr studies.]
+FAILED tests/test_negation.py::test_negation_just_before_the_quote_is_not_confirmed[SYN-NODULE-1 doesn\u2019t flag nodule-like findings on chest-xr studies.]
+FAILED tests/test_negation.py::test_negation_just_before_the_quote_is_not_confirmed[Not in scope: flag nodule-like findings on chest-xr studies.]
+FAILED tests/test_negation.py::test_negation_inside_the_quote_is_not_confirmed[does not flag nodule-like findings on chest-xr studies]
+FAILED tests/test_negation.py::test_negation_inside_the_quote_is_not_confirmed[flag nodule-like findings on chest-xr studies except portable films]
+FAILED tests/test_negation.py::test_negation_inside_the_quote_is_not_confirmed[never flag nodule-like findings on chest-xr studies]
+FAILED tests/test_negation.py::test_a_negated_capability_never_reaches_full_support
+10 failed, 3 passed in 0.17s
+# exit code: 1

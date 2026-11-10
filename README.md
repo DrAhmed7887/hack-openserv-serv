@@ -11,7 +11,7 @@ An engineer wires specialist tools into a reporting agent and gets a report that
 | `unsupported` | No catalog entry covers this modality and finding class (never substituted) |
 | `uncertain` | An entry exists but its source link does not confirm the mapping |
 
-It then validates the proposed calls, checks each execution receipt, and reconciles the draft report against those receipts. **Full support requires a confirmed mapping, a valid call and a valid receipt.** Nothing else can set it.
+It then validates the proposed calls, checks each execution receipt, and reconciles the draft report against those receipts. **Full support requires a confirmed mapping, a valid call and a valid receipt.** Nothing else can set it. The report must address every obligation: one it never mentions is a gap, even when the tool evidence is complete.
 
 Why this shape: the motivating arXiv paper ([2611.09836](https://arxiv.org/abs/2611.09836v1), submitted 6 Nov 2026) separates tools that do not exist from tools that existed and were not called. The paper does not validate this repo's catalog, and no figure from it is used here. See `docs/EVIDENCE_SUMMARY.md`.
 
@@ -31,13 +31,13 @@ PYTHONPATH=src python3 -m contract_audit audit \
   --catalog data/catalog.json --case data/cases/c01_supported_called.json --fail-on-gaps
 ```
 
-Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2` bad or non-synthetic input, malformed catalog or file (invalid UTF-8, too deeply nested, missing `required_args` or `args_schema`) or an unwritable `--out` path (no traceback; never confused with `1`), `3` `--serv` without credentials, `4` `--serv` with credentials but no `--serv-model`, `5` the SERV request failed (audit still printed). Inputs not marked `"synthetic": true` are refused.
+Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2` bad or non-synthetic input, malformed catalog or file (invalid UTF-8, too deeply nested, missing `required_args` or `args_schema`) or an unwritable `--out` path (no traceback; never confused with `1`), `3` `--serv` without credentials, `4` `--serv` with credentials but no `--serv-model`, `5` the SERV request failed (audit still printed), `6` internal error: a bug in this tool, never a finding (traceback on stderr, no audit). Integer literals over 64 digits and lone-surrogate escapes such as `\ud800` are bad input (`2`). Inputs not marked `"synthetic": true` are refused.
 
 ## Test it
 
 ```bash
 python3 -m pip install -r requirements-dev.txt   # pytest only
-python3 -m pytest -q                              # 402 tests, offline (a few mock-routing tests need node and skip without it)
+python3 -m pytest -q                              # 463 tests, offline (a few mock-routing tests need node and skip without it)
 python3 scripts/make_g1_results.py                # re-runs everything, rewrites docs/G1_RESULTS.md
 python3 scripts/build_mock.py                     # re-embeds fixture output in mock/index.html
 ```

@@ -1,16 +1,19 @@
 # Known limitations and evidence caveats
 
-Status: synthetic G1/G2 precursor. Live SERV transport built, tested offline and run once on 10 Nov 2026 (`docs/SERV_RUN.md`: SERV answered `supported` where the source is insufficient; the deterministic `uncertain` stood).
+Status: synthetic G1/G2 precursor. Review round 2 findings B1–B5 fixed, plus B6 (empty report) and B7 (negation): `tests/test_review_round2.py`, `tests/test_negation.py`. Live SERV transport built, tested offline and run once on 10 Nov 2026 (`docs/SERV_RUN.md`: SERV answered `supported` where the source is insufficient; the deterministic `uncertain` stood).
 
 ## What the validator does not do
 
 - **Fixtures are not evidence about real tools.** The catalog is fictional, its sources are invented, and nothing was checked against a public source. Physician/operator sign-off is **pending**.
 - **Argument bounds are engineering limits, not clinical ones.** `args_schema` bounds (`min`, `max`, `max_total`, ...) are values a catalog author picks for a synthetic mock tool. Passing them says the call is well-formed, not that the value is right for any patient or device. The shipped catalog models only `study_id`; numeric and list arguments are exercised by test-only tools.
 - **Receipts detect edits, not forgery.** The digest is not a signature. Receipt output content is not interpreted, and a receipt whose `call_id` matches no valid call is ignored (not reported).
-- **Capability matching is a strict string rule** and report text is not inspected.
+- **Capability matching is a strict string rule** and report text is not inspected. A statement's `kind` (`claims_assessed` or `discloses_not_assessed`) is trusted as labelled: a statement labelled as a disclosure whose text claims an assessment is not caught.
+- **The negation guard is a word list.** A quote that contains, or follows within six words in the same sentence, one of `not`, `no`, `never`, `cannot`, `doesn't`, `without`, `except` and a few others is not confirmed (`negation_near_quote`). It is English-only and can over-flag (safe direction). It misses phrasings with no listed word, such as "fails to" or "is out of scope for".
+- **Catalog quotes have no length floor.** A catalog quote must contain both the modality and the finding term, so it is at least two words, but the 3-word SERV quote floor is not applied to it.
+- **Duplicate call ids** are both marked invalid (`duplicate_call_id`); the audit's `calls` map is keyed by `call_id`, so it shows one entry for them, while each obligation's lists keep both.
 - **Conflicting outputs are detected only by digest.** Two valid receipts from the same tool for one obligation with different digests block full support (`conflicting_outputs`); receipts from different tools are not compared.
 - **The SERV quote floor is a minimum, not a semantic check.** A 3-word, 12-character verbatim stretch of the source is accepted as a quote; a human still confirms every advisory. The live transport applies the same floor.
-- **Exit codes.** `2` covers unreadable or malformed input files, a malformed catalog, and an unwritable `--out`. An unexpected internal error is still an uncaught Python exception (exit 1 with a traceback). That is not expected from any input tested here, but it is not guarded by a catch-all, on purpose: a catch-all would hide bugs.
+- **Exit codes.** `2` covers unreadable or malformed input files, a malformed catalog, and an unwritable `--out`. An unexpected internal error exits `6` and prints its full traceback on stderr, with no audit. It can never read as exit `1` ("gaps found"), and nothing is hidden: the traceback is still there. No input tested here reaches it.
 
 ## Evidence caveats for review round 2 (cycles `13a` to `13n`, `docs/red/`)
 

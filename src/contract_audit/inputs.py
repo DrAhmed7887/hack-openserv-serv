@@ -12,6 +12,23 @@ class InputError(ValueError):
 _CATALOG_KEYS = ("catalog_id", "sources", "tools")
 _CASE_KEYS = ("case_id", "study", "proposed_calls", "receipts", "draft_report")
 
+# No field in this format needs a long integer. A bound well below CPython's own 4300-digit conversion limit
+# makes every Python version refuse the same files, as an input error instead of a ValueError traceback.
+MAX_INT_DIGITS = 64
+
+
+def _bounded_int(literal):
+    digits = len(literal) - literal.startswith("-")
+    if digits > MAX_INT_DIGITS:
+        raise InputError(f"integer literal with {digits} digits exceeds the {MAX_INT_DIGITS}-digit limit")
+    return int(literal)
+
+
+def _printable(value, limit=160):
+    """ASCII-only, capped: safe to print whatever the input contained."""
+    text = str(value).encode("ascii", "backslashreplace").decode("ascii")
+    return text if len(text) <= limit else text[:limit] + "..."
+
 
 def _read(path):
     try:
@@ -21,11 +38,15 @@ def _read(path):
     except UnicodeDecodeError as exc:
         raise InputError(f"{path} is not valid UTF-8: {exc.reason} at byte {exc.start}") from exc
     try:
-        data = json.loads(text)
+        data = json.loads(text, parse_int=_bounded_int)
+    except InputError as exc:
+        raise InputError(f"{path}: {exc}") from None
     except json.JSONDecodeError as exc:
         raise InputError(f"{path} is not valid JSON: {exc}") from exc
     except RecursionError as exc:
         raise InputError(f"{path} is nested too deeply to read") from exc
+    except ValueError as exc:  # any other parser refusal, such as CPython's own integer-digit limit
+        raise InputError(f"{path} could not be read as JSON: {_printable(exc)}") from None
     if not isinstance(data, dict):
         raise InputError(f"{path}: top level must be a JSON object")
     return data
@@ -66,8 +87,41 @@ def _strings(obj, keys, where, allow_none=()):
 
 
 def is_finite_number(value):
-    """A finite int or float. bool is excluded on purpose: True is an int in Python."""
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    """A finite int or float. bool is excluded on purpose: True is an int in Python.
+
+    An int too large for a float is refused too (fail closed): no bound in this format needs one, and
+    math.isfinite would raise OverflowError on it.
+    """
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return False
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        return False
+
+
+def _strings_in(data):
+    """Every string in a parsed JSON value, dict keys included. Iterative, so nesting depth cannot recurse."""
+    stack = [data]
+    while stack:
+        item = stack.pop()
+        if isinstance(item, str):
+            yield item
+        elif isinstance(item, dict):
+            stack.extend(item.keys())
+            stack.extend(item.values())
+        elif isinstance(item, list):
+            stack.extend(item)
+
+
+def _require_text(data, where):
+    """A JSON escape such as \\ud800 is valid JSON but not text: refuse it before anything hashes or prints it."""
+    for value in _strings_in(data):
+        try:
+            value.encode("utf-8")
+        except UnicodeEncodeError:
+            raise InputError(f"{where}: contains a lone surrogate escape (such as \\ud800), which is not "
+                             "valid UTF-8 text") from None
 
 
 # Argument spec types and the numeric keys each one requires. Bounds are engineering limits of a
@@ -114,6 +168,7 @@ def _unique(rows, key, where):
 def validate_catalog(data):
     """Synthetic flag, then structural checks (types, required keys, unique ids). Raises InputError."""
     _require_synthetic(data, "catalog")
+    _require_text(data, "catalog")
     _require(data, _CATALOG_KEYS, "catalog")
     sources = _object(data["sources"], "catalog sources")
     for sid, src in sources.items():
@@ -138,6 +193,7 @@ def validate_catalog(data):
 def validate_case(data):
     """Synthetic flag, then structural checks (types, required keys, unique ids). Raises InputError."""
     _require_synthetic(data, "case")
+    _require_text(data, "case")
     _require(data, _CASE_KEYS, "case")
     study = _object(data["study"], "case study")
     _strings(study, ("study_id", "modality"), "case study")

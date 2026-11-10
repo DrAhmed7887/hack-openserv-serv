@@ -147,7 +147,7 @@ def test_malformed_catalog_is_an_input_error(catalog, clone, tmp_path):
 def test_attach_advisory_refuses_a_result_that_is_neither_fixture_nor_executed(catalog, case):
     a = build_audit(catalog, case("c04_uncertain_source_insufficient"))
     with pytest.raises(ValueError, match="neither fixture nor executed"):
-        attach_advisory(a, "OB-4", parse_interpretation({}, "s"))
+        attach_advisory(a, "OB-4", parse_interpretation({}, "s"), catalog)
 
 
 def test_client_requires_real_credentials_even_for_a_transport(catalog):

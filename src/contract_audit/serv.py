@@ -147,8 +147,8 @@ def urllib_post(url, headers, body, timeout):
         try:
             err = json.loads(exc.read(10_000) or b"{}").get("error", {})
             detail = ": " + _clean(f"{err.get('type', '')} {err.get('message', '')}".strip(), headers)
-        except (ValueError, AttributeError, RecursionError):
-            pass
+        except (ValueError, AttributeError, RecursionError, OSError, http.client.HTTPException):
+            pass  # the status alone is reported when the error body is unreadable (e.g. connection reset)
         raise ServCallFailed(f"HTTP {exc.code} from SERV{detail}", status=exc.code) from None
     except (urllib.error.URLError, http.client.HTTPException, TimeoutError, OSError) as exc:
         raise ServCallFailed("SERV request did not complete: "
@@ -254,15 +254,58 @@ class LiveServClient:
         return result
 
 
-def attach_advisory(audit, obligation_id, interpretation):
+def _own_source_text(audit, obligation_id, catalog):
+    """The obligation and the catalog source text of its own tool. Raises ValueError, never KeyError."""
+    obligations = audit.get("obligations") if isinstance(audit, dict) else None
+    if not isinstance(obligations, dict) or obligation_id not in obligations:
+        raise ValueError(f"unknown obligation {obligation_id!r} in this audit")
+    if not isinstance(catalog, dict) or catalog.get("catalog_id") != audit.get("catalog_id"):
+        raise ValueError("the catalog must be the one this audit was built from (catalog_id differs)")
+    ob = obligations[obligation_id]
+    try:
+        tool = next(t for t in catalog["tools"] if t["tool_id"] == ob["tool_id"])
+        return ob, catalog["sources"][tool["source_id"]]["text"]
+    except (KeyError, TypeError, StopIteration):
+        raise ValueError(f"no catalog source text for the tool of {obligation_id!r}") from None
+
+
+def _recheck(interpretation, source_text):
+    """Re-derive acceptance from verdict and quote against the obligation's own source.
+
+    A caller can only make acceptance stricter (its reasons are kept), never looser.
+    """
+    try:
+        verdict, quote, reasons = interpretation["verdict"], interpretation["quote"], interpretation["reasons"]
+    except (KeyError, TypeError):
+        raise ValueError("an interpretation must carry verdict, quote and reasons") from None
+    if verdict is not None and verdict not in VERDICTS:
+        raise ValueError(f"verdict not allowed: expected one of {VERDICTS} or none")
+    if not isinstance(reasons, list) or not all(isinstance(r, str) for r in reasons):
+        raise ValueError("reasons must be a list of strings")
+    own = []
+    if verdict is None:
+        own.append("no_verdict")
+    elif verdict in ("supported", "unsupported"):
+        if not isinstance(quote, str) or not _meaningful_quote(quote):
+            own.append("quote_too_short")
+        elif quote not in source_text:
+            own.append("quote_not_in_source")
+    return verdict, quote, list(dict.fromkeys([*reasons, *own]))
+
+
+def attach_advisory(audit, obligation_id, interpretation, catalog):
     """Return a copy of the audit with SERV's interpretation attached as advice only.
 
     Disposition, full_support, statements and completeness are copied unchanged: SERV cannot
     override a deterministic result, and a confirmed capability still needs a human edit to the catalog.
     Executed results are accepted only straight from LiveServClient (module-private provenance marker).
+    Acceptance is recomputed here against the obligation's own catalog source, never taken from the caller.
     """
-    if audit["obligations"][obligation_id]["disposition"] != "uncertain":
+    ob, source_text = _own_source_text(audit, obligation_id, catalog)
+    if ob["disposition"] != "uncertain":
         raise ValueError("SERV advisory is only attached to uncertain obligations")
+    if not isinstance(interpretation, dict):
+        raise ValueError("interpretation must be a dict from parse_interpretation or LiveServClient")
     fixture, executed = interpretation.get("fixture"), interpretation.get("executed", False)
     if fixture is True and executed is True:
         raise ValueError("fixture and executed are mutually exclusive; refusing to label it")
@@ -272,10 +315,10 @@ def attach_advisory(audit, obligation_id, interpretation):
                          "and a caller cannot attest live execution")
     if not live and fixture is not True:
         raise ValueError("interpretation is neither fixture nor executed; refusing to label it")
+    verdict, quote, reasons = _recheck(interpretation, source_text)
     out = copy.deepcopy(audit)
     advisory = {
-        "verdict": interpretation["verdict"], "quote": interpretation["quote"],
-        "accepted": interpretation["accepted"], "reasons": list(interpretation["reasons"]),
+        "verdict": verdict, "quote": quote, "accepted": not reasons, "reasons": reasons,
         "human_confirmation_required": True,
     }
     if live:

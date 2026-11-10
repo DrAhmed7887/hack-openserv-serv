@@ -1,5 +1,7 @@
 # Current OpenServ blockers — 2026-11-10
 
+> **Status (10 Nov 2026, later): B1–B5 are fixed** on branch `fix/review-b1-b6`, test-first: `tests/test_review_round2.py` (46 tests), RED and GREEN logs in `docs/red/15_review_round2.*`. Each was first reproduced on `main` at `b2de604`. Two optional findings are fixed too: the "report that says nothing" (B6: an obligation the report never mentions is now a gap) and the negation part of the catalog-quote finding (B7: `tests/test_negation.py`, logs `docs/red/16_negation.*`). The other optional items are recorded in `docs/KNOWN_LIMITATIONS.md`.
+
 Exact reviewed implementation commit: `dc11c60a6472a95da0275a438652229956b4890a`.
 
 Conductor execution at this head: **378 passing tests**, with the missing-credential SERV path exiting 3 and making no request. Those green tests do not cover every newly identified boundary. A separate bounded independent source review returned **REQUEST_CHANGES** and reproduced the defects below from current code. Publication and submission remain blocked; no real SERV call occurred.

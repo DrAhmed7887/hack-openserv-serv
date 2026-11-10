@@ -2,6 +2,31 @@
 from __future__ import annotations
 
 import hashlib
+import re
+
+# Words that turn a capability statement into its opposite. One inside the quote, or among the few words just
+# before it in the same sentence of the source, means the mapping is not confirmed: the safe answer is
+# "uncertain". An engineering rule of this validator, not a clinical one.
+NEGATIONS = frozenset({"not", "no", "never", "cannot", "can't", "doesn't", "don't", "isn't", "aren't", "won't",
+                       "without", "except", "excluding", "nor", "neither"})
+NEGATION_WINDOW = 6  # words before the quote, within its sentence
+
+
+def _tokens(text):
+    return re.findall(r"[a-z]+(?:'[a-z]+)?", text.lower().replace("\u2019", "'"))
+
+
+def _negated(quote, text):
+    """True if the quote, or the words just before any occurrence of it in its sentence, negate it."""
+    if NEGATIONS.intersection(_tokens(quote)):
+        return True
+    start = text.find(quote) if quote else -1
+    while start != -1:
+        sentence = re.split(r"[.;!?](?:\s|$)", text[:start])[-1]
+        if NEGATIONS.intersection(_tokens(sentence)[-NEGATION_WINDOW:]):
+            return True
+        start = text.find(quote, start + 1)
+    return False
 
 
 def _words(label):
@@ -20,6 +45,8 @@ def entry_reasons(catalog, entry):
             reasons.append("source_hash_mismatch")
         if entry["quote"] not in source["text"]:
             reasons.append("quote_not_in_source")
+        elif _negated(entry["quote"], source["text"]):
+            reasons.append("negation_near_quote")
     if not entry["quote"] or not entry["modality_term"] or not entry["finding_term"]:
         reasons.append("empty_quote_or_term")
     if entry["modality_term"] != entry["modality"]:

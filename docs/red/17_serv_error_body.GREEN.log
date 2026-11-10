@@ -1,0 +1,6 @@
+# GREEN evidence: 17_serv_error_body
+# command: python3 -m pytest tests/test_serv_error_body.py -q
+# python: Python 3.9.6
+..                                                                       [100%]
+2 passed in 0.11s
+# exit code: 0

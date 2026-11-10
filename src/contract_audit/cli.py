@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import sys
+import traceback
 from pathlib import Path
 
 from .audit import build_audit
@@ -12,8 +13,10 @@ from .inputs import InputError, load_case, load_catalog
 from .serv import LiveServClient, NotConfigured, ServCallFailed, attach_advisory, load_config, urllib_post
 
 # EXIT_BAD_INPUT covers unreadable or malformed input files and an unwritable --out path: never a crash.
+# EXIT_INTERNAL_ERROR is a bug in this tool, never a finding: it exists so a crash can never look like 1.
 EXIT_OK, EXIT_GAPS, EXIT_BAD_INPUT, EXIT_SERV_NOT_CONFIGURED, EXIT_SERV_NO_MODEL, EXIT_SERV_CALL_FAILED = \
     0, 1, 2, 3, 4, 5
+EXIT_INTERNAL_ERROR = 6
 
 
 def _parser():
@@ -64,7 +67,7 @@ def _with_live_advice(audit, catalog, case, config, model, http):
                                  "missing; no request was sent for it") from None
         result = client.interpret(model, finding, case["study"]["modality"], source_id, text)
         try:
-            audit = attach_advisory(audit, oid, result)
+            audit = attach_advisory(audit, oid, result, catalog)
         except ValueError as exc:
             raise ServCallFailed(f"SERV advisory refused for {oid}: {exc}") from None
     return audit
@@ -81,14 +84,20 @@ def main(argv=None, environ=None, http=urllib_post):
     serv, code, message, config = None, EXIT_OK, "", None
     if args.serv:
         config, serv, code, message = _serv_gate(environ, args.serv_model)
-    audit = build_audit(catalog, case, serv=serv)
-    if config is not None:
-        try:
-            audit = _with_live_advice(audit, catalog, case, config, args.serv_model.strip(), http)
-        except ServCallFailed as exc:
-            audit = build_audit(catalog, case, serv=_serv_block("call_failed"))
-            code, message = EXIT_SERV_CALL_FAILED, str(exc)
-    text = json.dumps(audit, indent=2, sort_keys=True) + "\n"
+    try:
+        audit = build_audit(catalog, case, serv=serv)
+        if config is not None:
+            try:
+                audit = _with_live_advice(audit, catalog, case, config, args.serv_model.strip(), http)
+            except ServCallFailed as exc:
+                audit = build_audit(catalog, case, serv=_serv_block("call_failed"))
+                code, message = EXIT_SERV_CALL_FAILED, str(exc)
+        text = json.dumps(audit, indent=2, sort_keys=True) + "\n"
+    except Exception as exc:  # noqa: BLE001 - a bug: exit 6 with its traceback, so it never reads as 1 'gaps found'
+        print(f"error: internal error, no audit produced ({type(exc).__name__}). This is a bug in "
+              "contract_audit, not a finding about the case. Traceback follows.", file=sys.stderr)
+        print(traceback.format_exc().encode("ascii", "backslashreplace").decode("ascii"), file=sys.stderr, end="")
+        return EXIT_INTERNAL_ERROR
     if args.out:
         try:
             args.out.write_text(text, encoding="utf-8")

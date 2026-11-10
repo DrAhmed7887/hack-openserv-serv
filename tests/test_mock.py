@@ -128,4 +128,5 @@ def test_the_declared_outcome_and_action_sets_are_exactly_what_the_reconciler_em
     seen.append(reconcile_report(obligations, {"statements": [
         {"statement_id": "S", "obligation_id": "ZZ", "kind": "claims_assessed", "cites_receipt": None}]})["statements"]["S"])
     assert {v["outcome"] for v in seen} == set(OUTCOMES)
-    assert {v["action"] for v in seen if v["action"]} | {"add_limitation_statement"} == set(ACTIONS)
+    gap_actions = {"add_limitation_statement", "add_cited_claim"}  # report_gaps actions, not statement actions
+    assert {v["action"] for v in seen if v["action"]} | gap_actions == set(ACTIONS)
