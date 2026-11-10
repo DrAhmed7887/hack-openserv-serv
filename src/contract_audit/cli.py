@@ -55,10 +55,18 @@ def _with_live_advice(audit, catalog, case, config, model, http):
     for oid, ob in sorted(audit["obligations"].items()):
         if ob["disposition"] != "uncertain" or ob["tool_id"] not in tools:
             continue
-        source_id = tools[ob["tool_id"]]["source_id"]
-        result = client.interpret(model, classes[oid], case["study"]["modality"], source_id,
-                                  catalog["sources"][source_id]["text"])
-        audit = attach_advisory(audit, oid, result)
+        try:
+            source_id = tools[ob["tool_id"]]["source_id"]
+            text = catalog["sources"][source_id]["text"]
+            finding = classes[oid]
+        except (KeyError, TypeError):
+            raise ServCallFailed(f"cannot build the SERV request for {oid}: catalog source or obligation "
+                                 "missing; no request was sent for it") from None
+        result = client.interpret(model, finding, case["study"]["modality"], source_id, text)
+        try:
+            audit = attach_advisory(audit, oid, result)
+        except ValueError as exc:
+            raise ServCallFailed(f"SERV advisory refused for {oid}: {exc}") from None
     return audit
 
 

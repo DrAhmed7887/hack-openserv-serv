@@ -8,7 +8,9 @@ it never changes a disposition or full_support.
 from __future__ import annotations
 
 import copy
+import http.client
 import json
+import re
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -102,7 +104,30 @@ class ServCallFailed(RuntimeError):
 
 def _allowed_url(url):
     parts = urllib.parse.urlsplit(url)
-    return parts.scheme == "https" or (parts.scheme == "http" and parts.hostname in ("127.0.0.1", "localhost"))
+    return parts.scheme == "https" or (parts.scheme == "http" and parts.hostname in ("127.0.0.1", "::1"))
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Never follow a redirect: urllib would resend the Authorization header to the new host."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+_OPENER = urllib.request.build_opener(_NoRedirect)
+_CONTROL = re.compile(r"[\x00-\x1f\x7f]")
+MAX_ERROR_CHARS = 200
+
+
+def _clean(text, headers):
+    """Redact the bearer key, strip control characters and cap length: upstream text is untrusted."""
+    text = str(text)
+    auth = headers.get("Authorization", "")
+    key = auth[7:] if auth.startswith("Bearer ") else ""
+    if key:
+        text = text.replace(key, "<redacted>")
+    text = _CONTROL.sub("", text)
+    return text if len(text) <= MAX_ERROR_CHARS else text[:MAX_ERROR_CHARS] + "..."
 
 
 def urllib_post(url, headers, body, timeout):
@@ -115,23 +140,24 @@ def urllib_post(url, headers, body, timeout):
         raise ServCallFailed("refusing to send: SERV requests must use https")
     req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), headers=headers, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310 (scheme checked above)
+        with _OPENER.open(req, timeout=timeout) as resp:  # scheme checked above; redirects refused
             raw = resp.read(MAX_RESPONSE_BYTES + 1)
     except urllib.error.HTTPError as exc:
         detail = ""
         try:
             err = json.loads(exc.read(10_000) or b"{}").get("error", {})
-            detail = f": {err.get('type', '')} {err.get('message', '')}".rstrip()
-        except (ValueError, AttributeError):
+            detail = ": " + _clean(f"{err.get('type', '')} {err.get('message', '')}".strip(), headers)
+        except (ValueError, AttributeError, RecursionError):
             pass
         raise ServCallFailed(f"HTTP {exc.code} from SERV{detail}", status=exc.code) from None
-    except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        raise ServCallFailed(f"SERV request did not complete: {getattr(exc, 'reason', exc)}") from None
+    except (urllib.error.URLError, http.client.HTTPException, TimeoutError, OSError) as exc:
+        raise ServCallFailed("SERV request did not complete: "
+                             + _clean(getattr(exc, "reason", exc), headers)) from None
     if len(raw) > MAX_RESPONSE_BYTES:
         raise ServCallFailed("SERV response larger than the 1 MB limit")
     try:
         data = json.loads(raw)
-    except ValueError:
+    except (ValueError, RecursionError):
         raise ServCallFailed("SERV response is not JSON") from None
     if not isinstance(data, dict):
         raise ServCallFailed("SERV response is not a JSON object")

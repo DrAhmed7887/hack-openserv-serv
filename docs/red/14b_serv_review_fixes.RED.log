@@ -1,0 +1,173 @@
+..................FFFFF                                                  [100%]
+=================================== FAILURES ===================================
+________ test_urllib_post_does_not_follow_redirects_or_forward_the_key _________
+
+local_server = 'http://127.0.0.1:64464/v1/chat/completions'
+
+    def test_urllib_post_does_not_follow_redirects_or_forward_the_key(local_server):
+        _Handler.seen = {}
+        _Redirector.target = local_server
+        red = _serve(_Redirector)
+        try:
+            with pytest.raises(ServCallFailed) as exc:
+                urllib_post(f"http://127.0.0.1:{red.server_port}/v1/chat/completions",
+                            {"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}, {}, 5)
+        finally:
+            red.shutdown()
+>       assert exc.value.status == 302 and _Handler.seen == {}
+E       AssertionError: assert (501 == 302)
+E        +  where 501 = ServCallFailed('HTTP 501 from SERV').status
+E        +    where ServCallFailed('HTTP 501 from SERV') = <ExceptionInfo ServCallFailed('HTTP 501 from SERV') tblen=2>.value
+
+tests/test_serv_live.py:258: AssertionError
+___________ test_upstream_error_text_is_redacted_capped_and_stripped ___________
+
+local_server = 'http://127.0.0.1:64468/v1/chat/completions'
+
+    def test_upstream_error_text_is_redacted_capped_and_stripped(local_server):
+        msg = f"Incorrect API key provided: {KEY}\x1b[31m" + "x" * 500
+        _Handler.status, _Handler.payload = 401, json.dumps({"error": {"type": "auth", "message": msg}}).encode()
+        with pytest.raises(ServCallFailed) as exc:
+            urllib_post(local_server, {"Authorization": f"Bearer {KEY}"}, {}, 5)
+        text = str(exc.value)
+>       assert KEY not in text and "<redacted>" in text and "\x1b" not in text and len(text) <= 300
+E       AssertionError: assert ('sk-test-not...y-0000000000' not in 'HTTP 401 fr...xxxxxxxxxxxx'
+E         
+E         'sk-test-not-a-real-key-0000000000' is contained here:
+E           provided: sk-test-not-a-real-key-0000000000[31mxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
+E         
+E         ...Full output truncated (2 lines hidden), use '-vv' to show)
+
+tests/test_serv_live.py:267: AssertionError
+____________ test_deeply_nested_json_is_a_call_failure_not_a_crash _____________
+
+local_server = 'http://127.0.0.1:64470/v1/chat/completions'
+
+    def test_deeply_nested_json_is_a_call_failure_not_a_crash(local_server):
+        _Handler.status, _Handler.payload = 200, b"[" * 200_000 + b"]" * 200_000
+        with pytest.raises(ServCallFailed):
+>           urllib_post(local_server, {}, {}, 5)
+
+tests/test_serv_live.py:273: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/serv.py:133: in urllib_post
+    data = json.loads(raw)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x10597dc40>
+s = '[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[...]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+E           RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py:353: RecursionError
+__________________ test_plain_http_localhost_name_is_refused ___________________
+
+    def test_plain_http_localhost_name_is_refused():
+        with pytest.raises(ServCallFailed, match="https"):
+>           urllib_post("http://localhost:1/v1/chat/completions", {}, {}, 5)
+
+tests/test_serv_live.py:278: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+url = 'http://localhost:1/v1/chat/completions', headers = {}, body = {}
+timeout = 5
+
+    def urllib_post(url, headers, body, timeout):
+        """POST JSON with the standard library and return the parsed JSON object.
+    
+        https only (plain http is allowed for loopback, which the tests use). Errors carry the status and the
+        upstream error type, never the request headers.
+        """
+        if not _allowed_url(url):
+            raise ServCallFailed("refusing to send: SERV requests must use https")
+        req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), headers=headers, method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310 (scheme checked above)
+                raw = resp.read(MAX_RESPONSE_BYTES + 1)
+        except urllib.error.HTTPError as exc:
+            detail = ""
+            try:
+                err = json.loads(exc.read(10_000) or b"{}").get("error", {})
+                detail = f": {err.get('type', '')} {err.get('message', '')}".rstrip()
+            except (ValueError, AttributeError):
+                pass
+            raise ServCallFailed(f"HTTP {exc.code} from SERV{detail}", status=exc.code) from None
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+>           raise ServCallFailed(f"SERV request did not complete: {getattr(exc, 'reason', exc)}") from None
+E           contract_audit.serv.ServCallFailed: SERV request did not complete: [Errno 61] Connection refused
+
+src/contract_audit/serv.py:129: ServCallFailed
+
+During handling of the above exception, another exception occurred:
+
+    def test_plain_http_localhost_name_is_refused():
+        with pytest.raises(ServCallFailed, match="https"):
+>           urllib_post("http://localhost:1/v1/chat/completions", {}, {}, 5)
+E           AssertionError: Regex pattern did not match.
+E            Regex: 'https'
+E            Input: 'SERV request did not complete: [Errno 61] Connection refused'
+
+tests/test_serv_live.py:278: AssertionError
+_____________ test_cli_maps_catalog_lookup_errors_to_serv_failure ______________
+
+tmp_path = PosixPath('<tmp>')
+
+    def test_cli_maps_catalog_lookup_errors_to_serv_failure(tmp_path):
+        cat = json.loads(CATALOG.read_text(encoding="utf-8"))
+        del cat["sources"]["SRC-SYN-D"]
+        bad = tmp_path / "catalog.json"
+        bad.write_text(json.dumps(cat), encoding="utf-8")
+>       code, out, err = run_cli(["audit", "--catalog", str(bad), "--case", str(C04), "--serv",
+                                  "--serv-model", MODEL], {"SERV_API_KEY": KEY}, FakeHttp())
+
+tests/test_serv_live.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_serv_live.py:135: in run_cli
+    code = cli.main(argv, environ=environ, http=http)
+src/contract_audit/cli.py:79: in main
+    audit = _with_live_advice(audit, catalog, case, config, args.serv_model.strip(), http)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+audit = {'calls': {'CALL-1': {'reasons': ['source_missing', 'modality_term_not_in_quote'], 'status': 'unconfirmed'}}, 'case_id': 'c04_uncertain_source_insufficient', 'catalog_id': 'SYN-CATALOG-001', 'completeness': 'gaps_found', ...}
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... specified to flag tube-position-like findings on chest-xr studies.', 'title': 'Synthetic specification E'}, ...}, ...}
+case = {'case_id': 'c04_uncertain_source_insufficient', 'draft_report': {'statements': [{'cites_receipt': 'RCPT-1', 'kind': '...L-1', 'executor': 'mock-tool', 'fixture': True, 'output': {'region_id': 'R-001', 'result_code': 'MOCK-OK'}, ...}], ...}
+config = ServConfig(api_key=<hidden>), model = 'gpt-6-luna'
+http = <test_serv_live.FakeHttp object at 0x106627d30>
+
+    def _with_live_advice(audit, catalog, case, config, model, http):
+        """One SERV request per uncertain obligation; each answer is attached as advice only."""
+        client = LiveServClient(config, http)
+        tools = {t["tool_id"]: t for t in catalog["tools"]}
+        classes = {o["obligation_id"]: o["finding_class"] for o in case["study"]["obligations"]}
+        for oid, ob in sorted(audit["obligations"].items()):
+            if ob["disposition"] != "uncertain" or ob["tool_id"] not in tools:
+                continue
+            source_id = tools[ob["tool_id"]]["source_id"]
+            result = client.interpret(model, classes[oid], case["study"]["modality"], source_id,
+>                                     catalog["sources"][source_id]["text"])
+E           KeyError: 'SRC-SYN-D'
+
+src/contract_audit/cli.py:60: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_serv_live.py::test_urllib_post_does_not_follow_redirects_or_forward_the_key
+FAILED tests/test_serv_live.py::test_upstream_error_text_is_redacted_capped_and_stripped
+FAILED tests/test_serv_live.py::test_deeply_nested_json_is_a_call_failure_not_a_crash
+FAILED tests/test_serv_live.py::test_plain_http_localhost_name_is_refused - A...
+FAILED tests/test_serv_live.py::test_cli_maps_catalog_lookup_errors_to_serv_failure
+5 failed, 18 passed in 4.02s

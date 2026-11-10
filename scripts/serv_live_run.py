@@ -26,6 +26,11 @@ from contract_audit import cli  # noqa: E402
 CASES = ("c04_uncertain_source_insufficient", "c07_combined")
 
 
+def _cell(text):
+    """Make untrusted text safe inside one markdown table cell."""
+    return " ".join(str(text).split()).replace("|", "\\|")
+
+
 def run_case(name, model):
     out_dir = ROOT / "docs" / "serv_run"
     out_dir.mkdir(exist_ok=True)
@@ -54,10 +59,10 @@ def main():
         for oid, adv in sorted(audit.get("serv_advisory", {}).items()):
             u = adv.get("usage", {})
             rows.append(f"| {name} | {oid} | {audit['obligations'][oid]['disposition']} | {adv['verdict']} | "
-                        f"{'yes' if adv['accepted'] else 'no: ' + ', '.join(adv['reasons'])} | "
-                        f"\"{adv['quote']}\" | {u.get('prompt_tokens', '?')} / {u.get('completion_tokens', '?')} |")
+                        f"{'yes' if adv['accepted'] else 'no: ' + _cell(', '.join(adv['reasons']))} | "
+                        f"\"{_cell(adv['quote'])}\" | {u.get('prompt_tokens', '?')} / {u.get('completion_tokens', '?')} |")
         if not audit.get("serv_advisory"):
-            rows.append(f"| {name} | - | - | not run ({serv['status']}) | - | {err or '-'} | - |")
+            rows.append(f"| {name} | - | - | not run ({serv['status']}) | - | {_cell(err) or '-'} | - |")
     md = [
         "# SERV Reasoning live run",
         "",

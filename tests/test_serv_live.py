@@ -223,3 +223,67 @@ def test_urllib_post_refuses_non_json(local_server):
 def test_urllib_post_only_allows_https_or_loopback():
     with pytest.raises(ServCallFailed, match="https"):
         urllib_post("http://example.com/v1/chat/completions", {}, {}, 5)
+
+
+# --- review fixes: redirects, error text, odd failures ---
+
+class _Redirector(BaseHTTPRequestHandler):
+    target = ""
+
+    def do_POST(self):  # noqa: N802
+        self.send_response(302)
+        self.send_header("Location", _Redirector.target)
+        self.end_headers()
+
+    def log_message(self, *a):
+        pass
+
+
+def _serve(handler):
+    srv = HTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    return srv
+
+
+def test_urllib_post_does_not_follow_redirects_or_forward_the_key(local_server):
+    _Handler.seen = {}
+    _Redirector.target = local_server
+    red = _serve(_Redirector)
+    try:
+        with pytest.raises(ServCallFailed) as exc:
+            urllib_post(f"http://127.0.0.1:{red.server_port}/v1/chat/completions",
+                        {"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}, {}, 5)
+    finally:
+        red.shutdown()
+    assert exc.value.status == 302 and _Handler.seen == {}
+
+
+def test_upstream_error_text_is_redacted_capped_and_stripped(local_server):
+    msg = f"Incorrect API key provided: {KEY}\x1b[31m" + "x" * 500
+    _Handler.status, _Handler.payload = 401, json.dumps({"error": {"type": "auth", "message": msg}}).encode()
+    with pytest.raises(ServCallFailed) as exc:
+        urllib_post(local_server, {"Authorization": f"Bearer {KEY}"}, {}, 5)
+    text = str(exc.value)
+    assert KEY not in text and "<redacted>" in text and "\x1b" not in text and len(text) <= 300
+
+
+def test_deeply_nested_json_is_a_call_failure_not_a_crash(local_server):
+    _Handler.status, _Handler.payload = 200, b"[" * 200_000 + b"]" * 200_000
+    with pytest.raises(ServCallFailed):
+        urllib_post(local_server, {}, {}, 5)
+
+
+def test_plain_http_localhost_name_is_refused():
+    with pytest.raises(ServCallFailed, match="https"):
+        urllib_post("http://localhost:1/v1/chat/completions", {}, {}, 5)
+
+
+def test_cli_maps_catalog_lookup_errors_to_serv_failure(tmp_path):
+    cat = json.loads(CATALOG.read_text(encoding="utf-8"))
+    del cat["sources"]["SRC-SYN-D"]
+    bad = tmp_path / "catalog.json"
+    bad.write_text(json.dumps(cat), encoding="utf-8")
+    code, out, err = run_cli(["audit", "--catalog", str(bad), "--case", str(C04), "--serv",
+                              "--serv-model", MODEL], {"SERV_API_KEY": KEY}, FakeHttp())
+    assert "Traceback" not in err
+    assert code in (cli.EXIT_BAD_INPUT, cli.EXIT_SERV_CALL_FAILED)
