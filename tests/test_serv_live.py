@@ -105,7 +105,7 @@ def test_live_client_repr_hides_the_key():
 def test_live_advisory_attaches_without_changing_the_deterministic_result(catalog, case):
     case = case("c04_uncertain_source_insufficient")
     audit = build_audit(catalog, case)
-    out = attach_advisory(audit, "OB-4", interpret(client(FakeHttp())))
+    out = attach_advisory(audit, "OB-4", interpret(client(FakeHttp())), catalog)
     assert out["serv"] == {"status": "executed", "executed": True, "fixture": False, "model": MODEL}
     assert out["obligations"] == audit["obligations"] and out["completeness"] == audit["completeness"]
     assert out["serv_advisory"]["OB-4"]["human_confirmation_required"] is True
@@ -116,13 +116,13 @@ def test_live_result_that_lost_its_provenance_is_refused(catalog, case):
     r = interpret(client(FakeHttp()))
     forged = {k: v for k, v in r.items() if k != "live_token"}
     with pytest.raises(ValueError, match="no live transport"):
-        attach_advisory(audit, "OB-4", forged)
+        attach_advisory(audit, "OB-4", forged, catalog)
 
 
 def test_live_advisory_cannot_set_full_support(catalog, case):
     audit = build_audit(catalog, case("c04_uncertain_source_insufficient"))
     r = interpret(client(FakeHttp(completion("supported", "measure cardiac size on radiographs"))))
-    out = attach_advisory(audit, "OB-4", r)
+    out = attach_advisory(audit, "OB-4", r, catalog)
     assert out["obligations"]["OB-4"]["full_support"] is False
     assert out["obligations"]["OB-4"]["disposition"] == "uncertain"
 

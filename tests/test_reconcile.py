@@ -43,7 +43,8 @@ def test_statement_about_unknown_obligation_is_flagged(catalog, case, clone):
     c["draft_report"]["statements"][0]["obligation_id"] = "OB-99"
     r = reconcile(catalog, c)
     assert r["statements"]["ST-1"] == {"outcome": "unknown_obligation", "action": "remove_statement"}
-    assert r["report_gaps"] == {}
+    # OB-1 is now unmentioned. Fully supported or not, the report must address it (review round 2, B6).
+    assert r["report_gaps"] == {"OB-1": "add_cited_claim"}
 
 
 def test_obligation_with_no_statement_and_no_full_support_is_a_gap(catalog, case, clone):

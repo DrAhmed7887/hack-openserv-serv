@@ -127,6 +127,7 @@
   },
   "case_id": "c07_combined",
   "catalog_id": "SYN-CATALOG-001",
+  "catalog_sha256": "22bd621edcb20dabf4aef91bd434ea91d30fd684aa170623d56cb35145f4d389",
   "completeness": "gaps_found",
   "notices": [
    "Synthetic fixture data only. No images, DICOM, patients or real devices.",
@@ -533,7 +534,7 @@
   var LABEL = { supported_called:["Supported, called","ok"], supported_omitted:["Supported, omitted","warn"], unsupported:["Unsupported","bad"], uncertain:["Uncertain","info"] };
   var RECEIPT = { valid:["valid","ok"], missing:["missing","bad"], failed:["failed","bad"], invalid:["invalid","bad"], not_applicable:["n/a","info"] };
   var OUTCOME = { supported_by_receipt:["Backed by receipt","ok"], limitation_disclosed:["Limitation disclosed","ok"], unsupported_claim:["Claim not backed","bad"], receipt_mismatch:["Receipt mismatch","bad"], disclosure_contradicts_support:["Disclosure contradicts support","bad"], unknown_obligation:["Unknown obligation","bad"], invalid_statement:["Invalid statement","bad"] };
-  var ACTION = { run_tool_or_remove:"Run the tool, or remove the claim", remove_or_disclose:"Remove the claim or disclose the limit", qualify_or_remove:"Qualify the claim, or remove it", remove_until_valid_receipt:"Remove until a valid receipt exists", cite_valid_receipt:"Cite the valid receipt", replace_with_cited_claim:"Replace with a claim that cites the valid receipt", remove_statement:"Remove the statement", add_limitation_statement:"Add a limitation statement" };
+  var ACTION = { run_tool_or_remove:"Run the tool, or remove the claim", remove_or_disclose:"Remove the claim or disclose the limit", qualify_or_remove:"Qualify the claim, or remove it", remove_until_valid_receipt:"Remove until a valid receipt exists", cite_valid_receipt:"Cite the valid receipt", replace_with_cited_claim:"Replace with a claim that cites the valid receipt", remove_statement:"Remove the statement", add_limitation_statement:"Add a limitation statement", add_cited_claim:"Add a statement that cites the valid receipt" };
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
   function badge(pair) { return '<span class="badge ' + pair[1] + '">' + esc(pair[0]) + "</span>"; }
   function table(el, head, rows) {

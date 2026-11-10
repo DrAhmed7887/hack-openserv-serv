@@ -1,0 +1,88 @@
+# RED evidence: 17_serv_error_body
+# command: python3 -m pytest tests/test_serv_error_body.py -q
+# python: Python 3.9.6
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+________ test_http_error_with_an_unreadable_body_is_a_serv_failure[302] ________
+
+req = <urllib.request.Request object at 0x108ce22e0>, timeout = 5
+
+    def fake_open(req, timeout=None):
+>       raise urllib.error.HTTPError(req.full_url, code, "error", {}, _UnreadableBody())
+E       urllib.error.HTTPError: HTTP Error 302: error
+
+tests/test_serv_error_body.py:29: HTTPError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108ce20d0>
+code = 302
+
+    @pytest.mark.parametrize("code", [302, 500])
+    def test_http_error_with_an_unreadable_body_is_a_serv_failure(monkeypatch, code):
+        def fake_open(req, timeout=None):
+            raise urllib.error.HTTPError(req.full_url, code, "error", {}, _UnreadableBody())
+        monkeypatch.setattr(serv._OPENER, "open", fake_open)
+        with pytest.raises(ServCallFailed) as exc:
+>           serv.urllib_post("https://serv.invalid/v1/chat/completions", HEADERS, {}, 5)
+
+tests/test_serv_error_body.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/serv.py:148: in urllib_post
+    err = json.loads(exc.read(10_000) or b"{}").get("error", {})
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/tempfile.py:474: in func_wrapper
+    return func(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_serv_error_body._UnreadableBody object at 0x108ce2310>
+args = (10000,)
+
+    def read(self, *args):
+>       raise ConnectionResetError(54, "Connection reset by peer")
+E       ConnectionResetError: [Errno 54] Connection reset by peer
+
+tests/test_serv_error_body.py:20: ConnectionResetError
+________ test_http_error_with_an_unreadable_body_is_a_serv_failure[500] ________
+
+req = <urllib.request.Request object at 0x108def0a0>, timeout = 5
+
+    def fake_open(req, timeout=None):
+>       raise urllib.error.HTTPError(req.full_url, code, "error", {}, _UnreadableBody())
+E       urllib.error.HTTPError: HTTP Error 500: error
+
+tests/test_serv_error_body.py:29: HTTPError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108def3a0>
+code = 500
+
+    @pytest.mark.parametrize("code", [302, 500])
+    def test_http_error_with_an_unreadable_body_is_a_serv_failure(monkeypatch, code):
+        def fake_open(req, timeout=None):
+            raise urllib.error.HTTPError(req.full_url, code, "error", {}, _UnreadableBody())
+        monkeypatch.setattr(serv._OPENER, "open", fake_open)
+        with pytest.raises(ServCallFailed) as exc:
+>           serv.urllib_post("https://serv.invalid/v1/chat/completions", HEADERS, {}, 5)
+
+tests/test_serv_error_body.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/serv.py:148: in urllib_post
+    err = json.loads(exc.read(10_000) or b"{}").get("error", {})
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/tempfile.py:474: in func_wrapper
+    return func(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_serv_error_body._UnreadableBody object at 0x108def100>
+args = (10000,)
+
+    def read(self, *args):
+>       raise ConnectionResetError(54, "Connection reset by peer")
+E       ConnectionResetError: [Errno 54] Connection reset by peer
+
+tests/test_serv_error_body.py:20: ConnectionResetError
+=========================== short test summary info ============================
+FAILED tests/test_serv_error_body.py::test_http_error_with_an_unreadable_body_is_a_serv_failure[302]
+FAILED tests/test_serv_error_body.py::test_http_error_with_an_unreadable_body_is_a_serv_failure[500]
+2 failed in 0.17s
+# exit code: 1

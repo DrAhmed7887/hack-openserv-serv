@@ -92,7 +92,7 @@ def audit(catalog, case):
 
 def test_advisory_cannot_change_disposition_support_or_completeness(catalog, case):
     before = audit(catalog, case)
-    after = attach_advisory(before, "OB-4", good(catalog, verdict="supported"))
+    after = attach_advisory(before, "OB-4", good(catalog, verdict="supported"), catalog)
     assert after["obligations"] == before["obligations"]
     assert after["completeness"] == before["completeness"] == "gaps_found"
     assert after["statements"] == before["statements"]
@@ -102,23 +102,23 @@ def test_advisory_cannot_change_disposition_support_or_completeness(catalog, cas
 
 
 def test_advisory_marks_serv_block_as_fixture_not_executed(catalog, case):
-    after = attach_advisory(audit(catalog, case), "OB-4", good(catalog))
+    after = attach_advisory(audit(catalog, case), "OB-4", good(catalog), catalog)
     assert after["serv"] == {"status": "fixture", "executed": False, "fixture": True}
 
 
 def test_advisory_is_attached_without_mutating_the_input_audit(catalog, case):
     before = audit(catalog, case)
     snapshot = json.dumps(before, sort_keys=True)
-    attach_advisory(before, "OB-4", good(catalog))
+    attach_advisory(before, "OB-4", good(catalog), catalog)
     assert json.dumps(before, sort_keys=True) == snapshot
 
 
 def test_advisory_only_for_uncertain_obligations(catalog, case):
     a = build_audit(catalog, case("c01_supported_called"))
     with pytest.raises(ValueError, match="uncertain"):
-        attach_advisory(a, "OB-1", good(catalog))
+        attach_advisory(a, "OB-1", good(catalog), catalog)
 
 
 def test_rejected_interpretation_is_recorded_as_rejected(catalog, case):
-    after = attach_advisory(audit(catalog, case), "OB-4", good(catalog, quote="invented words"))
+    after = attach_advisory(audit(catalog, case), "OB-4", good(catalog, quote="invented words"), catalog)
     assert after["serv_advisory"]["OB-4"]["accepted"] is False

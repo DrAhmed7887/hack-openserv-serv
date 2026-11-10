@@ -71,13 +71,13 @@ def test_interpret_never_reports_executed(catalog):
 ])
 def test_attach_advisory_refuses_forged_or_ambiguous_labels(catalog, case, over, needle):
     with pytest.raises(ValueError, match=needle):
-        attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over))
+        attach_advisory(audit4(catalog, case), "OB-4", interp(catalog, **over), catalog)
 
 
 def test_attach_advisory_without_an_executed_key_is_a_fixture(catalog, case):
     i = interp(catalog)
     i.pop("executed", None)
-    out = attach_advisory(audit4(catalog, case), "OB-4", i)
+    out = attach_advisory(audit4(catalog, case), "OB-4", i, catalog)
     assert out["serv"] == {"status": "fixture", "executed": False, "fixture": True}
 
 
@@ -85,7 +85,7 @@ def test_attach_advisory_with_a_missing_fixture_key_is_refused_not_a_crash(catal
     i = interp(catalog)
     del i["fixture"]
     with pytest.raises(ValueError, match="neither fixture nor executed"):
-        attach_advisory(audit4(catalog, case), "OB-4", i)
+        attach_advisory(audit4(catalog, case), "OB-4", i, catalog)
 
 
 # a forged serv block cannot reach the audit through build_audit either

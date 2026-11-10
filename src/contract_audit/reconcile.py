@@ -16,7 +16,8 @@ _OK = ("supported_by_receipt", "limitation_disclosed")
 OUTCOMES = ("supported_by_receipt", "limitation_disclosed", "unsupported_claim", "receipt_mismatch",
             "disclosure_contradicts_support", "unknown_obligation", "invalid_statement")
 ACTIONS = ("run_tool_or_remove", "remove_or_disclose", "qualify_or_remove", "remove_until_valid_receipt",
-           "cite_valid_receipt", "replace_with_cited_claim", "remove_statement", "add_limitation_statement")
+           "cite_valid_receipt", "replace_with_cited_claim", "remove_statement", "add_limitation_statement",
+           "add_cited_claim")
 
 
 def _statement_verdict(obligations, statement):
@@ -39,7 +40,9 @@ def _statement_verdict(obligations, statement):
 def reconcile_report(obligations, draft_report):
     statements = {s["statement_id"]: _statement_verdict(obligations, s) for s in draft_report["statements"]}
     mentioned = {s["obligation_id"] for s in draft_report["statements"]}
-    gaps = {oid: "add_limitation_statement" for oid, ob in obligations.items()
-            if not ob["full_support"] and oid not in mentioned}
+    # The report must address every obligation. An unmentioned one is a gap even when it is fully supported:
+    # it then needs a statement that cites its receipt; otherwise it needs a limitation statement.
+    gaps = {oid: "add_cited_claim" if ob["full_support"] else "add_limitation_statement"
+            for oid, ob in obligations.items() if oid not in mentioned}
     consistent = not gaps and all(v["outcome"] in _OK for v in statements.values())
     return {"statements": statements, "report_gaps": gaps, "report_consistent": consistent}

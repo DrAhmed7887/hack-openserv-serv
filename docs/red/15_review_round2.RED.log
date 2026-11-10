@@ -1,0 +1,871 @@
+# RED evidence: 15_review_round2
+# command: python3 -m pytest tests/test_review_round2.py -q
+# python: Python 3.9.6
+FFFFFFFFFF....FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                           [100%]
+=================================== FAILURES ===================================
+________ test_huge_integer_literal_is_bad_input_not_a_crash[case-5000] _________
+
+tmp_path = PosixPath('<tmp>')
+digits = 5000, which = 'case'
+
+    @pytest.mark.parametrize("digits", [5000, 400])  # 5000 trips CPython's own 4300-digit limit (3.9.14+, 3.11+)
+    @pytest.mark.parametrize("which", ["case", "catalog"])
+    def test_huge_integer_literal_is_bad_input_not_a_crash(tmp_path, digits, which):
+        big = with_extra(tmp_path, CASE if which == "case" else CATALOG, "9" * digits)
+        r = run("--catalog", CATALOG, "--case", big) if which == "case" else run("--catalog", big, "--case", CASE)
+>       assert r.returncode == 2, r.stderr[-300:]
+E       AssertionError: 
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...fully_supported": 1,\n    "obligations": 1,\n    "report_consistent": true\n  },\n  "synthetic": true\n}\n', stderr='').returncode
+
+tests/test_review_round2.py:47: AssertionError
+_________ test_huge_integer_literal_is_bad_input_not_a_crash[case-400] _________
+
+tmp_path = PosixPath('<tmp>')
+digits = 400, which = 'case'
+
+    @pytest.mark.parametrize("digits", [5000, 400])  # 5000 trips CPython's own 4300-digit limit (3.9.14+, 3.11+)
+    @pytest.mark.parametrize("which", ["case", "catalog"])
+    def test_huge_integer_literal_is_bad_input_not_a_crash(tmp_path, digits, which):
+        big = with_extra(tmp_path, CASE if which == "case" else CATALOG, "9" * digits)
+        r = run("--catalog", CATALOG, "--case", big) if which == "case" else run("--catalog", big, "--case", CASE)
+>       assert r.returncode == 2, r.stderr[-300:]
+E       AssertionError: 
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...fully_supported": 1,\n    "obligations": 1,\n    "report_consistent": true\n  },\n  "synthetic": true\n}\n', stderr='').returncode
+
+tests/test_review_round2.py:47: AssertionError
+_______ test_huge_integer_literal_is_bad_input_not_a_crash[catalog-5000] _______
+
+tmp_path = PosixPath('<tmp>')
+digits = 5000, which = 'catalog'
+
+    @pytest.mark.parametrize("digits", [5000, 400])  # 5000 trips CPython's own 4300-digit limit (3.9.14+, 3.11+)
+    @pytest.mark.parametrize("which", ["case", "catalog"])
+    def test_huge_integer_literal_is_bad_input_not_a_crash(tmp_path, digits, which):
+        big = with_extra(tmp_path, CASE if which == "case" else CATALOG, "9" * digits)
+        r = run("--catalog", CATALOG, "--case", big) if which == "case" else run("--catalog", big, "--case", CASE)
+>       assert r.returncode == 2, r.stderr[-300:]
+E       AssertionError: 
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...fully_supported": 1,\n    "obligations": 1,\n    "report_consistent": true\n  },\n  "synthetic": true\n}\n', stderr='').returncode
+
+tests/test_review_round2.py:47: AssertionError
+_______ test_huge_integer_literal_is_bad_input_not_a_crash[catalog-400] ________
+
+tmp_path = PosixPath('<tmp>')
+digits = 400, which = 'catalog'
+
+    @pytest.mark.parametrize("digits", [5000, 400])  # 5000 trips CPython's own 4300-digit limit (3.9.14+, 3.11+)
+    @pytest.mark.parametrize("which", ["case", "catalog"])
+    def test_huge_integer_literal_is_bad_input_not_a_crash(tmp_path, digits, which):
+        big = with_extra(tmp_path, CASE if which == "case" else CATALOG, "9" * digits)
+        r = run("--catalog", CATALOG, "--case", big) if which == "case" else run("--catalog", big, "--case", CASE)
+>       assert r.returncode == 2, r.stderr[-300:]
+E       AssertionError: 
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...fully_supported": 1,\n    "obligations": 1,\n    "report_consistent": true\n  },\n  "synthetic": true\n}\n', stderr='').returncode
+
+tests/test_review_round2.py:47: AssertionError
+____________ test_negative_huge_integer_inside_a_list_is_bad_input _____________
+
+tmp_path = PosixPath('<tmp>')
+
+    def test_negative_huge_integer_inside_a_list_is_bad_input(tmp_path):
+        r = run("--catalog", CATALOG, "--case", with_extra(tmp_path, CASE, "[1, -" + "9" * 400 + "]"))
+>       assert r.returncode == 2 and "Traceback" not in r.stderr
+E       assert (0 == 2)
+E        +  where 0 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...fully_supported": 1,\n    "obligations": 1,\n    "report_consistent": true\n  },\n  "synthetic": true\n}\n', stderr='').returncode
+
+tests/test_review_round2.py:53: AssertionError
+________________ test_integer_at_the_digit_limit_is_still_read _________________
+
+tmp_path = PosixPath('<tmp>')
+
+    def test_integer_at_the_digit_limit_is_still_read(tmp_path):
+>       r = run("--catalog", CATALOG, "--case", with_extra(tmp_path, CASE, "9" * inputs.MAX_INT_DIGITS))
+E       AttributeError: module 'contract_audit.inputs' has no attribute 'MAX_INT_DIGITS'
+
+tests/test_review_round2.py:57: AttributeError
+_________ test_any_value_error_from_the_json_parser_is_an_input_error __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107218160>
+
+    def test_any_value_error_from_the_json_parser_is_an_input_error(monkeypatch):
+        def boom(*args, **kwargs):
+            raise ValueError("Exceeds the limit (4300 digits) for integer string conversion")
+        monkeypatch.setattr(inputs.json, "loads", boom)
+        with pytest.raises(InputError, match="digits"):
+>           inputs.load_case(CASE)
+
+tests/test_review_round2.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:176: in load_case
+    data = _read(path)
+src/contract_audit/inputs.py:24: in _read
+    data = json.loads(text)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ('{\n  "case_id": "c01_supported_called",\n  "draft_report": {\n    "statements": [\n      {\n        "cites_receipt":...,\n        "obligation_id": "OB-1"\n      }\n    ],\n    "study_id": "SYN-STUDY-001"\n  },\n  "synthetic": true\n}\n',)
+kwargs = {}
+
+    def boom(*args, **kwargs):
+>       raise ValueError("Exceeds the limit (4300 digits) for integer string conversion")
+E       ValueError: Exceeds the limit (4300 digits) for integer string conversion
+
+tests/test_review_round2.py:63: ValueError
+_ test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+value = 100000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize("value", [10 ** 400, -(10 ** 400), 10 ** 309])
+    def test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise(value):
+>       assert is_finite_number(value) is False
+
+tests/test_review_round2.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = 100000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+_ test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise[-10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+value = -10000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize("value", [10 ** 400, -(10 ** 400), 10 ** 309])
+    def test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise(value):
+>       assert is_finite_number(value) is False
+
+tests/test_review_round2.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = -10000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+_ test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise[1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+value = 100000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize("value", [10 ** 400, -(10 ** 400), 10 ** 309])
+    def test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise(value):
+>       assert is_finite_number(value) is False
+
+tests/test_review_round2.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = 100000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+________ test_catalog_bound_beyond_float_range_is_an_input_error[spec0] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1060f4310>
+spec = {'max': 100000000000000000...0000000000000000000, 'min': 100000000000000000...0000000000000000000, 'type': 'number'}
+
+    @pytest.mark.parametrize("spec", [
+        {"type": "number", "min": 10 ** 400, "max": 10 ** 401},
+        {"type": "number", "min": 0, "max": 10 ** 400},
+        {"type": "number_list", "max_items": 2, "item_min": 0, "item_max": 10 ** 400, "max_total": 1},
+    ])
+    def test_catalog_bound_beyond_float_range_is_an_input_error(catalog, clone, spec):
+        with pytest.raises(InputError, match="finite number"):
+>           validate_catalog(numeric_tool(catalog, clone, spec))
+
+tests/test_review_round2.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:131: in validate_catalog
+    _validate_spec(spec, f"{where} args_schema[{name}]")
+src/contract_audit/inputs.py:94: in _validate_spec
+    if not is_finite_number(spec.get(key)):
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = 100000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+________ test_catalog_bound_beyond_float_range_is_an_input_error[spec1] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1060f4310>
+spec = {'max': 100000000000000000...0000000000000000000, 'min': 0, 'type': 'number'}
+
+    @pytest.mark.parametrize("spec", [
+        {"type": "number", "min": 10 ** 400, "max": 10 ** 401},
+        {"type": "number", "min": 0, "max": 10 ** 400},
+        {"type": "number_list", "max_items": 2, "item_min": 0, "item_max": 10 ** 400, "max_total": 1},
+    ])
+    def test_catalog_bound_beyond_float_range_is_an_input_error(catalog, clone, spec):
+        with pytest.raises(InputError, match="finite number"):
+>           validate_catalog(numeric_tool(catalog, clone, spec))
+
+tests/test_review_round2.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:131: in validate_catalog
+    _validate_spec(spec, f"{where} args_schema[{name}]")
+src/contract_audit/inputs.py:94: in _validate_spec
+    if not is_finite_number(spec.get(key)):
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = 100000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+________ test_catalog_bound_beyond_float_range_is_an_input_error[spec2] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1060f4310>
+spec = {'item_max': 100000000000000000...0000000000000000000, 'item_min': 0, 'max_items': 2, 'max_total': 1, ...}
+
+    @pytest.mark.parametrize("spec", [
+        {"type": "number", "min": 10 ** 400, "max": 10 ** 401},
+        {"type": "number", "min": 0, "max": 10 ** 400},
+        {"type": "number_list", "max_items": 2, "item_min": 0, "item_max": 10 ** 400, "max_total": 1},
+    ])
+    def test_catalog_bound_beyond_float_range_is_an_input_error(catalog, clone, spec):
+        with pytest.raises(InputError, match="finite number"):
+>           validate_catalog(numeric_tool(catalog, clone, spec))
+
+tests/test_review_round2.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:131: in validate_catalog
+    _validate_spec(spec, f"{where} args_schema[{name}]")
+src/contract_audit/inputs.py:94: in _validate_spec
+    if not is_finite_number(spec.get(key)):
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = 100000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+_ test_call_argument_beyond_float_range_is_invalid_not_a_crash[spec0-10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10721baf0>
+clone = <function deepcopy at 0x1060f4310>
+spec = {'max': 4.0, 'min': 0.5, 'type': 'number'}
+value = 100000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize("spec,value", [
+        ({"type": "number", "min": 0.5, "max": 4.0}, 10 ** 400),
+        ({"type": "number_list", "max_items": 4, "item_min": 0, "item_max": 10, "max_total": 12}, [1, 10 ** 400]),
+    ])
+    def test_call_argument_beyond_float_range_is_invalid_not_a_crash(catalog, case, clone, spec, value):
+        cat, c = numeric_tool(catalog, clone, spec), clone(case("c01_supported_called"))
+        c["proposed_calls"][0]["args"] = {"study_id": "SYN-STUDY-001", "scale_factor": value}
+>       a = build_audit(cat, c)
+
+tests/test_review_round2.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/audit.py:33: in build_audit
+    obligations, call_results = assess_obligations(
+src/contract_audit/coverage.py:52: in assess_obligations
+    call_results = validate_calls(catalog, study, calls)
+src/contract_audit/calls.py:79: in validate_calls
+    reasons += _arg_reasons(arg, schema[arg], value, study)
+src/contract_audit/calls.py:31: in _arg_reasons
+    ok = is_finite_number(value) and spec["min"] <= value <= spec["max"]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = 100000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+__ test_call_argument_beyond_float_range_is_invalid_not_a_crash[spec1-value1] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107289ca0>
+clone = <function deepcopy at 0x1060f4310>
+spec = {'item_max': 10, 'item_min': 0, 'max_items': 4, 'max_total': 12, ...}
+value = [1, 100000000000000000...0000000000000000000]
+
+    @pytest.mark.parametrize("spec,value", [
+        ({"type": "number", "min": 0.5, "max": 4.0}, 10 ** 400),
+        ({"type": "number_list", "max_items": 4, "item_min": 0, "item_max": 10, "max_total": 12}, [1, 10 ** 400]),
+    ])
+    def test_call_argument_beyond_float_range_is_invalid_not_a_crash(catalog, case, clone, spec, value):
+        cat, c = numeric_tool(catalog, clone, spec), clone(case("c01_supported_called"))
+        c["proposed_calls"][0]["args"] = {"study_id": "SYN-STUDY-001", "scale_factor": value}
+>       a = build_audit(cat, c)
+
+tests/test_review_round2.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/audit.py:33: in build_audit
+    obligations, call_results = assess_obligations(
+src/contract_audit/coverage.py:52: in assess_obligations
+    call_results = validate_calls(catalog, study, calls)
+src/contract_audit/calls.py:79: in validate_calls
+    reasons += _arg_reasons(arg, schema[arg], value, study)
+src/contract_audit/calls.py:33: in _arg_reasons
+    ok = _number_list_ok(spec, value)
+src/contract_audit/calls.py:15: in _number_list_ok
+    if not all(is_finite_number(v) and spec["item_min"] <= v <= spec["item_max"] for v in value):
+src/contract_audit/calls.py:15: in <genexpr>
+    if not all(is_finite_number(v) and spec["item_min"] <= v <= spec["item_max"] for v in value):
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = 100000000000000000...0000000000000000000
+
+    def is_finite_number(value):
+        """A finite int or float. bool is excluded on purpose: True is an int in Python."""
+>       return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+E       OverflowError: int too large to convert to float
+
+src/contract_audit/inputs.py:70: OverflowError
+________ test_lone_surrogate_in_a_catalog_source_text_is_an_input_error ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x1060f4310>
+
+    def test_lone_surrogate_in_a_catalog_source_text_is_an_input_error(catalog, clone):
+        cat = clone(catalog)
+        cat["sources"]["SRC-SYN-A"]["text"] += "\ud800"
+        with pytest.raises(InputError, match="surrogate"):
+>           validate_catalog(cat)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_round2.py:115: Failed
+___ test_lone_surrogate_anywhere_in_a_case_is_an_input_error[statement text] ___
+
+case = <function case.<locals>._load at 0x107289dc0>
+clone = <function deepcopy at 0x1060f4310>, where = 'statement text'
+
+    @pytest.mark.parametrize("where", ["statement text", "dict key"])
+    def test_lone_surrogate_anywhere_in_a_case_is_an_input_error(case, clone, where):
+        c = clone(case("c01_supported_called"))
+        if where == "statement text":
+            c["draft_report"]["statements"][0]["text"] = "ok \udfff"
+        else:
+            c["study"]["\ud800"] = 1
+        with pytest.raises(InputError, match="surrogate"):
+>           validate_case(c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_round2.py:126: Failed
+______ test_lone_surrogate_anywhere_in_a_case_is_an_input_error[dict key] ______
+
+case = <function case.<locals>._load at 0x107289280>
+clone = <function deepcopy at 0x1060f4310>, where = 'dict key'
+
+    @pytest.mark.parametrize("where", ["statement text", "dict key"])
+    def test_lone_surrogate_anywhere_in_a_case_is_an_input_error(case, clone, where):
+        c = clone(case("c01_supported_called"))
+        if where == "statement text":
+            c["draft_report"]["statements"][0]["text"] = "ok \udfff"
+        else:
+            c["study"]["\ud800"] = 1
+        with pytest.raises(InputError, match="surrogate"):
+>           validate_case(c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_round2.py:126: Failed
+__ test_lone_surrogate_escape_in_a_catalog_file_exits_two_without_a_traceback __
+
+tmp_path = PosixPath('<tmp>')
+
+    def test_lone_surrogate_escape_in_a_catalog_file_exits_two_without_a_traceback(tmp_path):
+        cat = json.loads(CATALOG.read_text(encoding="utf-8"))
+        cat["sources"]["SRC-SYN-A"]["text"] += "\ud800"
+        p = tmp_path / "catalog.json"
+        p.write_text(json.dumps(cat), encoding="utf-8")  # ensure_ascii writes the \ud800 escape: a valid UTF-8 file
+        r = run("--catalog", p, "--case", CASE)
+>       assert r.returncode == 2, r.stderr[-300:]
+E       AssertionError: e "<repo>/src/contract_audit/catalog.py", line 19, in entry_reasons
+E             if hashlib.sha256(source["text"].encode("utf-8")).hexdigest() != source["sha256"]:
+E         UnicodeEncodeError: 'utf-8' codec can't encode character '\ud800' in position 142: surrogates not allowed
+E         
+E       assert 1 == 2
+E        +  where 1 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...]:\nUnicodeEncodeError: \'utf-8\' codec can\'t encode character \'\\ud800\' in position 142: surrogates not allowed\n').returncode
+
+tests/test_review_round2.py:135: AssertionError
+____ test_unexpected_error_while_building_the_audit_is_not_reported_as_gaps ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1072208e0>
+capsys = <_pytest.capture.CaptureFixture object at 0x1072200d0>
+
+    def test_unexpected_error_while_building_the_audit_is_not_reported_as_gaps(monkeypatch, capsys):
+        def boom(*args, **kwargs):
+            raise RuntimeError("synthetic internal failure \ud800")
+        monkeypatch.setattr(cli, "build_audit", boom)
+>       code = cli.main(["audit", "--catalog", str(CATALOG), "--case", str(CASE), "--fail-on-gaps"])
+
+tests/test_review_round2.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/cli.py:84: in main
+    audit = build_audit(catalog, case, serv=serv)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device l...-1', 'executor': 'mock-tool', 'fixture': True, 'output': {'region_id': 'R-001', 'result_code': 'MOCK-OK'}, ...}], ...})
+kwargs = {'serv': None}
+
+    def boom(*args, **kwargs):
+>       raise RuntimeError("synthetic internal failure \ud800")
+E       RuntimeError: synthetic internal failure \ud800
+
+tests/test_review_round2.py:142: RuntimeError
+____ test_serv_status_outside_the_not_run_states_is_refused[serv_confirmed] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107066430>, status = 'serv_confirmed'
+
+    @pytest.mark.parametrize("status", ["serv_confirmed", "executed", "fixture", "", "NOT_RUN"])
+    def test_serv_status_outside_the_not_run_states_is_refused(catalog, case, status):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"),
+                        serv={"status": status, "executed": False, "fixture": False})
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_round2.py:155: Failed
+_______ test_serv_status_outside_the_not_run_states_is_refused[executed] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107005940>, status = 'executed'
+
+    @pytest.mark.parametrize("status", ["serv_confirmed", "executed", "fixture", "", "NOT_RUN"])
+    def test_serv_status_outside_the_not_run_states_is_refused(catalog, case, status):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"),
+                        serv={"status": status, "executed": False, "fixture": False})
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_round2.py:155: Failed
+_______ test_serv_status_outside_the_not_run_states_is_refused[fixture] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107289940>, status = 'fixture'
+
+    @pytest.mark.parametrize("status", ["serv_confirmed", "executed", "fixture", "", "NOT_RUN"])
+    def test_serv_status_outside_the_not_run_states_is_refused(catalog, case, status):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"),
+                        serv={"status": status, "executed": False, "fixture": False})
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_round2.py:155: Failed
+___________ test_serv_status_outside_the_not_run_states_is_refused[] ___________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236820>, status = ''
+
+    @pytest.mark.parametrize("status", ["serv_confirmed", "executed", "fixture", "", "NOT_RUN"])
+    def test_serv_status_outside_the_not_run_states_is_refused(catalog, case, status):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"),
+                        serv={"status": status, "executed": False, "fixture": False})
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_round2.py:155: Failed
+_______ test_serv_status_outside_the_not_run_states_is_refused[NOT_RUN] ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1071fff70>, status = 'NOT_RUN'
+
+    @pytest.mark.parametrize("status", ["serv_confirmed", "executed", "fixture", "", "NOT_RUN"])
+    def test_serv_status_outside_the_not_run_states_is_refused(catalog, case, status):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"),
+                        serv={"status": status, "executed": False, "fixture": False})
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_round2.py:155: Failed
+__________________ test_serv_block_with_extra_keys_is_refused __________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107289a60>
+
+    def test_serv_block_with_extra_keys_is_refused(catalog, case):
+        with pytest.raises(ValueError, match="serv"):
+>           build_audit(catalog, case("c01_supported_called"),
+                        serv={"status": "not_run", "executed": False, "fixture": False, "verdict": "supported"})
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_round2.py:161: Failed
+____________________ test_serv_block_is_copied_not_aliased _____________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10721b550>
+
+    def test_serv_block_is_copied_not_aliased(catalog, case):
+        blk = {"status": "not_configured", "executed": False, "fixture": False}
+        a = build_audit(catalog, case("c01_supported_called"), serv=blk)
+        blk.update(status="executed", executed=True)
+>       assert a["serv"] == {"status": "not_configured", "executed": False, "fixture": False}
+E       AssertionError: assert {'executed': ...': 'executed'} == {'executed': ...t_configured'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'status': 'executed'} != {'status': 'not_configured'}
+E         {'executed': True} != {'executed': False}
+E         Use -v to get more diff
+
+tests/test_review_round2.py:169: AssertionError
+__________________ test_a_correct_advisory_is_still_accepted ___________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236dc0>
+
+    def test_a_correct_advisory_is_still_accepted(catalog, case):
+>       adv = advisory(catalog, case, fixture_interp(catalog))
+
+tests/test_review_round2.py:188: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236dc0>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+_____________ test_caller_set_acceptance_is_recomputed_not_trusted _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236ee0>
+
+    def test_caller_set_acceptance_is_recomputed_not_trusted(catalog, case):
+        forged = {"fixture": True, "executed": False, "verdict": "supported", "quote": "x", "accepted": True,
+                  "reasons": []}
+>       adv = advisory(catalog, case, forged)
+
+tests/test_review_round2.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236ee0>
+interp = {'accepted': True, 'executed': False, 'fixture': True, 'quote': 'x', ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+___________ test_quote_is_checked_against_the_obligations_own_source ___________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10721b550>
+
+    def test_quote_is_checked_against_the_obligations_own_source(catalog, case):
+        parsed_elsewhere = fixture_interp(catalog, quote=QUOTE_A, source="SRC-SYN-A")
+        assert parsed_elsewhere["accepted"] is True  # accepted against the wrong source text
+>       adv = advisory(catalog, case, parsed_elsewhere)
+
+tests/test_review_round2.py:202: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x10721b550>
+interp = {'accepted': True, 'fixture': True, 'quote': 'flag nodule-like findings on chest-xr studies', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+____________ test_caller_reasons_can_only_make_acceptance_stricter _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236f70>
+
+    def test_caller_reasons_can_only_make_acceptance_stricter(catalog, case):
+>       adv = advisory(catalog, case, dict(fixture_interp(catalog), reasons=["finish_reason_not_stop"], accepted=True))
+
+tests/test_review_round2.py:207: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236f70>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+____________ test_verdict_outside_the_schema_is_refused[CONFIRMED] _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236dc0>, verdict = 'CONFIRMED'
+
+    @pytest.mark.parametrize("verdict", ["CONFIRMED", "Supported", "", 1])
+    def test_verdict_outside_the_schema_is_refused(catalog, case, verdict):
+        with pytest.raises(ValueError, match="verdict"):
+>           advisory(catalog, case, dict(fixture_interp(catalog), verdict=verdict))
+
+tests/test_review_round2.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236dc0>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+____________ test_verdict_outside_the_schema_is_refused[Supported] _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236b80>, verdict = 'Supported'
+
+    @pytest.mark.parametrize("verdict", ["CONFIRMED", "Supported", "", 1])
+    def test_verdict_outside_the_schema_is_refused(catalog, case, verdict):
+        with pytest.raises(ValueError, match="verdict"):
+>           advisory(catalog, case, dict(fixture_interp(catalog), verdict=verdict))
+
+tests/test_review_round2.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107236b80>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+_________________ test_verdict_outside_the_schema_is_refused[] _________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1071ff4c0>, verdict = ''
+
+    @pytest.mark.parametrize("verdict", ["CONFIRMED", "Supported", "", 1])
+    def test_verdict_outside_the_schema_is_refused(catalog, case, verdict):
+        with pytest.raises(ValueError, match="verdict"):
+>           advisory(catalog, case, dict(fixture_interp(catalog), verdict=verdict))
+
+tests/test_review_round2.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1071ff4c0>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+________________ test_verdict_outside_the_schema_is_refused[1] _________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231280>, verdict = 1
+
+    @pytest.mark.parametrize("verdict", ["CONFIRMED", "Supported", "", 1])
+    def test_verdict_outside_the_schema_is_refused(catalog, case, verdict):
+        with pytest.raises(ValueError, match="verdict"):
+>           advisory(catalog, case, dict(fixture_interp(catalog), verdict=verdict))
+
+tests/test_review_round2.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231280>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+__ test_missing_interpretation_key_is_a_value_error_not_a_key_error[verdict] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231430>, drop = 'verdict'
+
+    @pytest.mark.parametrize("drop", ["verdict", "quote", "reasons"])
+    def test_missing_interpretation_key_is_a_value_error_not_a_key_error(catalog, case, drop):
+        interp = fixture_interp(catalog)
+        del interp[drop]
+        with pytest.raises(ValueError, match=drop):
+>           advisory(catalog, case, interp)
+
+tests/test_review_round2.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231430>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+___ test_missing_interpretation_key_is_a_value_error_not_a_key_error[quote] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231700>, drop = 'quote'
+
+    @pytest.mark.parametrize("drop", ["verdict", "quote", "reasons"])
+    def test_missing_interpretation_key_is_a_value_error_not_a_key_error(catalog, case, drop):
+        interp = fixture_interp(catalog)
+        del interp[drop]
+        with pytest.raises(ValueError, match=drop):
+>           advisory(catalog, case, interp)
+
+tests/test_review_round2.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231700>
+interp = {'accepted': True, 'fixture': True, 'quote_in_source': True, 'reasons': [], ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+__ test_missing_interpretation_key_is_a_value_error_not_a_key_error[reasons] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1072319d0>, drop = 'reasons'
+
+    @pytest.mark.parametrize("drop", ["verdict", "quote", "reasons"])
+    def test_missing_interpretation_key_is_a_value_error_not_a_key_error(catalog, case, drop):
+        interp = fixture_interp(catalog)
+        del interp[drop]
+        with pytest.raises(ValueError, match=drop):
+>           advisory(catalog, case, interp)
+
+tests/test_review_round2.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1072319d0>
+interp = {'accepted': True, 'fixture': True, 'quote': 'measure cardiac size on radiographs', 'quote_in_source': True, ...}
+
+    def advisory(catalog, case, interp):
+>       return attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)["serv_advisory"]["OB-4"]
+E       TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:184: TypeError
+___________ test_unknown_obligation_is_a_value_error_not_a_key_error ___________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1072313a0>
+
+    def test_unknown_obligation_is_a_value_error_not_a_key_error(catalog, case):
+        with pytest.raises(ValueError, match="OB-99"):
+>           attach_advisory(audit4(catalog, case), "OB-99", fixture_interp(catalog), catalog)
+E           TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:227: TypeError
+____________ test_catalog_must_be_the_one_the_audit_was_built_from _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231dc0>
+clone = <function deepcopy at 0x1060f4310>
+
+    def test_catalog_must_be_the_one_the_audit_was_built_from(catalog, case, clone):
+        other = clone(catalog)
+        other["catalog_id"] = "SYN-OTHER-CATALOG"
+        with pytest.raises(ValueError, match="catalog"):
+>           attach_advisory(audit4(catalog, case), "OB-4", fixture_interp(catalog), other)
+E           TypeError: attach_advisory() takes 3 positional arguments but 4 were given
+
+tests/test_review_round2.py:234: TypeError
+_ test_empty_report_is_not_complete_even_when_every_obligation_is_fully_supported _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107231040>
+clone = <function deepcopy at 0x1060f4310>
+
+    def test_empty_report_is_not_complete_even_when_every_obligation_is_fully_supported(catalog, case, clone):
+        c = clone(case("c01_supported_called"))
+        assert build_audit(catalog, c)["completeness"] == "full_support"
+        c["draft_report"]["statements"] = []
+        a = build_audit(catalog, c)
+>       assert a["completeness"] == "gaps_found"
+E       AssertionError: assert 'full_support' == 'gaps_found'
+E         
+E         - gaps_found
+E         + full_support
+
+tests/test_review_round2.py:243: AssertionError
+__________________ test_add_cited_claim_is_a_declared_action ___________________
+
+    def test_add_cited_claim_is_a_declared_action():
+>       assert "add_cited_claim" in reconcile.ACTIONS
+E       AssertionError: assert 'add_cited_claim' in ('run_tool_or_remove', 'remove_or_disclose', 'qualify_or_remove', 'remove_until_valid_receipt', 'cite_valid_receipt', 'replace_with_cited_claim', ...)
+E        +  where ('run_tool_or_remove', 'remove_or_disclose', 'qualify_or_remove', 'remove_until_valid_receipt', 'cite_valid_receipt', 'replace_with_cited_claim', ...) = reconcile.ACTIONS
+
+tests/test_review_round2.py:249: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_review_round2.py::test_huge_integer_literal_is_bad_input_not_a_crash[case-5000]
+FAILED tests/test_review_round2.py::test_huge_integer_literal_is_bad_input_not_a_crash[case-400]
+FAILED tests/test_review_round2.py::test_huge_integer_literal_is_bad_input_not_a_crash[catalog-5000]
+FAILED tests/test_review_round2.py::test_huge_integer_literal_is_bad_input_not_a_crash[catalog-400]
+FAILED tests/test_review_round2.py::test_negative_huge_integer_inside_a_list_is_bad_input
+FAILED tests/test_review_round2.py::test_integer_at_the_digit_limit_is_still_read
+FAILED tests/test_review_round2.py::test_any_value_error_from_the_json_parser_is_an_input_error
+FAILED tests/test_review_round2.py::test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_review_round2.py::test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise[-10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_review_round2.py::test_int_beyond_float_range_is_not_a_finite_number_and_does_not_raise[1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_review_round2.py::test_catalog_bound_beyond_float_range_is_an_input_error[spec0]
+FAILED tests/test_review_round2.py::test_catalog_bound_beyond_float_range_is_an_input_error[spec1]
+FAILED tests/test_review_round2.py::test_catalog_bound_beyond_float_range_is_an_input_error[spec2]
+FAILED tests/test_review_round2.py::test_call_argument_beyond_float_range_is_invalid_not_a_crash[spec0-10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_review_round2.py::test_call_argument_beyond_float_range_is_invalid_not_a_crash[spec1-value1]
+FAILED tests/test_review_round2.py::test_lone_surrogate_in_a_catalog_source_text_is_an_input_error
+FAILED tests/test_review_round2.py::test_lone_surrogate_anywhere_in_a_case_is_an_input_error[statement text]
+FAILED tests/test_review_round2.py::test_lone_surrogate_anywhere_in_a_case_is_an_input_error[dict key]
+FAILED tests/test_review_round2.py::test_lone_surrogate_escape_in_a_catalog_file_exits_two_without_a_traceback
+FAILED tests/test_review_round2.py::test_unexpected_error_while_building_the_audit_is_not_reported_as_gaps
+FAILED tests/test_review_round2.py::test_serv_status_outside_the_not_run_states_is_refused[serv_confirmed]
+FAILED tests/test_review_round2.py::test_serv_status_outside_the_not_run_states_is_refused[executed]
+FAILED tests/test_review_round2.py::test_serv_status_outside_the_not_run_states_is_refused[fixture]
+FAILED tests/test_review_round2.py::test_serv_status_outside_the_not_run_states_is_refused[]
+FAILED tests/test_review_round2.py::test_serv_status_outside_the_not_run_states_is_refused[NOT_RUN]
+FAILED tests/test_review_round2.py::test_serv_block_with_extra_keys_is_refused
+FAILED tests/test_review_round2.py::test_serv_block_is_copied_not_aliased - A...
+FAILED tests/test_review_round2.py::test_a_correct_advisory_is_still_accepted
+FAILED tests/test_review_round2.py::test_caller_set_acceptance_is_recomputed_not_trusted
+FAILED tests/test_review_round2.py::test_quote_is_checked_against_the_obligations_own_source
+FAILED tests/test_review_round2.py::test_caller_reasons_can_only_make_acceptance_stricter
+FAILED tests/test_review_round2.py::test_verdict_outside_the_schema_is_refused[CONFIRMED]
+FAILED tests/test_review_round2.py::test_verdict_outside_the_schema_is_refused[Supported]
+FAILED tests/test_review_round2.py::test_verdict_outside_the_schema_is_refused[]
+FAILED tests/test_review_round2.py::test_verdict_outside_the_schema_is_refused[1]
+FAILED tests/test_review_round2.py::test_missing_interpretation_key_is_a_value_error_not_a_key_error[verdict]
+FAILED tests/test_review_round2.py::test_missing_interpretation_key_is_a_value_error_not_a_key_error[quote]
+FAILED tests/test_review_round2.py::test_missing_interpretation_key_is_a_value_error_not_a_key_error[reasons]
+FAILED tests/test_review_round2.py::test_unknown_obligation_is_a_value_error_not_a_key_error
+FAILED tests/test_review_round2.py::test_catalog_must_be_the_one_the_audit_was_built_from
+FAILED tests/test_review_round2.py::test_empty_report_is_not_complete_even_when_every_obligation_is_fully_supported
+FAILED tests/test_review_round2.py::test_add_cited_claim_is_a_declared_action
+42 failed, 4 passed in 0.89s
+# exit code: 1

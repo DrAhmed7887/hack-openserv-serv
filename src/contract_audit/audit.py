@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+from .catalog import catalog_digest
 from .coverage import assess_obligations
 from .inputs import validate_case, validate_catalog
 from .reconcile import reconcile_report
@@ -16,20 +17,26 @@ NOTICES = (
 )
 
 
-def _check_serv_block(serv):
-    """Only a not-run status block is accepted here. Live execution cannot be asserted by a caller."""
-    if not isinstance(serv, dict) or serv.get("executed") is not False or serv.get("fixture") is not False \
-            or not isinstance(serv.get("status"), str):
-        raise ValueError("serv must be a status block with executed false and fixture false "
-                         "(a SERV advisory is attached afterwards with attach_advisory)")
+# The not-run states a caller may report. "executed" and "fixture" are set only by attach_advisory.
+SERV_NOT_RUN = ("not_run", "not_configured", "model_not_chosen", "call_failed")
+
+
+def _serv_block(serv):
+    """Validate a caller's SERV status block and return a fresh copy. Live execution cannot be asserted here."""
+    if serv is None:
+        return {"status": "not_run", "executed": False, "fixture": False}
+    if not isinstance(serv, dict) or set(serv) != {"status", "executed", "fixture"} \
+            or serv["executed"] is not False or serv["fixture"] is not False or serv["status"] not in SERV_NOT_RUN:
+        raise ValueError(f"serv must be exactly {{status, executed: false, fixture: false}} with status one of "
+                         f"{list(SERV_NOT_RUN)} (a SERV advisory is attached afterwards with attach_advisory)")
+    return {"status": serv["status"], "executed": False, "fixture": False}
 
 
 def build_audit(catalog, case, serv=None):
-    """Build the audit. `serv` is a status block from the SERV boundary; default says it was not run."""
+    """Build the audit. `serv` is a not-run status block (copied, never aliased); default says it was not run."""
     validate_catalog(catalog)
     validate_case(case)
-    if serv is not None:
-        _check_serv_block(serv)
+    serv = _serv_block(serv)
     obligations, call_results = assess_obligations(
         catalog, case["study"], case["proposed_calls"], case["receipts"])
     report = reconcile_report(obligations, case["draft_report"])
@@ -39,9 +46,10 @@ def build_audit(catalog, case, serv=None):
         "schema": SCHEMA,
         "case_id": case["case_id"],
         "catalog_id": catalog["catalog_id"],
+        "catalog_sha256": catalog_digest(catalog),
         "synthetic": bool(case.get("synthetic")) and bool(catalog.get("synthetic")),
         "signoff": {"status": "pending"},
-        "serv": serv if serv is not None else {"status": "not_run", "executed": False, "fixture": False},
+        "serv": serv,
         "notices": list(NOTICES),
         "study": {"study_id": case["study"]["study_id"], "modality": case["study"]["modality"]},
         "obligations": obligations,
