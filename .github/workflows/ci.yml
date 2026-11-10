@@ -23,6 +23,8 @@ jobs:
           if [ "$code" -ne 2 ]; then echo "expected exit 2 (bad input), got $code"; exit 1; fi
           code=0; python -m contract_audit audit --catalog data/catalog.json --case data/cases/c01_supported_called.json --out /nonexistent-dir/audit.json > /dev/null 2>&1 || code=$?
           if [ "$code" -ne 2 ]; then echo "expected exit 2 (unwritable --out), got $code"; exit 1; fi
+      - name: Adversarial eval is current and deterministic (seeded; no network)
+        run: python scripts/make_eval.py --check
       - name: Mock is in sync with the validator
         run: |
           python scripts/build_mock.py
