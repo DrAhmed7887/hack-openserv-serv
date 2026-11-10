@@ -1,0 +1,156 @@
+{
+  "case_id": "c07_combined",
+  "draft_report": {
+    "statements": [
+      {
+        "cites_receipt": "RCPT-1",
+        "kind": "claims_assessed",
+        "obligation_id": "OB-1",
+        "statement_id": "ST-1",
+        "text": "Nodule-like assessment completed (synthetic placeholder text)."
+      },
+      {
+        "cites_receipt": null,
+        "kind": "claims_assessed",
+        "obligation_id": "OB-2",
+        "statement_id": "ST-2",
+        "text": "Effusion-like assessment completed (synthetic placeholder text)."
+      },
+      {
+        "cites_receipt": null,
+        "kind": "discloses_not_assessed",
+        "obligation_id": "OB-3",
+        "statement_id": "ST-3",
+        "text": "Fracture-like assessment not performed (synthetic placeholder text)."
+      },
+      {
+        "cites_receipt": "RCPT-4",
+        "kind": "claims_assessed",
+        "obligation_id": "OB-4",
+        "statement_id": "ST-4",
+        "text": "Cardiac-size assessment completed (synthetic placeholder text)."
+      },
+      {
+        "cites_receipt": null,
+        "kind": "claims_assessed",
+        "obligation_id": "OB-5",
+        "statement_id": "ST-5",
+        "text": "Tube-position-like assessment completed (synthetic placeholder text)."
+      }
+    ]
+  },
+  "proposed_calls": [
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-1",
+      "obligation_id": "OB-1",
+      "tool_id": "SYN-NODULE-1"
+    },
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-4",
+      "obligation_id": "OB-4",
+      "tool_id": "SYN-CARDIAC-1"
+    },
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-5",
+      "obligation_id": "OB-5",
+      "tool_id": "SYN-LINE-1"
+    },
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-6",
+      "obligation_id": "OB-6",
+      "tool_id": "SYN-VOLUME-1"
+    },
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-3",
+      "obligation_id": "OB-3",
+      "tool_id": "SYN-FRACTURE-1"
+    }
+  ],
+  "receipts": [
+    {
+      "call_id": "CALL-1",
+      "executor": "mock-tool",
+      "fixture": true,
+      "output": {
+        "region_id": "R-001",
+        "result_code": "MOCK-OK"
+      },
+      "output_sha256": "ac6477740a8936dce1049f05937925138e77e8334df8aacd2051c862a6d57895",
+      "receipt_id": "RCPT-1",
+      "status": "ok",
+      "tool_id": "SYN-NODULE-1"
+    },
+    {
+      "call_id": "CALL-4",
+      "executor": "mock-tool",
+      "fixture": true,
+      "output": {
+        "region_id": "R-004",
+        "result_code": "MOCK-OK"
+      },
+      "output_sha256": "35568444ad987d5b9358a4c4c68150a461e5273019cd6c0a8cd2494395036da9",
+      "receipt_id": "RCPT-4",
+      "status": "ok",
+      "tool_id": "SYN-CARDIAC-1"
+    },
+    {
+      "call_id": "CALL-6",
+      "executor": "mock-tool",
+      "fixture": true,
+      "output": {
+        "region_id": "R-006",
+        "result_code": "MOCK-ERROR"
+      },
+      "output_sha256": "0a031444d0e63ed76f840e935b6469390b4c54bab923c48b7da8e22abb533f2a",
+      "receipt_id": "RCPT-6",
+      "status": "error",
+      "tool_id": "SYN-VOLUME-1"
+    }
+  ],
+  "study": {
+    "modality": "chest-xr",
+    "obligations": [
+      {
+        "finding_class": "nodule_like",
+        "obligation_id": "OB-1"
+      },
+      {
+        "finding_class": "effusion_like",
+        "obligation_id": "OB-2"
+      },
+      {
+        "finding_class": "fracture_like",
+        "obligation_id": "OB-3"
+      },
+      {
+        "finding_class": "cardiac_size",
+        "obligation_id": "OB-4"
+      },
+      {
+        "finding_class": "tube_position_like",
+        "obligation_id": "OB-5"
+      },
+      {
+        "finding_class": "volume_like",
+        "obligation_id": "OB-6"
+      }
+    ],
+    "study_id": "SYN-STUDY-001"
+  },
+  "synthetic": true
+}

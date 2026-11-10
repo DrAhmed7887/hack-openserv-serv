@@ -1,0 +1,8 @@
+{
+  "case_id": "c06_execution_failure",
+  "completeness": "gaps_found",
+  "obligations": {"OB-6": {"disposition": "supported_called", "receipt_status": "failed", "full_support": false}},
+  "calls": {"CALL-1": "valid"},
+  "statements": {"ST-1": {"outcome": "unsupported_claim", "action": "remove_until_valid_receipt"}},
+  "report_gaps": {}
+}

@@ -1,0 +1,21 @@
+{
+  "case_id": "c07_combined",
+  "completeness": "gaps_found",
+  "obligations": {
+    "OB-1": {"disposition": "supported_called", "receipt_status": "valid", "full_support": true},
+    "OB-2": {"disposition": "supported_omitted", "receipt_status": "not_applicable", "full_support": false},
+    "OB-3": {"disposition": "unsupported", "receipt_status": "not_applicable", "full_support": false},
+    "OB-4": {"disposition": "uncertain", "receipt_status": "not_applicable", "full_support": false},
+    "OB-5": {"disposition": "supported_called", "receipt_status": "missing", "full_support": false},
+    "OB-6": {"disposition": "supported_called", "receipt_status": "failed", "full_support": false}
+  },
+  "calls": {"CALL-1": "valid", "CALL-3": "invalid", "CALL-4": "unconfirmed", "CALL-5": "valid", "CALL-6": "valid"},
+  "statements": {
+    "ST-1": {"outcome": "supported_by_receipt", "action": null},
+    "ST-2": {"outcome": "unsupported_claim", "action": "run_tool_or_remove"},
+    "ST-3": {"outcome": "limitation_disclosed", "action": null},
+    "ST-4": {"outcome": "unsupported_claim", "action": "qualify_or_remove"},
+    "ST-5": {"outcome": "unsupported_claim", "action": "remove_until_valid_receipt"}
+  },
+  "report_gaps": {"OB-6": "add_limitation_statement"}
+}

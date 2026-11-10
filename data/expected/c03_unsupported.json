@@ -1,0 +1,8 @@
+{
+  "case_id": "c03_unsupported",
+  "completeness": "gaps_found",
+  "obligations": {"OB-3": {"disposition": "unsupported", "receipt_status": "not_applicable", "full_support": false}},
+  "calls": {"CALL-1": "invalid"},
+  "statements": {"ST-1": {"outcome": "limitation_disclosed", "action": null}},
+  "report_gaps": {}
+}

@@ -1,0 +1,27 @@
+{
+  "case_id": "c02_supported_omitted",
+  "draft_report": {
+    "statements": [
+      {
+        "cites_receipt": null,
+        "kind": "claims_assessed",
+        "obligation_id": "OB-2",
+        "statement_id": "ST-1",
+        "text": "Effusion-like assessment completed (synthetic placeholder text)."
+      }
+    ]
+  },
+  "proposed_calls": [],
+  "receipts": [],
+  "study": {
+    "modality": "chest-xr",
+    "obligations": [
+      {
+        "finding_class": "effusion_like",
+        "obligation_id": "OB-2"
+      }
+    ],
+    "study_id": "SYN-STUDY-001"
+  },
+  "synthetic": true
+}

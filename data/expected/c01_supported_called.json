@@ -1,0 +1,8 @@
+{
+  "case_id": "c01_supported_called",
+  "completeness": "full_support",
+  "obligations": {"OB-1": {"disposition": "supported_called", "receipt_status": "valid", "full_support": true}},
+  "calls": {"CALL-1": "valid"},
+  "statements": {"ST-1": {"outcome": "supported_by_receipt", "action": null}},
+  "report_gaps": {}
+}

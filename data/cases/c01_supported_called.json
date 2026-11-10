@@ -1,0 +1,50 @@
+{
+  "case_id": "c01_supported_called",
+  "draft_report": {
+    "statements": [
+      {
+        "cites_receipt": "RCPT-1",
+        "kind": "claims_assessed",
+        "obligation_id": "OB-1",
+        "statement_id": "ST-1",
+        "text": "Nodule-like assessment completed (synthetic placeholder text)."
+      }
+    ]
+  },
+  "proposed_calls": [
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-1",
+      "obligation_id": "OB-1",
+      "tool_id": "SYN-NODULE-1"
+    }
+  ],
+  "receipts": [
+    {
+      "call_id": "CALL-1",
+      "executor": "mock-tool",
+      "fixture": true,
+      "output": {
+        "region_id": "R-001",
+        "result_code": "MOCK-OK"
+      },
+      "output_sha256": "ac6477740a8936dce1049f05937925138e77e8334df8aacd2051c862a6d57895",
+      "receipt_id": "RCPT-1",
+      "status": "ok",
+      "tool_id": "SYN-NODULE-1"
+    }
+  ],
+  "study": {
+    "modality": "chest-xr",
+    "obligations": [
+      {
+        "finding_class": "nodule_like",
+        "obligation_id": "OB-1"
+      }
+    ],
+    "study_id": "SYN-STUDY-001"
+  },
+  "synthetic": true
+}

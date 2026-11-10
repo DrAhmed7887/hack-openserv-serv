@@ -1,0 +1,8 @@
+{
+  "case_id": "c04_uncertain_source_insufficient",
+  "completeness": "gaps_found",
+  "obligations": {"OB-4": {"disposition": "uncertain", "receipt_status": "not_applicable", "full_support": false}},
+  "calls": {"CALL-1": "unconfirmed"},
+  "statements": {"ST-1": {"outcome": "unsupported_claim", "action": "qualify_or_remove"}},
+  "report_gaps": {}
+}

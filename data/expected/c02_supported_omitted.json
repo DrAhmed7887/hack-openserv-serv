@@ -1,0 +1,8 @@
+{
+  "case_id": "c02_supported_omitted",
+  "completeness": "gaps_found",
+  "obligations": {"OB-2": {"disposition": "supported_omitted", "receipt_status": "not_applicable", "full_support": false}},
+  "calls": {},
+  "statements": {"ST-1": {"outcome": "unsupported_claim", "action": "run_tool_or_remove"}},
+  "report_gaps": {}
+}

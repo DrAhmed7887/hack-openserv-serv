@@ -1,0 +1,36 @@
+{
+  "case_id": "c05_missing_receipt",
+  "draft_report": {
+    "statements": [
+      {
+        "cites_receipt": null,
+        "kind": "claims_assessed",
+        "obligation_id": "OB-5",
+        "statement_id": "ST-1",
+        "text": "Tube-position-like assessment completed (synthetic placeholder text)."
+      }
+    ]
+  },
+  "proposed_calls": [
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-1",
+      "obligation_id": "OB-5",
+      "tool_id": "SYN-LINE-1"
+    }
+  ],
+  "receipts": [],
+  "study": {
+    "modality": "chest-xr",
+    "obligations": [
+      {
+        "finding_class": "tube_position_like",
+        "obligation_id": "OB-5"
+      }
+    ],
+    "study_id": "SYN-STUDY-001"
+  },
+  "synthetic": true
+}

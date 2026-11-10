@@ -1,0 +1,115 @@
+{
+  "catalog_id": "SYN-CATALOG-001",
+  "notice": "FICTIONAL engineering catalog for a mechanism spike. Not a real device list. Does not describe any real product's intended use.",
+  "signoff": {
+    "by": null,
+    "status": "pending"
+  },
+  "sources": {
+    "SRC-SYN-A": {
+      "sha256": "bff1b8f7115ac30f869884db65ae5884d7951a2f84f1ae70d14f533cca404bbc",
+      "text": "SYNTHETIC SPECIFICATION A (fictional, engineering test only). Tool SYN-NODULE-1 is specified to flag nodule-like findings on chest-xr studies.",
+      "title": "Synthetic specification A"
+    },
+    "SRC-SYN-B": {
+      "sha256": "c8d572e45007cc224bbf08180a3fdc2af354487e576a70a172033520196c79fa",
+      "text": "SYNTHETIC SPECIFICATION B (fictional, engineering test only). Tool SYN-EFFUSION-1 is specified to flag effusion-like findings on chest-xr studies.",
+      "title": "Synthetic specification B"
+    },
+    "SRC-SYN-C": {
+      "sha256": "ee26c7adba1cd59d50404f56130bc307aef7d02cb97c7f0c7e4414bd8f206d47",
+      "text": "SYNTHETIC SPECIFICATION C (fictional, engineering test only). Tool SYN-FRACTURE-1 is specified to flag fracture-like findings on extremity-xr studies only.",
+      "title": "Synthetic specification C"
+    },
+    "SRC-SYN-D": {
+      "sha256": "81b1bece8c775bd0359e64eb712a990334d40ad1836472e10fa32c4bf6170f62",
+      "text": "SYNTHETIC SPECIFICATION D (fictional, engineering test only). Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs. Supported study types are listed in a separate document that is not included here.",
+      "title": "Synthetic specification D"
+    },
+    "SRC-SYN-E": {
+      "sha256": "473a0de1c53c9ebc402bc6e195bb7f408809822f7f23fb18930db8e687269453",
+      "text": "SYNTHETIC SPECIFICATION E (fictional, engineering test only). Tool SYN-LINE-1 is specified to flag tube-position-like findings on chest-xr studies.",
+      "title": "Synthetic specification E"
+    },
+    "SRC-SYN-F": {
+      "sha256": "edf40b161763d7598a07bf46ecbc7ea4503ba064104063f005d6a8bbb58af3f5",
+      "text": "SYNTHETIC SPECIFICATION F (fictional, engineering test only). Tool SYN-VOLUME-1 is specified to flag lung-volume-like findings on chest-xr studies.",
+      "title": "Synthetic specification F"
+    }
+  },
+  "synthetic": true,
+  "tools": [
+    {
+      "finding_class": "nodule_like",
+      "finding_term": "nodule-like",
+      "modality": "chest-xr",
+      "modality_term": "chest-xr",
+      "quote": "flag nodule-like findings on chest-xr studies",
+      "required_args": [
+        "study_id"
+      ],
+      "source_id": "SRC-SYN-A",
+      "tool_id": "SYN-NODULE-1"
+    },
+    {
+      "finding_class": "effusion_like",
+      "finding_term": "effusion-like",
+      "modality": "chest-xr",
+      "modality_term": "chest-xr",
+      "quote": "flag effusion-like findings on chest-xr studies",
+      "required_args": [
+        "study_id"
+      ],
+      "source_id": "SRC-SYN-B",
+      "tool_id": "SYN-EFFUSION-1"
+    },
+    {
+      "finding_class": "fracture_like",
+      "finding_term": "fracture-like",
+      "modality": "extremity-xr",
+      "modality_term": "extremity-xr",
+      "quote": "flag fracture-like findings on extremity-xr studies only",
+      "required_args": [
+        "study_id"
+      ],
+      "source_id": "SRC-SYN-C",
+      "tool_id": "SYN-FRACTURE-1"
+    },
+    {
+      "finding_class": "cardiac_size",
+      "finding_term": "cardiac size",
+      "modality": "chest-xr",
+      "modality_term": "chest-xr",
+      "quote": "measure cardiac size on radiographs",
+      "required_args": [
+        "study_id"
+      ],
+      "source_id": "SRC-SYN-D",
+      "tool_id": "SYN-CARDIAC-1"
+    },
+    {
+      "finding_class": "tube_position_like",
+      "finding_term": "tube-position-like",
+      "modality": "chest-xr",
+      "modality_term": "chest-xr",
+      "quote": "flag tube-position-like findings on chest-xr studies",
+      "required_args": [
+        "study_id"
+      ],
+      "source_id": "SRC-SYN-E",
+      "tool_id": "SYN-LINE-1"
+    },
+    {
+      "finding_class": "volume_like",
+      "finding_term": "lung-volume-like",
+      "modality": "chest-xr",
+      "modality_term": "chest-xr",
+      "quote": "flag lung-volume-like findings on chest-xr studies",
+      "required_args": [
+        "study_id"
+      ],
+      "source_id": "SRC-SYN-F",
+      "tool_id": "SYN-VOLUME-1"
+    }
+  ]
+}

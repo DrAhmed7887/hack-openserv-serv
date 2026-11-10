@@ -1,0 +1,36 @@
+{
+  "case_id": "c03_unsupported",
+  "draft_report": {
+    "statements": [
+      {
+        "cites_receipt": null,
+        "kind": "discloses_not_assessed",
+        "obligation_id": "OB-3",
+        "statement_id": "ST-1",
+        "text": "Fracture-like assessment not performed (synthetic placeholder text)."
+      }
+    ]
+  },
+  "proposed_calls": [
+    {
+      "args": {
+        "study_id": "SYN-STUDY-001"
+      },
+      "call_id": "CALL-1",
+      "obligation_id": "OB-3",
+      "tool_id": "SYN-FRACTURE-1"
+    }
+  ],
+  "receipts": [],
+  "study": {
+    "modality": "chest-xr",
+    "obligations": [
+      {
+        "finding_class": "fracture_like",
+        "obligation_id": "OB-3"
+      }
+    ],
+    "study_id": "SYN-STUDY-001"
+  },
+  "synthetic": true
+}
