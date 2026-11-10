@@ -1,6 +1,6 @@
 # SERV integration boundary
 
-**Status: live transport built and tested offline (injected HTTP plus a loopback server). Not yet executed against SERV:** the run waits for the owner's API key. When it has run, `docs/SERV_RUN.md` records exactly what came back. Evidence rows are in the private research pack; public-doc facts are summarised in `docs/EVIDENCE_SUMMARY.md`.
+**Status: live transport built, tested offline (injected HTTP plus a loopback server), and run against SERV on 10 Nov 2026** (`gpt-6-luna`, the two fixture cases with an uncertain obligation). What came back, and why the deterministic result stood: `docs/SERV_RUN.md`. Evidence rows are in the private research pack; public-doc facts are summarised in `docs/EVIDENCE_SUMMARY.md`.
 
 ## Interface, as documented publicly (read 2026-11-10, no sign-in)
 

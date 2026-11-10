@@ -1,6 +1,6 @@
 # Known limitations and evidence caveats
 
-Status: synthetic G1/G2 precursor. Live SERV transport built and tested offline; the live run waits for the API key (see `docs/SERV_RUN.md` once it exists).
+Status: synthetic G1/G2 precursor. Live SERV transport built, tested offline and run once on 10 Nov 2026 (`docs/SERV_RUN.md`: SERV answered `supported` where the source is insufficient; the deterministic `uncertain` stood).
 
 ## What the validator does not do
 

@@ -1,0 +1,91 @@
+{
+  "calls": {
+    "CALL-1": {
+      "reasons": [
+        "modality_term_not_in_quote"
+      ],
+      "status": "unconfirmed"
+    }
+  },
+  "case_id": "c04_uncertain_source_insufficient",
+  "catalog_id": "SYN-CATALOG-001",
+  "completeness": "gaps_found",
+  "notices": [
+    "Synthetic fixture data only. No images, DICOM, patients or real devices.",
+    "Catalog is fictional. Physician/operator sign-off is pending.",
+    "Full support means: confirmed catalog entry, valid call and valid mock receipt. It is not a clinical or SERV performance claim."
+  ],
+  "obligations": {
+    "OB-4": {
+      "call_id": null,
+      "calls": [
+        {
+          "call_id": "CALL-1",
+          "reasons": [
+            "modality_term_not_in_quote"
+          ],
+          "receipt_id": null,
+          "receipt_status": "not_applicable",
+          "status": "unconfirmed"
+        }
+      ],
+      "capability": "uncertain",
+      "disposition": "uncertain",
+      "full_support": false,
+      "reasons": [
+        "modality_term_not_in_quote"
+      ],
+      "receipt_id": null,
+      "receipt_ids": [],
+      "receipt_status": "not_applicable",
+      "tool_id": "SYN-CARDIAC-1"
+    }
+  },
+  "report_gaps": {},
+  "schema": "contract-audit/v0",
+  "serv": {
+    "executed": true,
+    "fixture": false,
+    "model": "gpt-6-luna",
+    "status": "executed"
+  },
+  "serv_advisory": {
+    "OB-4": {
+      "accepted": true,
+      "human_confirmation_required": true,
+      "quote": "Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs.",
+      "reasons": [],
+      "usage": {
+        "completion_tokens": 78,
+        "prompt_tokens": 503,
+        "total_tokens": 581
+      },
+      "verdict": "supported"
+    }
+  },
+  "signoff": {
+    "status": "pending"
+  },
+  "statements": {
+    "ST-1": {
+      "action": "qualify_or_remove",
+      "outcome": "unsupported_claim"
+    }
+  },
+  "study": {
+    "modality": "chest-xr",
+    "study_id": "SYN-STUDY-001"
+  },
+  "summary": {
+    "by_disposition": {
+      "supported_called": 0,
+      "supported_omitted": 0,
+      "uncertain": 1,
+      "unsupported": 0
+    },
+    "fully_supported": 0,
+    "obligations": 1,
+    "report_consistent": false
+  },
+  "synthetic": true
+}
