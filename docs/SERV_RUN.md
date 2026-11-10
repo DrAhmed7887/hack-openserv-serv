@@ -18,4 +18,6 @@ Cost: read it from the SERV console usage page (prices per model are in the SERV
 - **Cost:** 1,006 input + 168 output tokens in total. At the SERV models page price for `gpt-6-luna` ($0.13 / $0.65 per million) that is about $0.0002; the console balance is the real figure.
 - Two cases, one obligation, one model: this says nothing about SERV's accuracy in general.
 
+- **Under the rules since 10 Nov (PR #4)** this answer is **not accepted**: a `supported` quote must name the study type, and "measure cardiac size on radiographs" does not name chest-xr. The rule came from the larger live batches in `eval/SERV_BATCH.md`, where it was checked on held-out wording.
+
 (This section is written by hand; `scripts/serv_live_run.py` regenerates the table above it.)

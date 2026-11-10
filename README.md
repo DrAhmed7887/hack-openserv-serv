@@ -1,6 +1,16 @@
 # Radiology tool-capability contract audit
 
-> **Status: G1 mechanism spike plus a G2 design mock. Not a clinical product.** Synthetic data only. SERV Reasoning: **run live on 10 Nov 2026** (`gpt-6-luna`, 2 requests); results and what they show in `docs/SERV_RUN.md`. Product name not yet chosen (neutral descriptor used).
+**A reporting agent's draft can read as finished and still be wrong.** On 120 seeded broken reports that each look complete, the audit flags all 120 for the right reason and passes none as complete; 30 of 30 clean reports pass ([eval/RESULTS.md](eval/RESULTS.md)). Where its strict rule can only say "uncertain", it asks **SERV Reasoning**, and SERV's answer stays advice: in a held-out live batch SERV over-reached on 8 of 16 specs, and the guard accepted none of those 8 ([eval/SERV_BATCH.md](eval/SERV_BATCH.md)).
+
+![How the audit decides: inputs, capability, calls, receipts, coverage, report, audit JSON; uncertain obligations go to SERV Reasoning as advice only](docs/workflow.svg)
+
+```bash
+PYTHONPATH=src python3 -m contract_audit audit --catalog data/catalog.json --case data/cases/c07_combined.json
+```
+
+Replay page, no install: [`mock/index.html`](mock/index.html). Judges: [JUDGES.md](JUDGES.md). Every number traced to its script: [CLAIMS.md](CLAIMS.md).
+
+> **Status:** hackathon prototype (OpenServ SERV Hackathon 02, Open Track). Synthetic data and a fictional catalog only; not a clinical product. Physician/operator sign-off on the assessment obligations is pending. Product name not yet chosen (neutral descriptor used).
 
 An engineer wires specialist tools into a reporting agent and gets a report that looks complete. This audit asks why it looks complete. It separates four situations per required assessment:
 
@@ -37,7 +47,7 @@ Exit codes: `0` audit produced, `1` gaps found (only with `--fail-on-gaps`), `2`
 
 ```bash
 python3 -m pip install -r requirements-dev.txt   # pytest only
-python3 -m pytest -q                              # 515 tests, offline (a few mock-routing tests need node and skip without it)
+python3 -m pytest -q                              # 519 tests, offline (a few mock-routing tests need node and skip without it)
 python3 scripts/make_g1_results.py                # re-runs everything, rewrites docs/G1_RESULTS.md
 python3 scripts/build_mock.py                     # re-embeds fixture output in mock/index.html
 ```
@@ -50,8 +60,10 @@ Measured results and the RED-before-GREEN logs: `docs/G1_RESULTS.md`, `docs/red/
 |---|---|
 | `src/contract_audit/` | Validator: catalog, calls, receipts, coverage, report reconciliation, audit, CLI, SERV boundary |
 | `data/` | Fictional catalog, 7 fixed synthetic cases, hand-written expected outcomes, `DATA_CARD.md` |
-| `docs/USER_FLOW.md`, `mock/index.html` | G2 flow and a static **DESIGN MOCK — NOT CONNECTED** (open the file in a browser) |
-| `docs/SERV_INTEGRATION.md` | Documented SERV interface, the boundary, what is unverified |
+| `docs/USER_FLOW.md`, `mock/index.html` | The user flow and a static **replay page** of real output (no server; open it in a browser) |
+| `docs/SERV_INTEGRATION.md` | Documented SERV interface and the advice-only boundary |
+| `eval/` | Seeded adversarial eval (CI-checked) and the live SERV batches, with raw JSON |
+| `docs/workflow.svg` | The pipeline diagram, generated from `scripts/make_workflow.py` |
 | `docs/G1_RESULTS.md` | Actual test log and case table |
 | `docs/KNOWN_LIMITATIONS.md` | Limits of the validator and caveats on the evidence in `docs/red/` |
 
@@ -68,4 +80,4 @@ Measured results and the RED-before-GREEN logs: `docs/G1_RESULTS.md`, `docs/red/
 
 ## Licence
 
-MIT, see `LICENSE`. Repository is private until the owner decides otherwise.
+MIT, see `LICENSE`. Built for the OpenServ SERV Hackathon 02 (2 to 15 Nov 2026).

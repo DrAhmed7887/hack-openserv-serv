@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DESIGN MOCK: Radiology tool-capability contract audit</title>
+<title>Tool-capability contract audit: replay</title>
 <style>
   :root { --ink:#1b2430; --muted:#566273; --line:#d9dee5; --bg:#f6f7f9; --card:#fff; --accent:#1f5f8b; --warn:#8a5a00; --bad:#9b2c2c; --ok:#1d6b43; }
   * { box-sizing:border-box; }
@@ -27,6 +27,10 @@
   .ok { color:var(--ok); } .warn { color:var(--warn); } .bad { color:var(--bad); } .info { color:var(--accent); }
   .note { border-left:4px solid var(--accent); background:#eef4f9; padding:10px 12px; border-radius:4px; margin:12px 0; }
   .note.stop { border-color:var(--bad); background:#faeeee; }
+  .verdict { background:var(--card); border:2px solid var(--bad); border-radius:12px; padding:14px 16px; margin:10px 0 14px; }
+  .verdict .big { font-size:1.2rem; font-weight:700; margin:0 0 6px; }
+  .verdict ul { margin:6px 0 0; padding-left:20px; color:var(--muted); }
+  .serv { border-left:4px solid var(--warn); background:#fbf5ea; padding:10px 12px; border-radius:4px; margin:12px 0; }
   .nextbar { display:flex; justify-content:space-between; gap:8px; margin-top:14px; }
   .btn { border:1px solid var(--accent); background:var(--accent); color:#fff; padding:10px 16px; border-radius:8px; font:inherit; min-height:44px; cursor:pointer; }
   .btn.ghost { background:#fff; color:var(--accent); }
@@ -46,12 +50,13 @@
 </style>
 </head>
 <body>
-<div class="banner">DESIGN MOCK — NOT CONNECTED
-  <small>Fixture data from the offline validator. No SERV account, key or call. Synthetic and fictional. Physician/operator sign-off pending.</small>
+<div class="banner">REPLAY OF REAL OUTPUT
+  <small>Every value here was produced by the offline validator (synthetic case c07) or recorded from a live SERV Reasoning run. This page calls no server. Fictional catalog; physician/operator sign-off pending.</small>
 </div>
 <main>
   <h1>Radiology tool-capability contract audit</h1>
   <p class="lead">For an engineer wiring specialist tools into a reporting agent: which assessments could the tools cover, which were actually run, and what does the draft report claim beyond the receipts?</p>
+  <div class="verdict" id="verdict"></div>
   <nav class="steps" id="nav" aria-label="Flow steps"></nav>
 
   <section class="step" id="step-catalog"><h2>1. Capability catalog</h2>
@@ -71,7 +76,8 @@
   <section class="step" id="step-coverage"><h2>3. Coverage matrix</h2>
     <p id="cov-summary"></p>
     <div class="table-wrap"><table id="t-coverage"></table></div>
-    <div class="note">Full support needs a confirmed mapping, a valid call and a valid receipt. A receipt cannot upgrade an uncertain or unsupported obligation.</div>
+    <div id="serv-notes"></div>
+    <div class="note">Full support needs a confirmed mapping, a valid call and a valid receipt. A receipt cannot upgrade an uncertain or unsupported obligation, and neither can SERV.</div>
     <div class="nextbar"><button class="btn ghost" data-go="study">Back</button><button class="btn" data-go="repair">Next: calls and report</button></div>
   </section>
 
@@ -80,8 +86,7 @@
     <div class="table-wrap"><table id="t-calls"></table></div>
     <h3>Draft report against receipts</h3>
     <div id="stmts"></div>
-    <div class="note stop"><strong>Not applied, not drafted.</strong> The labels above are the validator's proposed actions only. The mock does not rewrite the report. No SERV response is shown or simulated.
-      <div style="margin-top:8px"><button class="btn" disabled aria-disabled="true">Ask SERV for a repair draft (not connected)</button></div></div>
+    <div class="note stop"><strong>Not applied, not drafted.</strong> The labels above are the validator's proposed actions only. It does not rewrite the report: a person decides.</div>
     <div class="nextbar"><button class="btn ghost" data-go="coverage">Back</button><button class="btn" data-go="export">Next: export</button></div>
   </section>
 
@@ -89,7 +94,7 @@
     <p>The export is a structured JSON audit that can be re-run offline and compared byte for byte. It carries its own limits.</p>
     <pre id="export-cmd">python3 -m contract_audit audit --catalog data/catalog.json --case data/cases/c07_combined.json</pre>
     <div class="table-wrap"><table id="t-export"></table></div>
-    <h3>Audit JSON (fixture)</h3>
+    <h3>Audit JSON (real validator output, synthetic case c07)</h3>
     <pre id="audit-json"></pre>
     <div class="nextbar"><button class="btn ghost" data-go="repair">Back</button><button class="btn ghost" data-go="catalog">Start over</button></div>
   </section>
@@ -431,6 +436,20 @@
    "tool_id": "SYN-VOLUME-1"
   }
  ],
+ "eval": {
+  "broken": 120,
+  "clean": 30,
+  "clean_passed": 30,
+  "flagged_right": 120,
+  "guard_held": 24,
+  "guard_of": 24,
+  "passed_as_complete": 0,
+  "serv_accepted": 13,
+  "serv_accepted_right": 13,
+  "serv_over": 8,
+  "serv_over_accepted": 0,
+  "serv_over_of": 16
+ },
  "receipts": [
   {
    "call_id": "CALL-1",
@@ -448,6 +467,18 @@
    "status": "error"
   }
  ],
+ "serv_recorded": {
+  "OB-4": {
+   "accepted_now": false,
+   "model": "gpt-6-luna",
+   "quote": "measure cardiac size on radiographs",
+   "reasons_now": [
+    "quote_does_not_name_modality"
+   ],
+   "run": "10 Nov 2026, 10:47 UTC",
+   "verdict": "supported"
+  }
+ },
  "statements": [
   {
    "action": null,
@@ -551,12 +582,27 @@
   document.getElementById("study-line").innerHTML = "Study <code>" + esc(data.study.study_id) + "</code>, modality <code>" + esc(data.study.modality) + "</code>. The report must address " + data.study.obligations.length + " assessment obligations.";
   table("t-study", ["Obligation","Finding class (placeholder)"], data.study.obligations.map(function (o) { return ["<code>" + esc(o.obligation_id) + "</code>", esc(o.finding_class)]; }));
 
-  var s = a.summary, d = s.by_disposition;
+  var s = a.summary, d = s.by_disposition, e = data.eval;
+  var claims = data.statements.filter(function (st) { return st.kind === "claims_assessed"; }).length;
+  var limits = data.statements.length - claims;
+  document.getElementById("verdict").innerHTML = '<p class="big">This draft report reads as finished: it claims ' + claims + " assessments and discloses " + limits +
+    " limit" + (limits === 1 ? "" : "s") + ". Only " + s.fully_supported + " of the " + s.obligations + " required assessments " + (s.fully_supported === 1 ? "is" : "are") + " fully supported.</p>" +
+    "<div>The audit says why for each one: a tool that was never called, no tool for that study type, a tool whose spec does not confirm it, or a claim without a valid receipt.</div><ul>" +
+    "<li>Seeded test: <strong>" + e.flagged_right + "/" + e.broken + "</strong> broken reports flagged for the right reason, <strong>" + e.passed_as_complete + "</strong> passed as complete; " + e.clean_passed + "/" + e.clean + " clean reports passed.</li>" +
+    "<li>SERV Reasoning, held-out live batch: said &ldquo;supported&rdquo; on " + e.serv_over + " of " + e.serv_over_of + " specs that do not establish coverage. The guard accepted <strong>" + e.serv_over_accepted + "</strong> of those; all " + e.serv_accepted_right + " of the " + e.serv_accepted + " answers it accepted were right. The result stayed with a human in " + e.guard_held + "/" + e.guard_of + ".</li></ul>";
   document.getElementById("cov-summary").innerHTML = "<strong>" + s.fully_supported + " of " + s.obligations + "</strong> obligations have full support. Supported and called: " + d.supported_called + ". Supported but omitted: " + d.supported_omitted + ". Unsupported: " + d.unsupported + ". Uncertain: " + d.uncertain + ".";
   table("t-coverage", ["Obligation","Coverage","Receipt","Full support","Why"], Object.keys(a.obligations).sort().map(function (k) {
     var o = a.obligations[k];
-    return ["<code>" + esc(k) + "</code>", badge(LABEL[o.disposition]), badge(RECEIPT[o.receipt_status]), o.full_support ? badge(["yes (fixture)","ok"]) : badge(["no","bad"]), esc(o.reasons.join(", ") || "-")];
+    return ["<code>" + esc(k) + "</code>", badge(LABEL[o.disposition]), badge(RECEIPT[o.receipt_status]), o.full_support ? badge(["yes (mock receipt)","ok"]) : badge(["no","bad"]), esc(o.reasons.join(", ") || "-")];
   }));
+
+  document.getElementById("serv-notes").innerHTML = Object.keys(data.serv_recorded).sort().map(function (k) {
+    var r = data.serv_recorded[k];
+    return '<div class="serv"><strong>' + esc(k) + ": SERV Reasoning advice</strong> (recorded live run, " + esc(r.run) + ", <code>" + esc(r.model) + "</code>)<br>" +
+      "SERV said <strong>" + esc(r.verdict) + "</strong>, quoting &ldquo;" + esc(r.quote) + "&rdquo;.<br>" +
+      (r.accepted_now ? "Accepted as advice: a person must still confirm it." : "Not accepted under the current rules (" + esc(r.reasons_now.join(", ")) + "): the quote does not show this study type is covered.") +
+      " The audit result stays <strong>" + esc(LABEL[a.obligations[k].disposition][0].toLowerCase()) + "</strong>; SERV cannot change it.</div>";
+  }).join("");
 
   table("t-calls", ["Call","Tool","For","Check"], data.calls.map(function (c) {
     var cls = c.status === "valid" ? "ok" : (c.status === "unconfirmed" ? "warn" : "bad");
