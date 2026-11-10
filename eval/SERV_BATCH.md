@@ -19,4 +19,19 @@ Run before the quote-relevance rule existed; the rule was written after it, so t
 - **Accepted advice under the current rules:** 17 answers, 17 of them match the designed answer.
 - Tokens: 11940 in, 2247 out, 24 requests.
 
+## Batch v2 (2026-11-10 11:43 UTC, `gpt-6-luna`)
+
+Held out: new wording, committed before the run, scored with the rule already in place.
+
+| Group | n | Designed | SERV: supported / uncertain / unsupported | Matches designed | Accepted at run | Accepted under current rules | Quote names chest-xr |
+|---|---|---|---|---|---|---|---|
+| sufficient | 8 | supported | 8 / 0 / 0 | 8 | 6 | 6 | 8 |
+| insufficient | 8 | uncertain | 8 / 0 / 0 | 0 | 0 | 0 | 0 |
+| excluded | 8 | unsupported | 0 / 0 / 8 | 8 | 7 | 7 | 7 |
+
+- **Guard:** the deterministic disposition stayed `uncertain` in 24/24 answered cases; `full_support` was set 0 times; completeness reached `full_support` 0 times.
+- **Over-reach:** SERV said `supported` on 8 of the 16 specs that do not establish chest-xr coverage; under the current rules 0 of those answers are accepted.
+- **Accepted advice under the current rules:** 13 answers, 13 of them match the designed answer.
+- Tokens: 11825 in, 2324 out, 24 requests.
+
 Limits: synthetic sentences, one tool, one obligation, one model, one run per batch. This measures this setup, not SERV in general.

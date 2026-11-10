@@ -1,0 +1,475 @@
+{
+  "batch": "v2",
+  "model": "gpt-6-luna",
+  "requests": 24,
+  "rows": [
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-1",
+      "quote": "\"will measure cardiac size on radiographs. It was cleared for chest-xr use.\"",
+      "reasons": [
+        "quote_not_in_source"
+      ],
+      "serv_status": "executed",
+      "spec_text": "Version 3 of SYN-CARDIAC-1 will measure cardiac size on radiographs. It was cleared for chest-xr use.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-2",
+      "quote": "SYN-CARDIAC-1 can measure cardiac size on radiographs. Target modality: chest-xr.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 can measure cardiac size on radiographs. Target modality: chest-xr.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-3",
+      "quote": "This module is built to measure cardiac size on radiographs. Every chest-xr study is in scope.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "This module is built to measure cardiac size on radiographs. Every chest-xr study is in scope.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-4",
+      "quote": "SYN-CARDIAC-1 was trained to measure cardiac size on radiographs, and its target studies are chest-xr.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 was trained to measure cardiac size on radiographs, and its target studies are chest-xr.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-5",
+      "quote": "Purpose: measure cardiac size on radiographs. Study type covered: chest-xr.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "Purpose: measure cardiac size on radiographs. Study type covered: chest-xr.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-6",
+      "quote": "SYN-CARDIAC-1 is designed to measure cardiac size on radiographs. Inputs accepted: chest-xr studies.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 is designed to measure cardiac size on radiographs. Inputs accepted: chest-xr studies.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-7",
+      "quote": "The tool's job is to measure cardiac size on radiographs. It is meant for chest-xr.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "The tool's job is to measure cardiac size on radiographs. It is meant for chest-xr.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "sufficient",
+      "id": "sufficient-8",
+      "quote": "\u201cSYN-CARDIAC-1 aims to measure cardiac size on radiographs; chest-xr is the supported study type.\u201d",
+      "reasons": [
+        "quote_not_in_source"
+      ],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 aims to measure cardiac size on radiographs; chest-xr is the supported study type.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-1",
+      "quote": "can measure cardiac size on radiographs",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 can measure cardiac size on radiographs. Which study types it accepts is not stated here.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-2",
+      "quote": "measure cardiac size on radiographs",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "Purpose: measure cardiac size on radiographs. The list of study types is pending review.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-3",
+      "quote": "This module is built to measure cardiac size on radiographs.",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "This module is built to measure cardiac size on radiographs. Study types vary by deployment.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-4",
+      "quote": "aims to measure cardiac size on radiographs",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 aims to measure cardiac size on radiographs. Contact the vendor about study types.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-5",
+      "quote": "The tool's job is to measure cardiac size on radiographs.",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "The tool's job is to measure cardiac size on radiographs. Its study-type list is in annex B (not provided).",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-6",
+      "quote": "SYN-CARDIAC-1 was trained to measure cardiac size on radiographs from several sites.",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 was trained to measure cardiac size on radiographs from several sites.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-7",
+      "quote": "SYN-CARDIAC-1 is designed to measure cardiac size on radiographs.",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 is designed to measure cardiac size on radiographs. Performance data will follow.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "insufficient",
+      "id": "insufficient-8",
+      "quote": "will measure cardiac size on radiographs once configured",
+      "reasons": [
+        "quote_does_not_name_modality"
+      ],
+      "serv_status": "executed",
+      "spec_text": "Version 3 of SYN-CARDIAC-1 will measure cardiac size on radiographs once configured.",
+      "verdict": "supported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-1",
+      "quote": "chest-xr is outside its intended use.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 can measure cardiac size on radiographs. chest-xr is outside its intended use.",
+      "verdict": "unsupported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-2",
+      "quote": "Study type covered: extremity-xr only.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "Purpose: measure cardiac size on radiographs. Study type covered: extremity-xr only.",
+      "verdict": "unsupported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-3",
+      "quote": "Do not run it on chest-xr.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "This module is built to measure cardiac size on radiographs. Do not run it on chest-xr.",
+      "verdict": "unsupported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-4",
+      "quote": "chest-xr inputs are rejected.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 aims to measure cardiac size on radiographs. chest-xr inputs are rejected.",
+      "verdict": "unsupported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-5",
+      "quote": "It must not be used for chest-xr studies.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "The tool's job is to measure cardiac size on radiographs. It must not be used for chest-xr studies.",
+      "verdict": "unsupported"
+    },
+    {
+      "accepted": false,
+      "accepted_now": false,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-6",
+      "quote": "excluding chest-xr",
+      "reasons": [
+        "quote_too_short"
+      ],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 was trained to measure cardiac size on radiographs, excluding chest-xr.",
+      "verdict": "unsupported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-7",
+      "quote": "chest-xr is an unsupported input.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "SYN-CARDIAC-1 is designed to measure cardiac size on radiographs. chest-xr is an unsupported input.",
+      "verdict": "unsupported"
+    },
+    {
+      "accepted": true,
+      "accepted_now": true,
+      "answered": true,
+      "completeness": "gaps_found",
+      "disposition": "uncertain",
+      "exit_code": 0,
+      "full_support": false,
+      "group": "excluded",
+      "id": "excluded-8",
+      "quote": "chest-xr support ended with version 2.",
+      "reasons": [],
+      "serv_status": "executed",
+      "spec_text": "Version 3 of SYN-CARDIAC-1 will measure cardiac size on radiographs. chest-xr support ended with version 2.",
+      "verdict": "unsupported"
+    }
+  ],
+  "run_at": "2026-11-10 11:43 UTC",
+  "schema": "contract-audit-serv-batch/v1",
+  "summary": {
+    "accepted_advice_now": {
+      "match_designed": 13,
+      "n": 13
+    },
+    "excluded": {
+      "accepted_at_run": 7,
+      "accepted_now": 7,
+      "designed": "unsupported",
+      "matches_designed": 8,
+      "n": 8,
+      "quote_names_chest_xr": 7,
+      "verdicts": {
+        "supported": 0,
+        "uncertain": 0,
+        "unsupported": 8
+      }
+    },
+    "guard": {
+      "answered": 24,
+      "completeness_full_support": 0,
+      "disposition_unchanged": 24,
+      "full_support_set": 0
+    },
+    "insufficient": {
+      "accepted_at_run": 0,
+      "accepted_now": 0,
+      "designed": "uncertain",
+      "matches_designed": 0,
+      "n": 8,
+      "quote_names_chest_xr": 0,
+      "verdicts": {
+        "supported": 8,
+        "uncertain": 0,
+        "unsupported": 0
+      }
+    },
+    "over_reach": {
+      "accepted_now": 0,
+      "n": 8,
+      "of": 16
+    },
+    "sufficient": {
+      "accepted_at_run": 6,
+      "accepted_now": 6,
+      "designed": "supported",
+      "matches_designed": 8,
+      "n": 8,
+      "quote_names_chest_xr": 8,
+      "verdicts": {
+        "supported": 8,
+        "uncertain": 0,
+        "unsupported": 0
+      }
+    }
+  },
+  "tokens": {
+    "completion": 2324,
+    "prompt": 11825
+  }
+}
