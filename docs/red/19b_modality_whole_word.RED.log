@@ -1,0 +1,108 @@
+# RED evidence: 19b_modality_whole_word
+# command: python3 -m pytest tests/test_serv_quote_relevance.py -q -k whole_word
+# python: Python 3.9.6
+.F.FFFF                                                                  [100%]
+=================================== FAILURES ===================================
+_ test_the_modality_must_appear_as_a_whole_word[Applies to Chest-XR studies-chest-xr-True] _
+
+quote = 'Applies to Chest-XR studies', modality = 'chest-xr', expected = True
+
+    @pytest.mark.parametrize("quote,modality,expected", [
+        ("Intended study type: chest-xr.", "chest-xr", True),
+        ("Applies to Chest-XR studies", "chest-xr", True),          # case does not matter
+        ("chest-xr", "chest-xr", True),
+        ("nonchest-xr studies", "chest-xr", False),                 # not a whole word
+        ("chest-xray studies", "chest-xr", False),
+        ("Use it on CT studies.", "ct", True),
+        ("the subject and its effect", "ct", False),                # 'ct' inside other words
+    ])
+    def test_the_modality_must_appear_as_a_whole_word(quote, modality, expected):
+>       assert _names_modality(quote, modality) is expected
+E       AssertionError: assert False is True
+E        +  where False = _names_modality('Applies to Chest-XR studies', 'chest-xr')
+
+tests/test_serv_quote_relevance.py:72: AssertionError
+_ test_the_modality_must_appear_as_a_whole_word[nonchest-xr studies-chest-xr-False] _
+
+quote = 'nonchest-xr studies', modality = 'chest-xr', expected = False
+
+    @pytest.mark.parametrize("quote,modality,expected", [
+        ("Intended study type: chest-xr.", "chest-xr", True),
+        ("Applies to Chest-XR studies", "chest-xr", True),          # case does not matter
+        ("chest-xr", "chest-xr", True),
+        ("nonchest-xr studies", "chest-xr", False),                 # not a whole word
+        ("chest-xray studies", "chest-xr", False),
+        ("Use it on CT studies.", "ct", True),
+        ("the subject and its effect", "ct", False),                # 'ct' inside other words
+    ])
+    def test_the_modality_must_appear_as_a_whole_word(quote, modality, expected):
+>       assert _names_modality(quote, modality) is expected
+E       AssertionError: assert True is False
+E        +  where True = _names_modality('nonchest-xr studies', 'chest-xr')
+
+tests/test_serv_quote_relevance.py:72: AssertionError
+_ test_the_modality_must_appear_as_a_whole_word[chest-xray studies-chest-xr-False] _
+
+quote = 'chest-xray studies', modality = 'chest-xr', expected = False
+
+    @pytest.mark.parametrize("quote,modality,expected", [
+        ("Intended study type: chest-xr.", "chest-xr", True),
+        ("Applies to Chest-XR studies", "chest-xr", True),          # case does not matter
+        ("chest-xr", "chest-xr", True),
+        ("nonchest-xr studies", "chest-xr", False),                 # not a whole word
+        ("chest-xray studies", "chest-xr", False),
+        ("Use it on CT studies.", "ct", True),
+        ("the subject and its effect", "ct", False),                # 'ct' inside other words
+    ])
+    def test_the_modality_must_appear_as_a_whole_word(quote, modality, expected):
+>       assert _names_modality(quote, modality) is expected
+E       AssertionError: assert True is False
+E        +  where True = _names_modality('chest-xray studies', 'chest-xr')
+
+tests/test_serv_quote_relevance.py:72: AssertionError
+_ test_the_modality_must_appear_as_a_whole_word[Use it on CT studies.-ct-True] _
+
+quote = 'Use it on CT studies.', modality = 'ct', expected = True
+
+    @pytest.mark.parametrize("quote,modality,expected", [
+        ("Intended study type: chest-xr.", "chest-xr", True),
+        ("Applies to Chest-XR studies", "chest-xr", True),          # case does not matter
+        ("chest-xr", "chest-xr", True),
+        ("nonchest-xr studies", "chest-xr", False),                 # not a whole word
+        ("chest-xray studies", "chest-xr", False),
+        ("Use it on CT studies.", "ct", True),
+        ("the subject and its effect", "ct", False),                # 'ct' inside other words
+    ])
+    def test_the_modality_must_appear_as_a_whole_word(quote, modality, expected):
+>       assert _names_modality(quote, modality) is expected
+E       AssertionError: assert False is True
+E        +  where False = _names_modality('Use it on CT studies.', 'ct')
+
+tests/test_serv_quote_relevance.py:72: AssertionError
+_ test_the_modality_must_appear_as_a_whole_word[the subject and its effect-ct-False] _
+
+quote = 'the subject and its effect', modality = 'ct', expected = False
+
+    @pytest.mark.parametrize("quote,modality,expected", [
+        ("Intended study type: chest-xr.", "chest-xr", True),
+        ("Applies to Chest-XR studies", "chest-xr", True),          # case does not matter
+        ("chest-xr", "chest-xr", True),
+        ("nonchest-xr studies", "chest-xr", False),                 # not a whole word
+        ("chest-xray studies", "chest-xr", False),
+        ("Use it on CT studies.", "ct", True),
+        ("the subject and its effect", "ct", False),                # 'ct' inside other words
+    ])
+    def test_the_modality_must_appear_as_a_whole_word(quote, modality, expected):
+>       assert _names_modality(quote, modality) is expected
+E       AssertionError: assert True is False
+E        +  where True = _names_modality('the subject and its effect', 'ct')
+
+tests/test_serv_quote_relevance.py:72: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_serv_quote_relevance.py::test_the_modality_must_appear_as_a_whole_word[Applies to Chest-XR studies-chest-xr-True]
+FAILED tests/test_serv_quote_relevance.py::test_the_modality_must_appear_as_a_whole_word[nonchest-xr studies-chest-xr-False]
+FAILED tests/test_serv_quote_relevance.py::test_the_modality_must_appear_as_a_whole_word[chest-xray studies-chest-xr-False]
+FAILED tests/test_serv_quote_relevance.py::test_the_modality_must_appear_as_a_whole_word[Use it on CT studies.-ct-True]
+FAILED tests/test_serv_quote_relevance.py::test_the_modality_must_appear_as_a_whole_word[the subject and its effect-ct-False]
+5 failed, 2 passed, 7 deselected in 0.16s
+# exit code: 1

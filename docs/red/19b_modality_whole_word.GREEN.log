@@ -1,0 +1,6 @@
+# GREEN evidence: 19b_modality_whole_word
+# command: python3 -m pytest tests/test_serv_quote_relevance.py -q -k whole_word
+# python: Python 3.9.6
+.......                                                                  [100%]
+7 passed, 7 deselected in 0.11s
+# exit code: 0

@@ -11,7 +11,7 @@ import hashlib
 import pytest
 
 from contract_audit.audit import build_audit
-from contract_audit.serv import attach_advisory
+from contract_audit.serv import _names_modality, attach_advisory
 
 GENERIC = "Tool SYN-CARDIAC-1 is specified to measure cardiac size on radiographs."
 NAMES_CHEST = "Intended study type: chest-xr."
@@ -57,3 +57,16 @@ def test_the_rule_never_changes_the_deterministic_result(catalog, case, clone):
     after = attach_advisory(before, "OB-4", {"fixture": True, "verdict": "supported", "quote": NAMES_CHEST,
                                             "reasons": []}, cat)
     assert after["obligations"] == before["obligations"] and after["completeness"] == before["completeness"]
+
+
+@pytest.mark.parametrize("quote,modality,expected", [
+    ("Intended study type: chest-xr.", "chest-xr", True),
+    ("Applies to Chest-XR studies", "chest-xr", True),          # case does not matter
+    ("chest-xr", "chest-xr", True),
+    ("nonchest-xr studies", "chest-xr", False),                 # not a whole word
+    ("chest-xray studies", "chest-xr", False),
+    ("Use it on CT studies.", "ct", True),
+    ("the subject and its effect", "ct", False),                # 'ct' inside other words
+])
+def test_the_modality_must_appear_as_a_whole_word(quote, modality, expected):
+    assert _names_modality(quote, modality) is expected
