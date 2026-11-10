@@ -73,6 +73,14 @@ def _with_live_advice(audit, catalog, case, config, model, http):
     return audit
 
 
+def _internal_error(exc):
+    """A bug, not a finding: exit 6 with the traceback, so it can never read as 1 ('gaps found')."""
+    print(f"error: internal error, no audit produced ({type(exc).__name__}). This is a bug in "
+          "contract_audit, not a finding about the case. Traceback follows.", file=sys.stderr)
+    print(traceback.format_exc().encode("ascii", "backslashreplace").decode("ascii"), file=sys.stderr, end="")
+    return EXIT_INTERNAL_ERROR
+
+
 def main(argv=None, environ=None, http=urllib_post):
     args = _parser().parse_args(argv)
     environ = os.environ if environ is None else environ
@@ -81,6 +89,8 @@ def main(argv=None, environ=None, http=urllib_post):
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return EXIT_BAD_INPUT
+    except Exception as exc:  # noqa: BLE001 - see _internal_error
+        return _internal_error(exc)
     serv, code, message, config = None, EXIT_OK, "", None
     if args.serv:
         config, serv, code, message = _serv_gate(environ, args.serv_model)
@@ -93,11 +103,8 @@ def main(argv=None, environ=None, http=urllib_post):
                 audit = build_audit(catalog, case, serv=_serv_block("call_failed"))
                 code, message = EXIT_SERV_CALL_FAILED, str(exc)
         text = json.dumps(audit, indent=2, sort_keys=True) + "\n"
-    except Exception as exc:  # noqa: BLE001 - a bug: exit 6 with its traceback, so it never reads as 1 'gaps found'
-        print(f"error: internal error, no audit produced ({type(exc).__name__}). This is a bug in "
-              "contract_audit, not a finding about the case. Traceback follows.", file=sys.stderr)
-        print(traceback.format_exc().encode("ascii", "backslashreplace").decode("ascii"), file=sys.stderr, end="")
-        return EXIT_INTERNAL_ERROR
+    except Exception as exc:  # noqa: BLE001 - see _internal_error
+        return _internal_error(exc)
     if args.out:
         try:
             args.out.write_text(text, encoding="utf-8")

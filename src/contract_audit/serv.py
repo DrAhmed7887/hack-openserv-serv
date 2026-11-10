@@ -15,6 +15,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from .catalog import catalog_digest
+
 ENDPOINT = "https://inference-api.openserv.ai/v1/chat/completions"
 TIMEOUT_SECONDS = 30
 MAX_RESPONSE_BYTES = 1_000_000
@@ -261,6 +263,12 @@ def _own_source_text(audit, obligation_id, catalog):
         raise ValueError(f"unknown obligation {obligation_id!r} in this audit")
     if not isinstance(catalog, dict) or catalog.get("catalog_id") != audit.get("catalog_id"):
         raise ValueError("the catalog must be the one this audit was built from (catalog_id differs)")
+    try:
+        same = catalog_digest(catalog) == audit.get("catalog_sha256")
+    except (TypeError, ValueError, RecursionError):
+        same = False
+    if not same:
+        raise ValueError("the catalog must be the one this audit was built from (catalog_sha256 differs)")
     ob = obligations[obligation_id]
     try:
         tool = next(t for t in catalog["tools"] if t["tool_id"] == ob["tool_id"])
@@ -280,6 +288,8 @@ def _recheck(interpretation, source_text):
         raise ValueError("an interpretation must carry verdict, quote and reasons") from None
     if verdict is not None and verdict not in VERDICTS:
         raise ValueError(f"verdict not allowed: expected one of {VERDICTS} or none")
+    if quote is not None and not isinstance(quote, str):
+        raise ValueError("quote must be a string or none")
     if not isinstance(reasons, list) or not all(isinstance(r, str) for r in reasons):
         raise ValueError("reasons must be a list of strings")
     own = []

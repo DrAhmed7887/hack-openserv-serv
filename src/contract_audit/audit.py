@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+from .catalog import catalog_digest
 from .coverage import assess_obligations
 from .inputs import validate_case, validate_catalog
 from .reconcile import reconcile_report
@@ -45,6 +46,7 @@ def build_audit(catalog, case, serv=None):
         "schema": SCHEMA,
         "case_id": case["case_id"],
         "catalog_id": catalog["catalog_id"],
+        "catalog_sha256": catalog_digest(catalog),
         "synthetic": bool(case.get("synthetic")) and bool(catalog.get("synthetic")),
         "signoff": {"status": "pending"},
         "serv": serv,

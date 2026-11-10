@@ -137,7 +137,7 @@ _SPEC_ORDERED = {"number": ("min", "max"), "number_list": ("item_min", "item_max
 def _validate_spec(spec, where):
     spec = _object(spec, where)
     kind = spec.get("type")
-    if kind not in _SPEC_NUMBERS:
+    if not isinstance(kind, str) or kind not in _SPEC_NUMBERS:
         raise InputError(f"{where}: 'type' must be one of {sorted(_SPEC_NUMBERS)}")
     numbers = _SPEC_NUMBERS[kind]
     counts = ("max_items",) if kind == "number_list" else ()

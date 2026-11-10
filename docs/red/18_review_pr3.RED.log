@@ -1,0 +1,688 @@
+# RED evidence: 18_review_pr3
+# command: python3 -m pytest tests/test_review_pr3.py -q
+# python: Python 3.9.6
+FFF..FFFFFFFFFFFFFFFFFFFFFFFF.FFFFFFFF                                   [100%]
+=================================== FAILURES ===================================
+_______ test_spec_type_that_is_not_a_string_is_an_input_error[bad_type0] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>, bad_type = []
+
+    @pytest.mark.parametrize("bad_type", [[], {}, ["study_id"], 7, None])
+    def test_spec_type_that_is_not_a_string_is_an_input_error(catalog, clone, bad_type):
+        cat = clone(catalog)
+        cat["tools"][0]["args_schema"]["study_id"]["type"] = bad_type
+        with pytest.raises(InputError, match="type"):
+>           validate_catalog(cat)
+
+tests/test_review_pr3.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:186: in validate_catalog
+    _validate_spec(spec, f"{where} args_schema[{name}]")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+spec = {'type': []}, where = 'catalog tools[0] args_schema[study_id]'
+
+    def _validate_spec(spec, where):
+        spec = _object(spec, where)
+        kind = spec.get("type")
+>       if kind not in _SPEC_NUMBERS:
+E       TypeError: unhashable type: 'list'
+
+src/contract_audit/inputs.py:140: TypeError
+_______ test_spec_type_that_is_not_a_string_is_an_input_error[bad_type1] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>, bad_type = {}
+
+    @pytest.mark.parametrize("bad_type", [[], {}, ["study_id"], 7, None])
+    def test_spec_type_that_is_not_a_string_is_an_input_error(catalog, clone, bad_type):
+        cat = clone(catalog)
+        cat["tools"][0]["args_schema"]["study_id"]["type"] = bad_type
+        with pytest.raises(InputError, match="type"):
+>           validate_catalog(cat)
+
+tests/test_review_pr3.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:186: in validate_catalog
+    _validate_spec(spec, f"{where} args_schema[{name}]")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+spec = {'type': {}}, where = 'catalog tools[0] args_schema[study_id]'
+
+    def _validate_spec(spec, where):
+        spec = _object(spec, where)
+        kind = spec.get("type")
+>       if kind not in _SPEC_NUMBERS:
+E       TypeError: unhashable type: 'dict'
+
+src/contract_audit/inputs.py:140: TypeError
+_______ test_spec_type_that_is_not_a_string_is_an_input_error[bad_type2] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>, bad_type = ['study_id']
+
+    @pytest.mark.parametrize("bad_type", [[], {}, ["study_id"], 7, None])
+    def test_spec_type_that_is_not_a_string_is_an_input_error(catalog, clone, bad_type):
+        cat = clone(catalog)
+        cat["tools"][0]["args_schema"]["study_id"]["type"] = bad_type
+        with pytest.raises(InputError, match="type"):
+>           validate_catalog(cat)
+
+tests/test_review_pr3.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/inputs.py:186: in validate_catalog
+    _validate_spec(spec, f"{where} args_schema[{name}]")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+spec = {'type': ['study_id']}, where = 'catalog tools[0] args_schema[study_id]'
+
+    def _validate_spec(spec, where):
+        spec = _object(spec, where)
+        kind = spec.get("type")
+>       if kind not in _SPEC_NUMBERS:
+E       TypeError: unhashable type: 'list'
+
+src/contract_audit/inputs.py:140: TypeError
+______ test_unhashable_spec_type_in_a_file_exits_two_without_a_traceback _______
+
+tmp_path = PosixPath('<tmp>')
+
+    def test_unhashable_spec_type_in_a_file_exits_two_without_a_traceback(tmp_path):
+        cat = json.loads(CATALOG.read_text(encoding="utf-8"))
+        cat["tools"][0]["args_schema"]["study_id"]["type"] = []
+        p = tmp_path / "catalog.json"
+        p.write_text(json.dumps(cat), encoding="utf-8")
+        r = run("--catalog", p, "--case", CASE)
+>       assert r.returncode == 2 and "Traceback" not in r.stderr, r.stderr[-300:]
+E       AssertionError: src/contract_audit/inputs.py", line 186, in validate_catalog
+E             _validate_spec(spec, f"{where} args_schema[{name}]")
+E           File "<repo>/src/contract_audit/inputs.py", line 140, in _validate_spec
+E             if kind not in _SPEC_NUMBERS:
+E         TypeError: unhashable type: 'list'
+E         
+E       assert (1 == 2)
+E        +  where 1 = CompletedProcess(args=['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '-m', 'contract_audit', 'audit', ...it/inputs.py", line 140, in _validate_spec\n    if kind not in _SPEC_NUMBERS:\nTypeError: unhashable type: \'list\'\n').returncode
+
+tests/test_review_pr3.py:50: AssertionError
+___________ test_unexpected_error_while_loading_is_exit_six_not_one ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d83a90>
+capsys = <_pytest.capture.CaptureFixture object at 0x106d83a00>
+
+    def test_unexpected_error_while_loading_is_exit_six_not_one(monkeypatch, capsys):
+        def boom(path):
+            raise RuntimeError("synthetic loader failure")
+        monkeypatch.setattr(cli, "load_catalog", boom)
+>       code = cli.main(["audit", "--catalog", str(CATALOG), "--case", str(CASE), "--fail-on-gaps"])
+
+tests/test_review_pr3.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/cli.py:80: in main
+    catalog, case = load_catalog(args.catalog), load_case(args.case)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('<repo>/data/catalog.json')
+
+    def boom(path):
+>       raise RuntimeError("synthetic loader failure")
+E       RuntimeError: synthetic loader failure
+
+tests/test_review_pr3.py:55: RuntimeError
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-quote0] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106ca9940>, verdict = 'uncertain'
+quote = {1}
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-5] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9ab80>, verdict = 'uncertain'
+quote = 5
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-quote2] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9a280>, verdict = 'uncertain'
+quote = ['a']
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-quote3] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9a670>, verdict = 'uncertain'
+quote = {'q': 'x'}
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-nan] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9aa60>, verdict = 'uncertain'
+quote = nan
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-True] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9a310>, verdict = 'uncertain'
+quote = True
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-quote0] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9a940>, verdict = None
+quote = {1}
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+____ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-5] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9aca0>, verdict = None, quote = 5
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-quote2] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9a670>, verdict = None
+quote = ['a']
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-quote3] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8040>, verdict = None
+quote = {'q': 'x'}
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+___ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-nan] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd81f0>, verdict = None
+quote = nan
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+__ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-True] ___
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd84c0>, verdict = None
+quote = True
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-quote0] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106d9a5e0>, verdict = 'supported'
+quote = {1}
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-5] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8790>, verdict = 'supported'
+quote = 5
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-quote2] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8280>, verdict = 'supported'
+quote = ['a']
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-quote3] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8820>, verdict = 'supported'
+quote = {'q': 'x'}
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-nan] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8310>, verdict = 'supported'
+quote = nan
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+_ test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-True] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8af0>, verdict = 'supported'
+quote = True
+
+    @pytest.mark.parametrize("quote", [{1}, 5, ["a"], {"q": "x"}, float("nan"), True])
+    @pytest.mark.parametrize("verdict", ["uncertain", None, "supported"])
+    def test_a_quote_that_is_not_a_string_is_refused_for_every_verdict(catalog, case, verdict, quote):
+        interp = {"fixture": True, "verdict": verdict, "quote": quote, "reasons": []}
+        with pytest.raises(ValueError, match="quote"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, catalog)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:72: Failed
+________ test_audit_records_the_digest_of_the_catalog_it_was_built_from ________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8a60>
+
+    def test_audit_records_the_digest_of_the_catalog_it_was_built_from(catalog, case):
+        canonical = json.dumps(catalog, sort_keys=True, separators=(",", ":")).encode("utf-8")
+>       assert audit4(catalog, case)["catalog_sha256"] == hashlib.sha256(canonical).hexdigest()
+E       KeyError: 'catalog_sha256'
+
+tests/test_review_pr3.py:78: KeyError
+__ test_a_different_catalog_with_the_same_id_is_refused[source text and hash] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd89d0>
+clone = <function deepcopy at 0x105cc8310>, edit = 'source text and hash'
+
+    @pytest.mark.parametrize("edit", ["source text and hash", "source text only", "tool quote"])
+    def test_a_different_catalog_with_the_same_id_is_refused(catalog, case, clone, edit):
+        forged = clone(catalog)
+        src = forged["sources"]["SRC-SYN-D"]
+        if edit == "tool quote":
+            next(t for t in forged["tools"] if t["tool_id"] == "SYN-CARDIAC-1")["quote"] = "measure cardiac size"
+        else:
+            src["text"] += " FORGED quote sentence here."
+            if edit == "source text and hash":
+                src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+        interp = {"fixture": True, "verdict": "supported", "quote": "FORGED quote sentence here", "reasons": []}
+        with pytest.raises(ValueError, match="catalog"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, forged)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:93: Failed
+____ test_a_different_catalog_with_the_same_id_is_refused[source text only] ____
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106dd8280>
+clone = <function deepcopy at 0x105cc8310>, edit = 'source text only'
+
+    @pytest.mark.parametrize("edit", ["source text and hash", "source text only", "tool quote"])
+    def test_a_different_catalog_with_the_same_id_is_refused(catalog, case, clone, edit):
+        forged = clone(catalog)
+        src = forged["sources"]["SRC-SYN-D"]
+        if edit == "tool quote":
+            next(t for t in forged["tools"] if t["tool_id"] == "SYN-CARDIAC-1")["quote"] = "measure cardiac size"
+        else:
+            src["text"] += " FORGED quote sentence here."
+            if edit == "source text and hash":
+                src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+        interp = {"fixture": True, "verdict": "supported", "quote": "FORGED quote sentence here", "reasons": []}
+        with pytest.raises(ValueError, match="catalog"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, forged)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:93: Failed
+_______ test_a_different_catalog_with_the_same_id_is_refused[tool quote] _______
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106e30550>
+clone = <function deepcopy at 0x105cc8310>, edit = 'tool quote'
+
+    @pytest.mark.parametrize("edit", ["source text and hash", "source text only", "tool quote"])
+    def test_a_different_catalog_with_the_same_id_is_refused(catalog, case, clone, edit):
+        forged = clone(catalog)
+        src = forged["sources"]["SRC-SYN-D"]
+        if edit == "tool quote":
+            next(t for t in forged["tools"] if t["tool_id"] == "SYN-CARDIAC-1")["quote"] = "measure cardiac size"
+        else:
+            src["text"] += " FORGED quote sentence here."
+            if edit == "source text and hash":
+                src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+        interp = {"fixture": True, "verdict": "supported", "quote": "FORGED quote sentence here", "reasons": []}
+        with pytest.raises(ValueError, match="catalog"):
+>           attach_advisory(audit4(catalog, case), "OB-4", interp, forged)
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_pr3.py:93: Failed
+_ test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 wasn't built to] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>
+lead = "Tool SYN-NODULE-1 wasn't built to"
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+_ test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 is unable to] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>
+lead = 'Tool SYN-NODULE-1 is unable to'
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+__ test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 fails to] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>, lead = 'Tool SYN-NODULE-1 fails to'
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+_ test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 lacks the ability to] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>
+lead = 'Tool SYN-NODULE-1 lacks the ability to'
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+_________ test_more_negation_phrasings_are_not_confirmed[Unsupported:] _________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>, lead = 'Unsupported:'
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+_ test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 shouldn't be used to] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>
+lead = "Tool SYN-NODULE-1 shouldn't be used to"
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+__ test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 couldn't] __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>, lead = "Tool SYN-NODULE-1 couldn't"
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+_ test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 hasn't been cleared to] _
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x105cc8310>
+lead = "Tool SYN-NODULE-1 hasn't been cleared to"
+
+    @pytest.mark.parametrize("lead", [
+        "Tool SYN-NODULE-1 wasn't built to", "Tool SYN-NODULE-1 is unable to", "Tool SYN-NODULE-1 fails to",
+        "Tool SYN-NODULE-1 lacks the ability to", "Unsupported:", "Tool SYN-NODULE-1 shouldn't be used to",
+        "Tool SYN-NODULE-1 couldn't", "Tool SYN-NODULE-1 hasn't been cleared to",
+    ])
+    def test_more_negation_phrasings_are_not_confirmed(catalog, clone, lead):
+        cat = clone(catalog)
+        tool = next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")
+        src = cat["sources"][tool["source_id"]]
+        src["text"] = f"{lead} {QUOTE}."
+        src["sha256"] = hashlib.sha256(src["text"].encode("utf-8")).hexdigest()
+>       assert "negation_near_quote" in entry_reasons(cat, tool)
+E       assert 'negation_near_quote' in []
+E        +  where [] = entry_reasons({'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}, {'args_schema': {'study_id': {'type': 'study_id'}}, 'finding_class': 'nodule_like', 'finding_term': 'nodule-like', 'modality': 'chest-xr', ...})
+
+tests/test_review_pr3.py:118: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_review_pr3.py::test_spec_type_that_is_not_a_string_is_an_input_error[bad_type0]
+FAILED tests/test_review_pr3.py::test_spec_type_that_is_not_a_string_is_an_input_error[bad_type1]
+FAILED tests/test_review_pr3.py::test_spec_type_that_is_not_a_string_is_an_input_error[bad_type2]
+FAILED tests/test_review_pr3.py::test_unhashable_spec_type_in_a_file_exits_two_without_a_traceback
+FAILED tests/test_review_pr3.py::test_unexpected_error_while_loading_is_exit_six_not_one
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-quote0]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-5]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-quote2]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-quote3]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-nan]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[uncertain-True]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-quote0]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-5]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-quote2]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-quote3]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-nan]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[None-True]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-quote0]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-5]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-quote2]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-quote3]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-nan]
+FAILED tests/test_review_pr3.py::test_a_quote_that_is_not_a_string_is_refused_for_every_verdict[supported-True]
+FAILED tests/test_review_pr3.py::test_audit_records_the_digest_of_the_catalog_it_was_built_from
+FAILED tests/test_review_pr3.py::test_a_different_catalog_with_the_same_id_is_refused[source text and hash]
+FAILED tests/test_review_pr3.py::test_a_different_catalog_with_the_same_id_is_refused[source text only]
+FAILED tests/test_review_pr3.py::test_a_different_catalog_with_the_same_id_is_refused[tool quote]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 wasn't built to]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 is unable to]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 fails to]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 lacks the ability to]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Unsupported:]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 shouldn't be used to]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 couldn't]
+FAILED tests/test_review_pr3.py::test_more_negation_phrasings_are_not_confirmed[Tool SYN-NODULE-1 hasn't been cleared to]
+35 failed, 3 passed in 0.38s
+# exit code: 1

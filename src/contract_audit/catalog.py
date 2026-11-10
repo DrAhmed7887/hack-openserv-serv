@@ -2,14 +2,26 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 
 # Words that turn a capability statement into its opposite. One inside the quote, or among the few words just
 # before it in the same sentence of the source, means the mapping is not confirmed: the safe answer is
 # "uncertain". An engineering rule of this validator, not a clinical one.
-NEGATIONS = frozenset({"not", "no", "never", "cannot", "can't", "doesn't", "don't", "isn't", "aren't", "won't",
-                       "without", "except", "excluding", "nor", "neither"})
+NEGATIONS = frozenset({"not", "no", "never", "cannot", "without", "except", "excluding", "exclude", "excludes",
+                       "excluded", "nor", "neither", "unable", "fails", "lacks", "lack", "unsupported"})
 NEGATION_WINDOW = 6  # words before the quote, within its sentence
+
+
+def _negation_words(tokens):
+    """Listed negations, plus every contracted one ("doesn't", "wasn't", "hasn't", ...)."""
+    return [t for t in tokens if t in NEGATIONS or t.endswith("n't")]
+
+
+def catalog_digest(catalog):
+    """sha256 of the catalog's canonical JSON. The audit records it, so advice can be tied to that exact catalog."""
+    canonical = json.dumps(catalog, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def _tokens(text):
@@ -18,12 +30,12 @@ def _tokens(text):
 
 def _negated(quote, text):
     """True if the quote, or the words just before any occurrence of it in its sentence, negate it."""
-    if NEGATIONS.intersection(_tokens(quote)):
+    if _negation_words(_tokens(quote)):
         return True
     start = text.find(quote) if quote else -1
     while start != -1:
         sentence = re.split(r"[.;!?](?:\s|$)", text[:start])[-1]
-        if NEGATIONS.intersection(_tokens(sentence)[-NEGATION_WINDOW:]):
+        if _negation_words(_tokens(sentence)[-NEGATION_WINDOW:]):
             return True
         start = text.find(quote, start + 1)
     return False
