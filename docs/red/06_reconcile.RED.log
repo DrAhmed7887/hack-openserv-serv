@@ -1,0 +1,19 @@
+# RED evidence: 06_reconcile
+# command: python3 -m pytest tests/test_reconcile.py -q
+# python: Python 3.9.6
+
+==================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_reconcile.py ___________________
+ImportError while importing test module '<repo>/tests/test_reconcile.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/test_reconcile.py:4: in <module>
+    from contract_audit.reconcile import reconcile_report
+E   ModuleNotFoundError: No module named 'contract_audit.reconcile'
+=========================== short test summary info ============================
+ERROR tests/test_reconcile.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.20s
+# exit code: 2

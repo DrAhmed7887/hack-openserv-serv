@@ -1,0 +1,76 @@
+# RED evidence: 02_source_integrity
+# command: python3 -m pytest tests/test_capability.py -q
+# python: Python 3.9.6
+....FFFF.                                                                [100%]
+=================================== FAILURES ===================================
+________________ test_quote_not_verbatim_in_source_is_uncertain ________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x109bea310>
+
+    def test_quote_not_verbatim_in_source_is_uncertain(catalog, clone):
+        cat = clone(catalog)
+        next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")["quote"] = "flag nodule-like findings on chest-xr scans"
+        r = resolve_capability(cat, "chest-xr", "nodule_like")
+>       assert r["capability"] == "uncertain"
+E       AssertionError: assert 'supported' == 'uncertain'
+E         
+E         - uncertain
+E         + supported
+
+tests/test_capability.py:30: AssertionError
+_____________ test_source_text_changed_after_hashing_is_uncertain ______________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x109bea310>
+
+    def test_source_text_changed_after_hashing_is_uncertain(catalog, clone):
+        cat = clone(catalog)
+        cat["sources"]["SRC-SYN-A"]["text"] += " Edited later."
+        r = resolve_capability(cat, "chest-xr", "nodule_like")
+>       assert r["capability"] == "uncertain"
+E       AssertionError: assert 'supported' == 'uncertain'
+E         
+E         - uncertain
+E         + supported
+
+tests/test_capability.py:38: AssertionError
+_______________________ test_missing_source_is_uncertain _______________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x109bea310>
+
+    def test_missing_source_is_uncertain(catalog, clone):
+        cat = clone(catalog)
+        del cat["sources"]["SRC-SYN-A"]
+        r = resolve_capability(cat, "chest-xr", "nodule_like")
+>       assert r["capability"] == "uncertain"
+E       AssertionError: assert 'supported' == 'uncertain'
+E         
+E         - uncertain
+E         + supported
+
+tests/test_capability.py:46: AssertionError
+______________ test_finding_term_missing_from_quote_is_uncertain _______________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x109bea310>
+
+    def test_finding_term_missing_from_quote_is_uncertain(catalog, clone):
+        cat = clone(catalog)
+        next(t for t in cat["tools"] if t["tool_id"] == "SYN-NODULE-1")["finding_term"] = "mass-like"
+        r = resolve_capability(cat, "chest-xr", "nodule_like")
+>       assert r["capability"] == "uncertain"
+E       AssertionError: assert 'supported' == 'uncertain'
+E         
+E         - uncertain
+E         + supported
+
+tests/test_capability.py:54: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_capability.py::test_quote_not_verbatim_in_source_is_uncertain
+FAILED tests/test_capability.py::test_source_text_changed_after_hashing_is_uncertain
+FAILED tests/test_capability.py::test_missing_source_is_uncertain - Assertion...
+FAILED tests/test_capability.py::test_finding_term_missing_from_quote_is_uncertain
+4 failed, 5 passed in 0.11s
+# exit code: 1

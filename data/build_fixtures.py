@@ -47,17 +47,17 @@ TOOLS = [
      "measure cardiac size on radiographs", "chest-xr", "cardiac size"),
     ("SYN-LINE-1", "tube_position_like", "chest-xr", "SRC-SYN-E",
      "flag tube-position-like findings on chest-xr studies", "chest-xr", "tube-position-like"),
-    ("SYN-VOLUME-1", "volume_like", "chest-xr", "SRC-SYN-F",
+    ("SYN-VOLUME-1", "lung_volume_like", "chest-xr", "SRC-SYN-F",
      "flag lung-volume-like findings on chest-xr studies", "chest-xr", "lung-volume-like"),
 ]
 
 OBLIGATIONS = {  # id -> finding class (engineering placeholders, not clinical requirements)
     "OB-1": "nodule_like", "OB-2": "effusion_like", "OB-3": "fracture_like",
-    "OB-4": "cardiac_size", "OB-5": "tube_position_like", "OB-6": "volume_like",
+    "OB-4": "cardiac_size", "OB-5": "tube_position_like", "OB-6": "lung_volume_like",
 }
 TOOL_FOR = {t[1]: t[0] for t in TOOLS}
 LABEL = {"nodule_like": "Nodule-like", "effusion_like": "Effusion-like", "fracture_like": "Fracture-like",
-         "cardiac_size": "Cardiac-size", "tube_position_like": "Tube-position-like", "volume_like": "Lung-volume-like"}
+         "cardiac_size": "Cardiac-size", "tube_position_like": "Tube-position-like", "lung_volume_like": "Lung-volume-like"}
 
 
 def sha(text):

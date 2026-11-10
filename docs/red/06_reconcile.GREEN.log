@@ -1,0 +1,6 @@
+# GREEN evidence: 06_reconcile
+# command: python3 -m pytest tests -q
+# python: Python 3.9.6
+.........................................................                [100%]
+57 passed in 0.13s
+# exit code: 0

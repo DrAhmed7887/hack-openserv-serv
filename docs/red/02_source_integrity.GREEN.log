@@ -1,0 +1,6 @@
+# GREEN evidence: 02_source_integrity
+# command: python3 -m pytest tests -q
+# python: Python 3.9.6
+.........                                                                [100%]
+9 passed in 0.18s
+# exit code: 0

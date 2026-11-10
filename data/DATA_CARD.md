@@ -12,11 +12,11 @@ The catalog is an engineering stand-in for the mechanism spike. It does not desc
 | `catalog.json` | Fictional catalog: 6 invented tools (`SYN-*`), each tied to an invented specification text in `sources` with a SHA-256 of that text. |
 | `cases/c01..c07*.json` | One study with obligations, proposed calls, mock-tool receipts and a draft report each. |
 | `expected/c01..c07*.json` | Expected audit outcomes, **hand-written before any validator code existed** (see git history: the data commit precedes the first `src/` commit). |
-| `build_fixtures.py` | Writes `catalog.json` and `cases/`. Static data and hashing only. Not seeded because nothing is random. |
+| `build_fixtures.py` | (Class `volume_like` was renamed `lung_volume_like` after review cycle 12 so its term matches; expected outcomes did not change.) Writes `catalog.json` and `cases/`. Static data and hashing only. Not seeded because nothing is random. |
 
 ## Fields
 
-Catalog tool: `tool_id`, `finding_class`, `modality` (the catalog author's claimed mapping), `required_args`, `source_id`, `quote` (must appear verbatim in the source text), `modality_term` and `finding_term` (must both appear inside `quote`, otherwise the mapping is *not confirmed*).
+Catalog tool: `tool_id`, `finding_class`, `modality` (the catalog author's claimed mapping), `required_args`, `source_id`, `quote` (must appear verbatim in the source text), `modality_term` and `finding_term`. A mapping is *confirmed* only if the quote is non-empty and verbatim in an unchanged source, both terms appear inside the quote, `modality_term` equals the entry's `modality`, and `finding_term` equals the entry's `finding_class` ignoring case, hyphens and underscores. Anything else is *not confirmed*, so the obligation is `uncertain`.
 
 Case: `study.modality`; `study.obligations[]` (`obligation_id`, `finding_class`: a placeholder label, not a clinical requirement); `proposed_calls[]` (`call_id`, `tool_id`, `obligation_id`, `args`); `receipts[]` (`receipt_id`, `call_id`, `tool_id`, `executor` = `mock-tool`, `fixture: true`, `status` ok|error, `output`, `output_sha256`); `draft_report.statements[]` (`kind` = `claims_assessed` | `discloses_not_assessed`, `cites_receipt`).
 

@@ -1,0 +1,24 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+      - name: CLI is offline, deterministic and fails closed on gaps
+        run: |
+          export PYTHONPATH=src
+          python -m contract_audit audit --catalog data/catalog.json --case data/cases/c01_supported_called.json --fail-on-gaps > /dev/null
+          if python -m contract_audit audit --catalog data/catalog.json --case data/cases/c02_supported_omitted.json --fail-on-gaps > /dev/null; then echo "expected gaps to fail"; exit 1; fi
+      - name: Mock is in sync with the validator
+        run: |
+          python scripts/build_mock.py
+          git diff --exit-code mock/index.html

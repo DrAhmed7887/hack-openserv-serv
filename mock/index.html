@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DESIGN MOCK: Radiology tool-capability contract audit</title>
+<style>
+  :root { --ink:#1b2430; --muted:#566273; --line:#d9dee5; --bg:#f6f7f9; --card:#fff; --accent:#1f5f8b; --warn:#8a5a00; --bad:#9b2c2c; --ok:#1d6b43; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.5 -apple-system, "Segoe UI", Inter, Roboto, sans-serif; color:var(--ink); background:var(--bg); }
+  .banner { background:#1b2430; color:#fff; padding:10px 16px; font-weight:700; letter-spacing:.04em; text-align:center; position:sticky; top:0; z-index:5; }
+  .banner small { display:block; font-weight:400; letter-spacing:0; opacity:.85; }
+  main { max-width:960px; margin:0 auto; padding:16px; }
+  h1 { font-size:1.35rem; margin:.4rem 0 .2rem; }
+  h2 { font-size:1.15rem; margin:.2rem 0 .6rem; }
+  p.lead { color:var(--muted); margin:.2rem 0 1rem; }
+  nav.steps { display:flex; gap:6px; overflow-x:auto; padding:4px 0 10px; }
+  nav.steps button { flex:1 0 auto; border:1px solid var(--line); background:var(--card); color:var(--ink); padding:10px 12px; border-radius:8px; font:inherit; min-height:44px; cursor:pointer; }
+  nav.steps button[aria-current="step"] { border-color:var(--accent); background:var(--accent); color:#fff; }
+  section.step { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:12px; }
+  .table-wrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:.95rem; min-width:560px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:.85rem; text-transform:uppercase; letter-spacing:.03em; }
+  code { font:.88rem ui-monospace, Menlo, monospace; background:#eef1f5; padding:1px 5px; border-radius:4px; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid currentColor; font-size:.85rem; font-weight:600; white-space:nowrap; }
+  .ok { color:var(--ok); } .warn { color:var(--warn); } .bad { color:var(--bad); } .info { color:var(--accent); }
+  .note { border-left:4px solid var(--accent); background:#eef4f9; padding:10px 12px; border-radius:4px; margin:12px 0; }
+  .note.stop { border-color:var(--bad); background:#faeeee; }
+  .nextbar { display:flex; justify-content:space-between; gap:8px; margin-top:14px; }
+  .btn { border:1px solid var(--accent); background:var(--accent); color:#fff; padding:10px 16px; border-radius:8px; font:inherit; min-height:44px; cursor:pointer; }
+  .btn.ghost { background:#fff; color:var(--accent); }
+  .btn[disabled] { border-color:var(--line); background:#eceff3; color:#7a8493; cursor:not-allowed; }
+  pre { background:#101722; color:#e6edf5; padding:12px; border-radius:8px; overflow:auto; max-height:320px; font-size:.82rem; }
+  .stmt { padding:10px 0; border-bottom:1px solid var(--line); }
+  .stmt:last-child { border-bottom:0; }
+  noscript .step { display:block !important; }
+  @media (max-width:600px) {
+    main { padding:10px; } section.step { padding:12px; }
+    table { min-width:0; } thead { display:none; }
+    table, tbody, tr, td { display:block; width:100%; }
+    tr { border:1px solid var(--line); border-radius:8px; margin-bottom:10px; padding:4px 0; }
+    td { border-bottom:0; padding:4px 10px; }
+    td::before { content:attr(data-label); display:block; color:var(--muted); font-size:.75rem; text-transform:uppercase; letter-spacing:.03em; }
+  }
+</style>
+</head>
+<body>
+<div class="banner">DESIGN MOCK — NOT CONNECTED
+  <small>Fixture data from the offline validator. No SERV account, key or call. Synthetic and fictional. Physician/operator sign-off pending.</small>
+</div>
+<main>
+  <h1>Radiology tool-capability contract audit</h1>
+  <p class="lead">For an engineer wiring specialist tools into a reporting agent: which assessments could the tools cover, which were actually run, and what does the draft report claim beyond the receipts?</p>
+  <nav class="steps" id="nav" aria-label="Flow steps"></nav>
+
+  <section class="step" id="step-catalog"><h2>1. Capability catalog</h2>
+    <p>Each row ties a tool to the exact words of its source. A mapping is only <em>confirmed</em> when the quote is found verbatim in an unchanged source and names both the modality and the finding class.</p>
+    <div class="table-wrap"><table id="t-catalog"></table></div>
+    <div class="note">This catalog is <strong>fictional</strong> (tool ids <code>SYN-*</code>). It does not describe any real device.</div>
+    <div class="nextbar"><span></span><button class="btn" data-go="study">Next: synthetic study</button></div>
+  </section>
+
+  <section class="step" id="step-study"><h2>2. Synthetic study</h2>
+    <p id="study-line"></p>
+    <div class="table-wrap"><table id="t-study"></table></div>
+    <div class="note">No images, no DICOM, no patient. Obligations are engineering placeholders; whether they are the right ones is a physician/operator decision that is still pending.</div>
+    <div class="nextbar"><button class="btn ghost" data-go="catalog">Back</button><button class="btn" data-go="coverage">Next: coverage matrix</button></div>
+  </section>
+
+  <section class="step" id="step-coverage"><h2>3. Coverage matrix</h2>
+    <p id="cov-summary"></p>
+    <div class="table-wrap"><table id="t-coverage"></table></div>
+    <div class="note">Full support needs a confirmed mapping, a valid call and a valid receipt. A receipt cannot upgrade an uncertain or unsupported obligation.</div>
+    <div class="nextbar"><button class="btn ghost" data-go="study">Back</button><button class="btn" data-go="repair">Next: calls and report</button></div>
+  </section>
+
+  <section class="step" id="step-repair"><h2>4. Calls and report: what needs repair</h2>
+    <h3>Proposed calls</h3>
+    <div class="table-wrap"><table id="t-calls"></table></div>
+    <h3>Draft report against receipts</h3>
+    <div id="stmts"></div>
+    <div class="note stop"><strong>Not applied, not drafted.</strong> The labels above are the validator's proposed actions only. The mock does not rewrite the report. No SERV response is shown or simulated.
+      <div style="margin-top:8px"><button class="btn" disabled aria-disabled="true">Ask SERV for a repair draft (not connected)</button></div></div>
+    <div class="nextbar"><button class="btn ghost" data-go="coverage">Back</button><button class="btn" data-go="export">Next: export</button></div>
+  </section>
+
+  <section class="step" id="step-export"><h2>5. Auditable export</h2>
+    <p>The export is a structured JSON audit that can be re-run offline and compared byte for byte. It carries its own limits.</p>
+    <pre id="export-cmd">python3 -m contract_audit audit --catalog data/catalog.json --case data/cases/c07_combined.json</pre>
+    <div class="table-wrap"><table id="t-export"></table></div>
+    <h3>Audit JSON (fixture)</h3>
+    <pre id="audit-json"></pre>
+    <div class="nextbar"><button class="btn ghost" data-go="repair">Back</button><button class="btn ghost" data-go="catalog">Start over</button></div>
+  </section>
+</main>
+<noscript><style>section.step { display:block !important; }</style></noscript>
+
+<script type="application/json" id="mock-data">
+{
+ "audit": {
+  "calls": {
+   "CALL-1": {
+    "reasons": [],
+    "status": "valid"
+   },
+   "CALL-3": {
+    "reasons": [
+     "modality_mismatch"
+    ],
+    "status": "invalid"
+   },
+   "CALL-4": {
+    "reasons": [
+     "modality_term_not_in_quote"
+    ],
+    "status": "unconfirmed"
+   },
+   "CALL-5": {
+    "reasons": [],
+    "status": "valid"
+   },
+   "CALL-6": {
+    "reasons": [],
+    "status": "valid"
+   }
+  },
+  "case_id": "c07_combined",
+  "catalog_id": "SYN-CATALOG-001",
+  "completeness": "gaps_found",
+  "notices": [
+   "Synthetic fixture data only. No images, DICOM, patients or real devices.",
+   "Catalog is fictional. Physician/operator sign-off is pending.",
+   "Full support means: confirmed catalog entry, valid call and valid mock receipt. It is not a clinical or SERV performance claim."
+  ],
+  "obligations": {
+   "OB-1": {
+    "call_id": "CALL-1",
+    "capability": "supported",
+    "disposition": "supported_called",
+    "full_support": true,
+    "reasons": [],
+    "receipt_id": "RCPT-1",
+    "receipt_status": "valid",
+    "tool_id": "SYN-NODULE-1"
+   },
+   "OB-2": {
+    "call_id": null,
+    "capability": "supported",
+    "disposition": "supported_omitted",
+    "full_support": false,
+    "reasons": [],
+    "receipt_id": null,
+    "receipt_status": "not_applicable",
+    "tool_id": "SYN-EFFUSION-1"
+   },
+   "OB-3": {
+    "call_id": null,
+    "capability": "unsupported",
+    "disposition": "unsupported",
+    "full_support": false,
+    "reasons": [
+     "no_catalog_entry"
+    ],
+    "receipt_id": null,
+    "receipt_status": "not_applicable",
+    "tool_id": null
+   },
+   "OB-4": {
+    "call_id": null,
+    "capability": "uncertain",
+    "disposition": "uncertain",
+    "full_support": false,
+    "reasons": [
+     "modality_term_not_in_quote"
+    ],
+    "receipt_id": null,
+    "receipt_status": "not_applicable",
+    "tool_id": "SYN-CARDIAC-1"
+   },
+   "OB-5": {
+    "call_id": "CALL-5",
+    "capability": "supported",
+    "disposition": "supported_called",
+    "full_support": false,
+    "reasons": [
+     "no_receipt"
+    ],
+    "receipt_id": null,
+    "receipt_status": "missing",
+    "tool_id": "SYN-LINE-1"
+   },
+   "OB-6": {
+    "call_id": "CALL-6",
+    "capability": "supported",
+    "disposition": "supported_called",
+    "full_support": false,
+    "reasons": [
+     "execution_error"
+    ],
+    "receipt_id": "RCPT-6",
+    "receipt_status": "failed",
+    "tool_id": "SYN-VOLUME-1"
+   }
+  },
+  "report_gaps": {
+   "OB-6": "add_limitation_statement"
+  },
+  "schema": "contract-audit/v0",
+  "serv": {
+   "executed": false,
+   "fixture": false,
+   "status": "not_run"
+  },
+  "signoff": {
+   "status": "pending"
+  },
+  "statements": {
+   "ST-1": {
+    "action": null,
+    "outcome": "supported_by_receipt"
+   },
+   "ST-2": {
+    "action": "run_tool_or_remove",
+    "outcome": "unsupported_claim"
+   },
+   "ST-3": {
+    "action": null,
+    "outcome": "limitation_disclosed"
+   },
+   "ST-4": {
+    "action": "qualify_or_remove",
+    "outcome": "unsupported_claim"
+   },
+   "ST-5": {
+    "action": "remove_until_valid_receipt",
+    "outcome": "unsupported_claim"
+   }
+  },
+  "study": {
+   "modality": "chest-xr",
+   "study_id": "SYN-STUDY-001"
+  },
+  "summary": {
+   "by_disposition": {
+    "supported_called": 3,
+    "supported_omitted": 1,
+    "uncertain": 1,
+    "unsupported": 1
+   },
+   "fully_supported": 1,
+   "obligations": 6,
+   "report_consistent": false
+  },
+  "synthetic": true
+ },
+ "calls": [
+  {
+   "args": {
+    "study_id": "SYN-STUDY-001"
+   },
+   "call_id": "CALL-1",
+   "obligation_id": "OB-1",
+   "reasons": [],
+   "status": "valid",
+   "tool_id": "SYN-NODULE-1"
+  },
+  {
+   "args": {
+    "study_id": "SYN-STUDY-001"
+   },
+   "call_id": "CALL-4",
+   "obligation_id": "OB-4",
+   "reasons": [
+    "modality_term_not_in_quote"
+   ],
+   "status": "unconfirmed",
+   "tool_id": "SYN-CARDIAC-1"
+  },
+  {
+   "args": {
+    "study_id": "SYN-STUDY-001"
+   },
+   "call_id": "CALL-5",
+   "obligation_id": "OB-5",
+   "reasons": [],
+   "status": "valid",
+   "tool_id": "SYN-LINE-1"
+  },
+  {
+   "args": {
+    "study_id": "SYN-STUDY-001"
+   },
+   "call_id": "CALL-6",
+   "obligation_id": "OB-6",
+   "reasons": [],
+   "status": "valid",
+   "tool_id": "SYN-VOLUME-1"
+  },
+  {
+   "args": {
+    "study_id": "SYN-STUDY-001"
+   },
+   "call_id": "CALL-3",
+   "obligation_id": "OB-3",
+   "reasons": [
+    "modality_mismatch"
+   ],
+   "status": "invalid",
+   "tool_id": "SYN-FRACTURE-1"
+  }
+ ],
+ "catalog": [
+  {
+   "finding_class": "nodule_like",
+   "modality": "chest-xr",
+   "quote": "flag nodule-like findings on chest-xr studies",
+   "reasons": [],
+   "source_id": "SRC-SYN-A",
+   "status": "confirmed",
+   "tool_id": "SYN-NODULE-1"
+  },
+  {
+   "finding_class": "effusion_like",
+   "modality": "chest-xr",
+   "quote": "flag effusion-like findings on chest-xr studies",
+   "reasons": [],
+   "source_id": "SRC-SYN-B",
+   "status": "confirmed",
+   "tool_id": "SYN-EFFUSION-1"
+  },
+  {
+   "finding_class": "fracture_like",
+   "modality": "extremity-xr",
+   "quote": "flag fracture-like findings on extremity-xr studies only",
+   "reasons": [],
+   "source_id": "SRC-SYN-C",
+   "status": "confirmed",
+   "tool_id": "SYN-FRACTURE-1"
+  },
+  {
+   "finding_class": "cardiac_size",
+   "modality": "chest-xr",
+   "quote": "measure cardiac size on radiographs",
+   "reasons": [
+    "modality_term_not_in_quote"
+   ],
+   "source_id": "SRC-SYN-D",
+   "status": "not confirmed",
+   "tool_id": "SYN-CARDIAC-1"
+  },
+  {
+   "finding_class": "tube_position_like",
+   "modality": "chest-xr",
+   "quote": "flag tube-position-like findings on chest-xr studies",
+   "reasons": [],
+   "source_id": "SRC-SYN-E",
+   "status": "confirmed",
+   "tool_id": "SYN-LINE-1"
+  },
+  {
+   "finding_class": "lung_volume_like",
+   "modality": "chest-xr",
+   "quote": "flag lung-volume-like findings on chest-xr studies",
+   "reasons": [],
+   "source_id": "SRC-SYN-F",
+   "status": "confirmed",
+   "tool_id": "SYN-VOLUME-1"
+  }
+ ],
+ "receipts": [
+  {
+   "call_id": "CALL-1",
+   "receipt_id": "RCPT-1",
+   "status": "ok"
+  },
+  {
+   "call_id": "CALL-4",
+   "receipt_id": "RCPT-4",
+   "status": "ok"
+  },
+  {
+   "call_id": "CALL-6",
+   "receipt_id": "RCPT-6",
+   "status": "error"
+  }
+ ],
+ "statements": [
+  {
+   "action": null,
+   "cites_receipt": "RCPT-1",
+   "kind": "claims_assessed",
+   "obligation_id": "OB-1",
+   "outcome": "supported_by_receipt",
+   "statement_id": "ST-1",
+   "text": "Nodule-like assessment completed (synthetic placeholder text)."
+  },
+  {
+   "action": "run_tool_or_remove",
+   "cites_receipt": null,
+   "kind": "claims_assessed",
+   "obligation_id": "OB-2",
+   "outcome": "unsupported_claim",
+   "statement_id": "ST-2",
+   "text": "Effusion-like assessment completed (synthetic placeholder text)."
+  },
+  {
+   "action": null,
+   "cites_receipt": null,
+   "kind": "discloses_not_assessed",
+   "obligation_id": "OB-3",
+   "outcome": "limitation_disclosed",
+   "statement_id": "ST-3",
+   "text": "Fracture-like assessment not performed (synthetic placeholder text)."
+  },
+  {
+   "action": "qualify_or_remove",
+   "cites_receipt": "RCPT-4",
+   "kind": "claims_assessed",
+   "obligation_id": "OB-4",
+   "outcome": "unsupported_claim",
+   "statement_id": "ST-4",
+   "text": "Cardiac-size assessment completed (synthetic placeholder text)."
+  },
+  {
+   "action": "remove_until_valid_receipt",
+   "cites_receipt": null,
+   "kind": "claims_assessed",
+   "obligation_id": "OB-5",
+   "outcome": "unsupported_claim",
+   "statement_id": "ST-5",
+   "text": "Tube-position-like assessment completed (synthetic placeholder text)."
+  }
+ ],
+ "study": {
+  "modality": "chest-xr",
+  "obligations": [
+   {
+    "finding_class": "nodule_like",
+    "obligation_id": "OB-1"
+   },
+   {
+    "finding_class": "effusion_like",
+    "obligation_id": "OB-2"
+   },
+   {
+    "finding_class": "fracture_like",
+    "obligation_id": "OB-3"
+   },
+   {
+    "finding_class": "cardiac_size",
+    "obligation_id": "OB-4"
+   },
+   {
+    "finding_class": "tube_position_like",
+    "obligation_id": "OB-5"
+   },
+   {
+    "finding_class": "lung_volume_like",
+    "obligation_id": "OB-6"
+   }
+  ],
+  "study_id": "SYN-STUDY-001"
+ }
+}
+</script>
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById("mock-data").textContent);
+  var steps = [["catalog","1 Catalog"],["study","2 Study"],["coverage","3 Matrix"],["repair","4 Repair"],["export","5 Export"]];
+  var LABEL = { supported_called:["Supported, called","ok"], supported_omitted:["Supported, omitted","warn"], unsupported:["Unsupported","bad"], uncertain:["Uncertain","info"] };
+  var RECEIPT = { valid:["valid","ok"], missing:["missing","bad"], failed:["failed","bad"], invalid:["invalid","bad"], not_applicable:["n/a","info"] };
+  var OUTCOME = { supported_by_receipt:["Backed by receipt","ok"], limitation_disclosed:["Limitation disclosed","ok"], unsupported_claim:["Claim not backed","bad"], receipt_mismatch:["Receipt mismatch","bad"], unknown_obligation:["Unknown obligation","bad"] };
+  var ACTION = { run_tool_or_remove:"Run the tool, or remove the claim", remove_or_disclose:"Remove the claim or disclose the limit", qualify_or_remove:"Qualify the claim, or remove it", remove_until_valid_receipt:"Remove until a valid receipt exists", cite_valid_receipt:"Cite the valid receipt", remove_statement:"Remove the statement", add_limitation_statement:"Add a limitation statement" };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function badge(pair) { return '<span class="badge ' + pair[1] + '">' + esc(pair[0]) + "</span>"; }
+  function table(el, head, rows) {
+    document.getElementById(el).innerHTML = "<thead><tr>" + head.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      rows.map(function (r) { return "<tr>" + r.map(function (c, i) { return '<td data-label="' + head[i] + '">' + c + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody>";
+  }
+  var a = data.audit;
+
+  table("t-catalog", ["Tool","Finding class","Modality","Source quote","Mapping"], data.catalog.map(function (t) {
+    return ["<code>" + esc(t.tool_id) + "</code>", esc(t.finding_class), esc(t.modality), "&ldquo;" + esc(t.quote) + "&rdquo;<br><small><code>" + esc(t.source_id) + "</code></small>",
+      badge([t.status, t.status === "confirmed" ? "ok" : "warn"]) + (t.reasons.length ? "<br><small>" + esc(t.reasons.join(", ")) + "</small>" : "")];
+  }));
+
+  document.getElementById("study-line").innerHTML = "Study <code>" + esc(data.study.study_id) + "</code>, modality <code>" + esc(data.study.modality) + "</code>. The report must address " + data.study.obligations.length + " assessment obligations.";
+  table("t-study", ["Obligation","Finding class (placeholder)"], data.study.obligations.map(function (o) { return ["<code>" + esc(o.obligation_id) + "</code>", esc(o.finding_class)]; }));
+
+  var s = a.summary, d = s.by_disposition;
+  document.getElementById("cov-summary").innerHTML = "<strong>" + s.fully_supported + " of " + s.obligations + "</strong> obligations have full support. Supported and called: " + d.supported_called + ". Supported but omitted: " + d.supported_omitted + ". Unsupported: " + d.unsupported + ". Uncertain: " + d.uncertain + ".";
+  table("t-coverage", ["Obligation","Coverage","Receipt","Full support","Why"], Object.keys(a.obligations).sort().map(function (k) {
+    var o = a.obligations[k];
+    return ["<code>" + esc(k) + "</code>", badge(LABEL[o.disposition]), badge(RECEIPT[o.receipt_status]), o.full_support ? badge(["yes (fixture)","ok"]) : badge(["no","bad"]), esc(o.reasons.join(", ") || "-")];
+  }));
+
+  table("t-calls", ["Call","Tool","For","Check"], data.calls.map(function (c) {
+    var cls = c.status === "valid" ? "ok" : (c.status === "unconfirmed" ? "warn" : "bad");
+    return ["<code>" + esc(c.call_id) + "</code>", "<code>" + esc(c.tool_id) + "</code>", esc(c.obligation_id), badge([c.status, cls]) + (c.reasons.length ? "<br><small>" + esc(c.reasons.join(", ")) + "</small>" : "")];
+  }));
+  var html = data.statements.map(function (st) {
+    return '<div class="stmt"><strong><code>' + esc(st.statement_id) + "</code> " + esc(st.obligation_id) + "</strong> " + badge(OUTCOME[st.outcome]) +
+      "<br>&ldquo;" + esc(st.text) + "&rdquo;" + (st.action ? "<br><small>Proposed action: " + esc(ACTION[st.action]) + "</small>" : "") + "</div>";
+  }).join("");
+  Object.keys(a.report_gaps).sort().forEach(function (k) {
+    html += '<div class="stmt"><strong>' + esc(k) + "</strong> " + badge(["No statement", "bad"]) + "<br><small>Proposed action: " + esc(ACTION[a.report_gaps[k]]) + "</small></div>";
+  });
+  document.getElementById("stmts").innerHTML = html;
+
+  table("t-export", ["Field","Value"], [
+    ["completeness", badge([a.completeness.replace("_"," "), a.completeness === "full_support" ? "ok" : "bad"])],
+    ["synthetic", esc(a.synthetic)], ["sign-off", esc(a.signoff.status)],
+    ["SERV", "status <code>" + esc(a.serv.status) + "</code>, executed <code>" + esc(a.serv.executed) + "</code>"],
+    ["notices", "<small>" + a.notices.map(esc).join("<br>") + "</small>"]]);
+  document.getElementById("audit-json").textContent = JSON.stringify(a, null, 2);
+
+  var nav = document.getElementById("nav");
+  function show(id) {
+    steps.forEach(function (st) {
+      document.getElementById("step-" + st[0]).style.display = st[0] === id ? "block" : "none";
+      var b = nav.querySelector('[data-go="' + st[0] + '"]');
+      if (st[0] === id) { b.setAttribute("aria-current", "step"); } else { b.removeAttribute("aria-current"); }
+    });
+    window.scrollTo(0, 0);
+  }
+  nav.innerHTML = steps.map(function (st) { return '<button data-go="' + st[0] + '">' + st[1] + "</button>"; }).join("");
+  document.addEventListener("click", function (e) { var g = e.target.getAttribute && e.target.getAttribute("data-go"); if (g) { show(g); } });
+  var start = location.hash.slice(1);
+  show(steps.some(function (st) { return st[0] === start; }) ? start : "catalog");
+})();
+</script>
+</body>
+</html>

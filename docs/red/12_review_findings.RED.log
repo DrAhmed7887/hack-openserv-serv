@@ -1,0 +1,637 @@
+# RED evidence: 12_review_findings
+# command: python3 -m pytest tests/test_review_findings.py -q
+# python: Python 3.9.6
+FFFFFFFFFFFFFFFFFFF.FFFFFFFF                                             [100%]
+=================================== FAILURES ===================================
+___________________ test_empty_quote_and_terms_never_confirm ___________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x108051160>
+clone = <function deepcopy at 0x10717a310>
+
+    def test_empty_quote_and_terms_never_confirm(catalog, case, clone):
+        cat, c = clone(catalog), clone(case("c01_supported_called"))
+        cat["tools"].append({"tool_id": "EVIL", "finding_class": "fracture_like", "modality": "chest-xr",
+                             "modality_term": "", "finding_term": "", "quote": "", "required_args": [],
+                             "source_id": "SRC-SYN-A"})
+        c["study"]["obligations"][0]["finding_class"] = "fracture_like"
+        c["proposed_calls"][0]["tool_id"] = "EVIL"
+        c["receipts"] = []
+        a = build_audit(cat, c)
+>       assert disp(a) == "uncertain" and a["completeness"] == "gaps_found"
+E       AssertionError: assert ('supported_called' == 'uncertain'
+E         
+E         - uncertain
+E         + supported_called)
+
+tests/test_review_findings.py:31: AssertionError
+____________ test_finding_term_must_match_the_entrys_finding_class _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x10717a310>
+
+    def test_finding_term_must_match_the_entrys_finding_class(catalog, clone):
+        from contract_audit.catalog import resolve_capability
+        cat = clone(catalog)
+        tool(cat, "SYN-NODULE-1")["finding_class"] = "fracture_like"
+        r = resolve_capability(cat, "chest-xr", "fracture_like")
+>       assert r["capability"] == "uncertain" and "finding_term_mismatch" in r["reasons"]
+E       AssertionError: assert ('supported' == 'uncertain'
+E         
+E         - uncertain
+E         + supported)
+
+tests/test_review_findings.py:39: AssertionError
+______________ test_modality_term_must_match_the_entrys_modality _______________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x10717a310>
+
+    def test_modality_term_must_match_the_entrys_modality(catalog, clone):
+        from contract_audit.catalog import resolve_capability
+        cat = clone(catalog)
+        tool(cat, "SYN-FRACTURE-1")["modality"] = "chest-xr"
+        r = resolve_capability(cat, "chest-xr", "fracture_like")
+>       assert r["capability"] == "uncertain" and "modality_term_mismatch" in r["reasons"]
+E       AssertionError: assert ('supported' == 'uncertain'
+E         
+E         - uncertain
+E         + supported)
+
+tests/test_review_findings.py:47: AssertionError
+____________________ test_duplicate_statement_id_is_refused ____________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1080c0d30>
+clone = <function deepcopy at 0x10717a310>
+
+    def test_duplicate_statement_id_is_refused(catalog, case, clone):
+        c = clone(case("c02_supported_omitted"))
+        c["draft_report"]["statements"].append(
+            {"statement_id": "ST-1", "obligation_id": "OB-2", "kind": "discloses_not_assessed", "cites_receipt": None, "text": "x"})
+        with pytest.raises(InputError, match="duplicate statement_id"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:56: Failed
+___________________ test_duplicate_obligation_id_is_refused ____________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1080c0f70>
+clone = <function deepcopy at 0x10717a310>
+
+    def test_duplicate_obligation_id_is_refused(catalog, case, clone):
+        c = clone(case("c01_supported_called"))
+        c["study"]["obligations"].insert(0, {"obligation_id": "OB-1", "finding_class": "fracture_like"})
+        with pytest.raises(InputError, match="duplicate obligation_id"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:63: Failed
+_______________________ test_null_receipt_id_is_refused ________________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x108051160>
+clone = <function deepcopy at 0x10717a310>
+
+    def test_null_receipt_id_is_refused(catalog, case, clone):
+        c = clone(case("c01_supported_called"))
+        c["receipts"][0]["receipt_id"] = None
+        c["draft_report"]["statements"][0]["cites_receipt"] = None
+        with pytest.raises(InputError, match="receipt_id"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:72: Failed
+_____________________ test_duplicate_receipt_id_is_refused _____________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1080c0b80>
+clone = <function deepcopy at 0x10717a310>
+
+    def test_duplicate_receipt_id_is_refused(catalog, case, clone):
+        c = clone(case("c07_combined"))
+        c["receipts"][1]["receipt_id"] = c["receipts"][0]["receipt_id"]
+        with pytest.raises(InputError, match="duplicate receipt_id"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:79: Failed
+___________ test_args_that_is_not_an_object_is_refused[xxstudy_idxx] ___________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1080c08b0>
+clone = <function deepcopy at 0x10717a310>, bad = 'xxstudy_idxx'
+
+    @pytest.mark.parametrize("bad", ["xxstudy_idxx", ["study_id"], None, 7])
+    def test_args_that_is_not_an_object_is_refused(catalog, case, clone, bad):
+        c = clone(case("c01_supported_called"))
+        c["proposed_calls"][0]["args"] = bad
+        with pytest.raises(InputError, match="args"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:88: Failed
+_______________ test_args_that_is_not_an_object_is_refused[bad1] _______________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x1080c0d30>
+clone = <function deepcopy at 0x10717a310>, bad = ['study_id']
+
+    @pytest.mark.parametrize("bad", ["xxstudy_idxx", ["study_id"], None, 7])
+    def test_args_that_is_not_an_object_is_refused(catalog, case, clone, bad):
+        c = clone(case("c01_supported_called"))
+        c["proposed_calls"][0]["args"] = bad
+        with pytest.raises(InputError, match="args"):
+>           build_audit(catalog, c)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:88: Failed
+_______________ test_args_that_is_not_an_object_is_refused[None] _______________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x107fe4160>
+clone = <function deepcopy at 0x10717a310>, bad = None
+
+    @pytest.mark.parametrize("bad", ["xxstudy_idxx", ["study_id"], None, 7])
+    def test_args_that_is_not_an_object_is_refused(catalog, case, clone, bad):
+        c = clone(case("c01_supported_called"))
+        c["proposed_calls"][0]["args"] = bad
+        with pytest.raises(InputError, match="args"):
+>           build_audit(catalog, c)
+
+tests/test_review_findings.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/audit.py:20: in build_audit
+    obligations, call_results = assess_obligations(
+src/contract_audit/coverage.py:14: in assess_obligations
+    call_results = validate_calls(catalog, study, calls)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+study = {'modality': 'chest-xr', 'obligations': [{'finding_class': 'nodule_like', 'obligation_id': 'OB-1'}], 'study_id': 'SYN-STUDY-001'}
+calls = [{'args': None, 'call_id': 'CALL-1', 'obligation_id': 'OB-1', 'tool_id': 'SYN-NODULE-1'}]
+
+    def validate_calls(catalog, study, calls):
+        """One result per call, in input order: {call_id, status valid|invalid|unconfirmed, reasons}.
+    
+        invalid:     the call cannot be run as proposed (unknown tool/obligation, wrong modality or
+                     finding class, missing args, duplicate id).
+        unconfirmed: the call is well-formed but the catalog's source link for that tool is not confirmed.
+        """
+        tools = {t["tool_id"]: t for t in catalog["tools"]}
+        obligations = {o["obligation_id"]: o for o in study["obligations"]}
+        id_counts = Counter(c["call_id"] for c in calls)
+        results = []
+        for call in calls:
+            reasons = []
+            if id_counts[call["call_id"]] > 1:
+                reasons.append("duplicate_call_id")
+            tool = tools.get(call["tool_id"])
+            obligation = obligations.get(call["obligation_id"])
+            if tool is None:
+                reasons.append("unknown_tool")
+            if obligation is None:
+                reasons.append("unknown_obligation")
+            if tool is not None:
+                if tool["modality"] != study["modality"]:
+                    reasons.append("modality_mismatch")
+                if obligation is not None and tool["finding_class"] != obligation["finding_class"]:
+                    reasons.append("finding_class_mismatch")
+                for arg in tool["required_args"]:
+>                   if arg not in call.get("args", {}):
+E                   TypeError: argument of type 'NoneType' is not iterable
+
+src/contract_audit/calls.py:36: TypeError
+________________ test_args_that_is_not_an_object_is_refused[7] _________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x108136430>
+clone = <function deepcopy at 0x10717a310>, bad = 7
+
+    @pytest.mark.parametrize("bad", ["xxstudy_idxx", ["study_id"], None, 7])
+    def test_args_that_is_not_an_object_is_refused(catalog, case, clone, bad):
+        c = clone(case("c01_supported_called"))
+        c["proposed_calls"][0]["args"] = bad
+        with pytest.raises(InputError, match="args"):
+>           build_audit(catalog, c)
+
+tests/test_review_findings.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/contract_audit/audit.py:20: in build_audit
+    obligations, call_results = assess_obligations(
+src/contract_audit/coverage.py:14: in assess_obligations
+    call_results = validate_calls(catalog, study, calls)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+study = {'modality': 'chest-xr', 'obligations': [{'finding_class': 'nodule_like', 'obligation_id': 'OB-1'}], 'study_id': 'SYN-STUDY-001'}
+calls = [{'args': 7, 'call_id': 'CALL-1', 'obligation_id': 'OB-1', 'tool_id': 'SYN-NODULE-1'}]
+
+    def validate_calls(catalog, study, calls):
+        """One result per call, in input order: {call_id, status valid|invalid|unconfirmed, reasons}.
+    
+        invalid:     the call cannot be run as proposed (unknown tool/obligation, wrong modality or
+                     finding class, missing args, duplicate id).
+        unconfirmed: the call is well-formed but the catalog's source link for that tool is not confirmed.
+        """
+        tools = {t["tool_id"]: t for t in catalog["tools"]}
+        obligations = {o["obligation_id"]: o for o in study["obligations"]}
+        id_counts = Counter(c["call_id"] for c in calls)
+        results = []
+        for call in calls:
+            reasons = []
+            if id_counts[call["call_id"]] > 1:
+                reasons.append("duplicate_call_id")
+            tool = tools.get(call["tool_id"])
+            obligation = obligations.get(call["obligation_id"])
+            if tool is None:
+                reasons.append("unknown_tool")
+            if obligation is None:
+                reasons.append("unknown_obligation")
+            if tool is not None:
+                if tool["modality"] != study["modality"]:
+                    reasons.append("modality_mismatch")
+                if obligation is not None and tool["finding_class"] != obligation["finding_class"]:
+                    reasons.append("finding_class_mismatch")
+                for arg in tool["required_args"]:
+>                   if arg not in call.get("args", {}):
+E                   TypeError: argument of type 'int' is not iterable
+
+src/contract_audit/calls.py:36: TypeError
+________ test_malformed_case_is_an_input_error_not_a_crash[calls null] _________
+
+case = <function case.<locals>._load at 0x1081365e0>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu0')
+name = 'calls null'
+mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a1f0>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+______ test_malformed_case_is_an_input_error_not_a_crash[call missing id] ______
+
+case = <function case.<locals>._load at 0x108136940>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu1')
+name = 'call missing id'
+mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a280>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+_ test_malformed_case_is_an_input_error_not_a_crash[receipt missing executor] __
+
+case = <function case.<locals>._load at 0x108136c10>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu2')
+name = 'receipt missing executor'
+mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a310>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+___ test_malformed_case_is_an_input_error_not_a_crash[obligation missing id] ___
+
+case = <function case.<locals>._load at 0x1081284c0>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu3')
+name = 'obligation missing id'
+mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a3a0>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+______ test_malformed_case_is_an_input_error_not_a_crash[statements null] ______
+
+case = <function case.<locals>._load at 0x1081281f0>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu4')
+name = 'statements null'
+mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a430>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+____ test_malformed_case_is_an_input_error_not_a_crash[obligation id list] _____
+
+case = <function case.<locals>._load at 0x108013040>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu5')
+name = 'obligation id list'
+mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a4c0>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+__ test_malformed_case_is_an_input_error_not_a_crash[statement missing kind] ___
+
+case = <function case.<locals>._load at 0x108128940>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu6')
+name = 'statement missing kind'
+mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a550>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+__ test_malformed_case_is_an_input_error_not_a_crash[statement missing cites] __
+
+case = <function case.<locals>._load at 0x108128550>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu7')
+name = 'statement missing cites'
+mutate = <function mutations.<locals>.drop.<locals>.f at 0x10805a5e0>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+_ test_malformed_case_is_an_input_error_not_a_crash[receipt output not object] _
+
+case = <function case.<locals>._load at 0x108128670>
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_case_is_an_inpu9')
+name = 'receipt output not object'
+mutate = <function mutations.<locals>.setv.<locals>.f at 0x10805a700>
+
+    @pytest.mark.parametrize("name,mutate", mutations(), ids=[m[0] for m in mutations()])
+    def test_malformed_case_is_an_input_error_not_a_crash(case, clone, tmp_path, name, mutate):
+        c = clone(case("c01_supported_called"))
+        mutate(c)
+        p = tmp_path / "c.json"
+        p.write_text(json.dumps(c), encoding="utf-8")
+        with pytest.raises(InputError):
+>           load_case(p)
+E           Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:129: Failed
+___________________ test_malformed_catalog_is_an_input_error ___________________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+clone = <function deepcopy at 0x10717a310>
+tmp_path = PosixPath('/private/var/folders/kw/_5vf485n11g1rsmqbvk3qnjw0000gn/T/pytest-of-ahmedzayed/pytest-15/test_malformed_catalog_is_an_i0')
+
+    def test_malformed_catalog_is_an_input_error(catalog, clone, tmp_path):
+        from contract_audit.inputs import load_catalog
+        for mutate in (lambda c: c["sources"]["SRC-SYN-A"].update(text=None),
+                       lambda c: c.update(tools={}),
+                       lambda c: c["tools"][0].update(required_args="study_id"),
+                       lambda c: c.update(sources=[])):
+            cat = clone(catalog)
+            mutate(cat)
+            p = tmp_path / "cat.json"
+            p.write_text(json.dumps(cat), encoding="utf-8")
+            with pytest.raises(InputError):
+>               load_catalog(p)
+E               Failed: DID NOT RAISE <class 'contract_audit.inputs.InputError'>
+
+tests/test_review_findings.py:143: Failed
+__ test_attach_advisory_refuses_a_result_that_is_neither_fixture_nor_executed __
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x108128d30>
+
+    def test_attach_advisory_refuses_a_result_that_is_neither_fixture_nor_executed(catalog, case):
+        a = build_audit(catalog, case("c04_uncertain_source_insufficient"))
+        with pytest.raises(ValueError, match="neither fixture nor executed"):
+>           attach_advisory(a, "OB-4", parse_interpretation({}, "s"))
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_review_findings.py:150: Failed
+__________ test_client_requires_real_credentials_even_for_a_transport __________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+
+    def test_client_requires_real_credentials_even_for_a_transport(catalog):
+        with pytest.raises(NotConfigured):
+>           ServClient(None, transport=lambda r, c: {}, live=True)
+E           Failed: DID NOT RAISE <class 'contract_audit.serv.NotConfigured'>
+
+tests/test_review_findings.py:155: Failed
+_______________ test_non_string_quote_is_rejected_not_a_crash[5] _______________
+
+quote = 5
+
+    @pytest.mark.parametrize("quote", [5, ["a"], None, {"a": 1}])
+    def test_non_string_quote_is_rejected_not_a_crash(quote):
+        content = json.dumps({"verdict": "supported", "quote": quote})
+>       r = parse_interpretation({"choices": [{"message": {"content": content}, "finish_reason": "stop"}]}, "source")
+
+tests/test_review_findings.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = {'choices': [{'finish_reason': 'stop', 'message': {'content': '{"verdict": "supported", "quote": 5}'}}]}
+source_text = 'source'
+
+    def parse_interpretation(response, source_text):
+        """Validate a chat-completions response. Output is advisory data, never a decision."""
+        result = {"verdict": None, "quote": None, "quote_in_source": False, "accepted": False,
+                  "reasons": [], "fixture": bool(isinstance(response, dict) and response.get("fixture") is True)}
+        try:
+            choice = response["choices"][0]
+            content, finish = choice["message"]["content"], choice["finish_reason"]
+        except (KeyError, IndexError, TypeError):
+            result["reasons"].append("malformed_response")
+            return result
+        if finish != "stop":
+            result["reasons"].append("finish_reason_not_stop")
+        try:
+            payload = json.loads(content)
+            verdict, quote = payload["verdict"], payload["quote"]
+        except (TypeError, ValueError, KeyError):
+            result["reasons"].append("content_not_json")
+            return result
+        result["verdict"], result["quote"] = verdict, quote
+        if verdict not in VERDICTS:
+            result["reasons"].append("verdict_not_allowed")
+>       result["quote_in_source"] = bool(quote) and quote in source_text
+E       TypeError: 'in <string>' requires string as left operand, not int
+
+src/contract_audit/serv.py:96: TypeError
+____________ test_non_string_quote_is_rejected_not_a_crash[quote1] _____________
+
+quote = ['a']
+
+    @pytest.mark.parametrize("quote", [5, ["a"], None, {"a": 1}])
+    def test_non_string_quote_is_rejected_not_a_crash(quote):
+        content = json.dumps({"verdict": "supported", "quote": quote})
+>       r = parse_interpretation({"choices": [{"message": {"content": content}, "finish_reason": "stop"}]}, "source")
+
+tests/test_review_findings.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = {'choices': [{'finish_reason': 'stop', 'message': {'content': '{"verdict": "supported", "quote": ["a"]}'}}]}
+source_text = 'source'
+
+    def parse_interpretation(response, source_text):
+        """Validate a chat-completions response. Output is advisory data, never a decision."""
+        result = {"verdict": None, "quote": None, "quote_in_source": False, "accepted": False,
+                  "reasons": [], "fixture": bool(isinstance(response, dict) and response.get("fixture") is True)}
+        try:
+            choice = response["choices"][0]
+            content, finish = choice["message"]["content"], choice["finish_reason"]
+        except (KeyError, IndexError, TypeError):
+            result["reasons"].append("malformed_response")
+            return result
+        if finish != "stop":
+            result["reasons"].append("finish_reason_not_stop")
+        try:
+            payload = json.loads(content)
+            verdict, quote = payload["verdict"], payload["quote"]
+        except (TypeError, ValueError, KeyError):
+            result["reasons"].append("content_not_json")
+            return result
+        result["verdict"], result["quote"] = verdict, quote
+        if verdict not in VERDICTS:
+            result["reasons"].append("verdict_not_allowed")
+>       result["quote_in_source"] = bool(quote) and quote in source_text
+E       TypeError: 'in <string>' requires string as left operand, not list
+
+src/contract_audit/serv.py:96: TypeError
+_____________ test_non_string_quote_is_rejected_not_a_crash[None] ______________
+
+quote = None
+
+    @pytest.mark.parametrize("quote", [5, ["a"], None, {"a": 1}])
+    def test_non_string_quote_is_rejected_not_a_crash(quote):
+        content = json.dumps({"verdict": "supported", "quote": quote})
+        r = parse_interpretation({"choices": [{"message": {"content": content}, "finish_reason": "stop"}]}, "source")
+>       assert r["accepted"] is False and "quote_not_string" in r["reasons"]
+E       AssertionError: assert (False is False and 'quote_not_string' in ['quote_not_in_source'])
+
+tests/test_review_findings.py:164: AssertionError
+____________ test_non_string_quote_is_rejected_not_a_crash[quote3] _____________
+
+quote = {'a': 1}
+
+    @pytest.mark.parametrize("quote", [5, ["a"], None, {"a": 1}])
+    def test_non_string_quote_is_rejected_not_a_crash(quote):
+        content = json.dumps({"verdict": "supported", "quote": quote})
+>       r = parse_interpretation({"choices": [{"message": {"content": content}, "finish_reason": "stop"}]}, "source")
+
+tests/test_review_findings.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = {'choices': [{'finish_reason': 'stop', 'message': {'content': '{"verdict": "supported", "quote": {"a": 1}}'}}]}
+source_text = 'source'
+
+    def parse_interpretation(response, source_text):
+        """Validate a chat-completions response. Output is advisory data, never a decision."""
+        result = {"verdict": None, "quote": None, "quote_in_source": False, "accepted": False,
+                  "reasons": [], "fixture": bool(isinstance(response, dict) and response.get("fixture") is True)}
+        try:
+            choice = response["choices"][0]
+            content, finish = choice["message"]["content"], choice["finish_reason"]
+        except (KeyError, IndexError, TypeError):
+            result["reasons"].append("malformed_response")
+            return result
+        if finish != "stop":
+            result["reasons"].append("finish_reason_not_stop")
+        try:
+            payload = json.loads(content)
+            verdict, quote = payload["verdict"], payload["quote"]
+        except (TypeError, ValueError, KeyError):
+            result["reasons"].append("content_not_json")
+            return result
+        result["verdict"], result["quote"] = verdict, quote
+        if verdict not in VERDICTS:
+            result["reasons"].append("verdict_not_allowed")
+>       result["quote_in_source"] = bool(quote) and quote in source_text
+E       TypeError: 'in <string>' requires string as left operand, not dict
+
+src/contract_audit/serv.py:96: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_review_findings.py::test_empty_quote_and_terms_never_confirm
+FAILED tests/test_review_findings.py::test_finding_term_must_match_the_entrys_finding_class
+FAILED tests/test_review_findings.py::test_modality_term_must_match_the_entrys_modality
+FAILED tests/test_review_findings.py::test_duplicate_statement_id_is_refused
+FAILED tests/test_review_findings.py::test_duplicate_obligation_id_is_refused
+FAILED tests/test_review_findings.py::test_null_receipt_id_is_refused - Faile...
+FAILED tests/test_review_findings.py::test_duplicate_receipt_id_is_refused - ...
+FAILED tests/test_review_findings.py::test_args_that_is_not_an_object_is_refused[xxstudy_idxx]
+FAILED tests/test_review_findings.py::test_args_that_is_not_an_object_is_refused[bad1]
+FAILED tests/test_review_findings.py::test_args_that_is_not_an_object_is_refused[None]
+FAILED tests/test_review_findings.py::test_args_that_is_not_an_object_is_refused[7]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[calls null]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[call missing id]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[receipt missing executor]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[obligation missing id]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[statements null]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[obligation id list]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[statement missing kind]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[statement missing cites]
+FAILED tests/test_review_findings.py::test_malformed_case_is_an_input_error_not_a_crash[receipt output not object]
+FAILED tests/test_review_findings.py::test_malformed_catalog_is_an_input_error
+FAILED tests/test_review_findings.py::test_attach_advisory_refuses_a_result_that_is_neither_fixture_nor_executed
+FAILED tests/test_review_findings.py::test_client_requires_real_credentials_even_for_a_transport
+FAILED tests/test_review_findings.py::test_non_string_quote_is_rejected_not_a_crash[5]
+FAILED tests/test_review_findings.py::test_non_string_quote_is_rejected_not_a_crash[quote1]
+FAILED tests/test_review_findings.py::test_non_string_quote_is_rejected_not_a_crash[None]
+FAILED tests/test_review_findings.py::test_non_string_quote_is_rejected_not_a_crash[quote3]
+27 failed, 1 passed in 0.29s
+# exit code: 1

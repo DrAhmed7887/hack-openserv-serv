@@ -1,0 +1,19 @@
+# RED evidence: 08_inputs
+# command: python3 -m pytest tests/test_inputs.py -q
+# python: Python 3.9.6
+
+==================================== ERRORS ====================================
+____________________ ERROR collecting tests/test_inputs.py _____________________
+ImportError while importing test module '<repo>/tests/test_inputs.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/test_inputs.py:5: in <module>
+    from contract_audit.inputs import InputError, load_case, load_catalog
+E   ModuleNotFoundError: No module named 'contract_audit.inputs'
+=========================== short test summary info ============================
+ERROR tests/test_inputs.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.17s
+# exit code: 2

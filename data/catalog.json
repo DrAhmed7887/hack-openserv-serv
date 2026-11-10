@@ -100,7 +100,7 @@
       "tool_id": "SYN-LINE-1"
     },
     {
-      "finding_class": "volume_like",
+      "finding_class": "lung_volume_like",
       "finding_term": "lung-volume-like",
       "modality": "chest-xr",
       "modality_term": "chest-xr",

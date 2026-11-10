@@ -146,7 +146,7 @@
         "obligation_id": "OB-5"
       },
       {
-        "finding_class": "volume_like",
+        "finding_class": "lung_volume_like",
         "obligation_id": "OB-6"
       }
     ],

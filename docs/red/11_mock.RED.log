@@ -1,0 +1,129 @@
+# RED evidence: 11_mock
+# command: python3 -m pytest tests/test_mock.py -q
+# python: Python 3.9.6
+FFFFF                                                                    [100%]
+=================================== FAILURES ===================================
+________ test_embedded_data_is_exactly_what_the_offline_modules_produce ________
+
+    def test_embedded_data_is_exactly_what_the_offline_modules_produce():
+>       assert embedded() == builder().payload()
+
+tests/test_mock.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_mock.py:19: in embedded
+    m = re.search(r'<script type="application/json" id="mock-data">(.*?)</script>', HTML.read_text(encoding="utf-8"), re.S)
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1256: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<repo>/mock/index.html')
+name = '<repo>/mock/index.html'
+flags = 16777216, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       FileNotFoundError: [Errno 2] No such file or directory: '<repo>/mock/index.html'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: FileNotFoundError
+_________ test_mock_is_marked_not_connected_and_names_all_five_screens _________
+
+    def test_mock_is_marked_not_connected_and_names_all_five_screens():
+>       text = HTML.read_text(encoding="utf-8")
+
+tests/test_mock.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1256: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<repo>/mock/index.html')
+name = '<repo>/mock/index.html'
+flags = 16777216, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       FileNotFoundError: [Errno 2] No such file or directory: '<repo>/mock/index.html'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: FileNotFoundError
+________ test_mock_makes_no_network_requests_and_loads_nothing_external ________
+
+    def test_mock_makes_no_network_requests_and_loads_nothing_external():
+>       text = HTML.read_text(encoding="utf-8")
+
+tests/test_mock.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1256: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<repo>/mock/index.html')
+name = '<repo>/mock/index.html'
+flags = 16777216, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       FileNotFoundError: [Errno 2] No such file or directory: '<repo>/mock/index.html'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: FileNotFoundError
+_________________ test_mock_never_shows_a_serv_result_or_trace _________________
+
+    def test_mock_never_shows_a_serv_result_or_trace():
+>       text = HTML.read_text(encoding="utf-8")
+
+tests/test_mock.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1256: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1242: in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('<repo>/mock/index.html')
+name = '<repo>/mock/index.html'
+flags = 16777216, mode = 438
+
+    def _opener(self, name, flags, mode=0o666):
+        # A stub for the opener argument to built-in open()
+>       return self._accessor.open(self, flags, mode)
+E       FileNotFoundError: [Errno 2] No such file or directory: '<repo>/mock/index.html'
+
+/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1110: FileNotFoundError
+________________ test_payload_is_labelled_fixture_and_synthetic ________________
+
+    def test_payload_is_labelled_fixture_and_synthetic():
+>       p = builder().payload()
+
+tests/test_mock.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_mock.py:14: in builder
+    spec.loader.exec_module(mod)
+<frozen importlib._bootstrap_external>:846: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:982: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a0a0d30>
+path = '<repo>/scripts/build_mock.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '<repo>/scripts/build_mock.py'
+
+<frozen importlib._bootstrap_external>:1039: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_mock.py::test_embedded_data_is_exactly_what_the_offline_modules_produce
+FAILED tests/test_mock.py::test_mock_is_marked_not_connected_and_names_all_five_screens
+FAILED tests/test_mock.py::test_mock_makes_no_network_requests_and_loads_nothing_external
+FAILED tests/test_mock.py::test_mock_never_shows_a_serv_result_or_trace - Fil...
+FAILED tests/test_mock.py::test_payload_is_labelled_fixture_and_synthetic - F...
+5 failed in 0.26s
+# exit code: 1

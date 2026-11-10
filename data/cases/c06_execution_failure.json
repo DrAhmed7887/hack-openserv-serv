@@ -40,7 +40,7 @@
     "modality": "chest-xr",
     "obligations": [
       {
-        "finding_class": "volume_like",
+        "finding_class": "lung_volume_like",
         "obligation_id": "OB-6"
       }
     ],

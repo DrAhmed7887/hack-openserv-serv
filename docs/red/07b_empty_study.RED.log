@@ -1,0 +1,27 @@
+# RED evidence: 07b_empty_study
+# command: python3 -m pytest tests/test_audit.py -q
+# python: Python 3.9.6
+...........F                                                             [100%]
+=================================== FAILURES ===================================
+_____________ test_study_with_no_obligations_is_never_full_support _____________
+
+catalog = {'catalog_id': 'SYN-CATALOG-001', 'notice': "FICTIONAL engineering catalog for a mechanism spike. Not a real device li... types are listed in a separate document that is not included here.', 'title': 'Synthetic specification D'}, ...}, ...}
+case = <function case.<locals>._load at 0x106c41160>
+clone = <function deepcopy at 0x105d46310>
+
+    def test_study_with_no_obligations_is_never_full_support(catalog, case, clone):
+        c = clone(case("c01_supported_called"))
+        c["study"]["obligations"] = []
+        c["proposed_calls"], c["receipts"], c["draft_report"]["statements"] = [], [], []
+        a = build_audit(catalog, c)
+>       assert a["completeness"] == "gaps_found"
+E       AssertionError: assert 'full_support' == 'gaps_found'
+E         
+E         - gaps_found
+E         + full_support
+
+tests/test_audit.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_audit.py::test_study_with_no_obligations_is_never_full_support
+1 failed, 11 passed in 0.12s
+# exit code: 1
