@@ -122,7 +122,7 @@ def tall():
     for j, line in enumerate(SERV_LINES_TALL[:4]):
         out.append(text(64, sy + 44 + j * 40, line, 28, 600 if j == 0 else 400, WARN if j == 0 else INK))
     out.append(text(64, sy + 44 + 4 * 40, " ".join(SERV_LINES_TALL[4:]), 28, 600, INK))
-    out.append(text(64, sy + 44 + 5 * 40 + 4, "Synthetic data. Sign-off pending.", 28, 400, MUTED))
+    out.append(text(64, sy + 44 + 5 * 40 + 4, "Synthetic data. Rules signed 11 Nov.", 28, 400, MUTED))
     out.append("</svg>")
     return "\n".join(out)
 

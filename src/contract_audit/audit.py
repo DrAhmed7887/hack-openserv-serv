@@ -12,7 +12,7 @@ SCHEMA = "contract-audit/v0"
 DISPOSITIONS = ("supported_called", "supported_omitted", "unsupported", "uncertain")
 NOTICES = (
     "Synthetic fixture data only. No images, DICOM, patients or real devices.",
-    "Catalog is fictional. Physician/operator sign-off is pending.",
+    "Catalog is fictional and unsigned. The physician/operator signed the engineering rules on 2026-11-11 (SIGNOFF.md); no clinical threshold is claimed.",
     "Full support means: confirmed catalog entry, valid call and valid mock receipt. It is not a clinical or SERV performance claim.",
 )
 
@@ -48,7 +48,7 @@ def build_audit(catalog, case, serv=None):
         "catalog_id": catalog["catalog_id"],
         "catalog_sha256": catalog_digest(catalog),
         "synthetic": bool(case.get("synthetic")) and bool(catalog.get("synthetic")),
-        "signoff": {"status": "pending"},
+        "signoff": {"status": "engineering_rules_signed", "date": "2026-11-11", "record": "SIGNOFF.md", "catalog": "fictional, unsigned"},
         "serv": serv,
         "notices": list(NOTICES),
         "study": {"study_id": case["study"]["study_id"], "modality": case["study"]["modality"]},
