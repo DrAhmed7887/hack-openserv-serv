@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1b2430"/>
+  <!-- receipt with a torn bottom edge -->
+  <path d="M156 92 h200 v262 l-25 -18 -25 18 -25 -18 -25 18 -25 -18 -25 18 -25 -18 -25 18 z"
+        fill="#ffffff"/>
+  <rect x="188" y="134" width="136" height="14" rx="7" fill="#c9d1db"/>
+  <rect x="188" y="168" width="104" height="14" rx="7" fill="#c9d1db"/>
+  <rect x="188" y="202" width="120" height="14" rx="7" fill="#c9d1db"/>
+  <!-- check mark -->
+  <path d="M206 262 l30 30 l62 -66" fill="none" stroke="#1f5f8b" stroke-width="22"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="440" text-anchor="middle" font-family="Inter, -apple-system, 'Segoe UI', Roboto, sans-serif"
+        font-size="64" font-weight="700" fill="#ffffff">Receipts</text>
+</svg>
