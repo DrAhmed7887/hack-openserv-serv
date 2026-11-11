@@ -51,7 +51,7 @@
 </head>
 <body>
 <div class="banner">REPLAY OF REAL OUTPUT
-  <small>Every value here was produced by the offline validator (synthetic case c07) or recorded from a live SERV Reasoning run. This page calls no server. Fictional catalog; physician/operator sign-off pending.</small>
+  <small>Every value here was produced by the offline validator (synthetic case c07) or recorded from a live SERV Reasoning run. This page calls no server. Fictional, unsigned catalog; engineering rules signed by the physician/operator on 11 Nov 2026.</small>
 </div>
 <main>
   <h1>Radiology tool-capability contract audit</h1>
@@ -136,7 +136,7 @@
   "completeness": "gaps_found",
   "notices": [
    "Synthetic fixture data only. No images, DICOM, patients or real devices.",
-   "Catalog is fictional. Physician/operator sign-off is pending.",
+   "Catalog is fictional and unsigned. The physician/operator signed the engineering rules on 2026-11-11 (SIGNOFF.md); no clinical threshold is claimed.",
    "Full support means: confirmed catalog entry, valid call and valid mock receipt. It is not a clinical or SERV performance claim."
   ],
   "obligations": {
@@ -281,7 +281,10 @@
    "status": "not_run"
   },
   "signoff": {
-   "status": "pending"
+   "catalog": "fictional, unsigned",
+   "date": "2026-11-11",
+   "record": "SIGNOFF.md",
+   "status": "engineering_rules_signed"
   },
   "statements": {
    "ST-1": {

@@ -24,10 +24,11 @@ def test_audit_is_byte_identical_across_runs(catalog, case):
     assert one == two
 
 
-def test_audit_labels_synthetic_pending_signoff_and_serv_not_run(catalog, case):
+def test_audit_labels_synthetic_signed_rules_and_serv_not_run(catalog, case):
     a = build_audit(catalog, case("c01_supported_called"))
     assert a["synthetic"] is True
-    assert a["signoff"]["status"] == "pending"
+    assert a["signoff"]["status"] == "engineering_rules_signed"
+    assert a["signoff"]["catalog"] == "fictional, unsigned"
     assert a["serv"] == {"status": "not_run", "executed": False, "fixture": False}
     text = json.dumps(a)
     assert "SERV result" not in text

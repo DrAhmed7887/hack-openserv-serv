@@ -1,4 +1,4 @@
-# Radiology tool-capability contract audit
+# Receipts: radiology tool-capability contract audit
 
 **A reporting agent's draft can read as finished and still be wrong.** On 120 seeded broken reports that each look complete, the audit flags all 120 for the right reason and passes none as complete; 30 of 30 clean reports pass (synthetic cases; the expected signal for each break was written before the run: [eval/RESULTS.md](eval/RESULTS.md)). Where its strict rule can only say "uncertain", it asks **SERV Reasoning**, and SERV's answer stays advice: in a held-out live batch SERV over-reached on 8 of 16 specs, and the guard accepted none of those 8 ([eval/SERV_BATCH.md](eval/SERV_BATCH.md)).
 
@@ -71,7 +71,7 @@ Measured results and the RED-before-GREEN logs: `docs/G1_RESULTS.md`, `docs/red/
 
 - **SERV is advice, never a decision.** `--serv --serv-model <id>` sends one request per uncertain obligation (`LiveServClient`, stdlib HTTPS) and attaches the answer as `serv_advisory`, which needs human confirmation and cannot change any disposition or `full_support`. Credentials or model absent: fail closed, no call. The request follows the public docs read on 2026-11-10; no SERV step trace is documented, so none is printed.
 - **Fixtures are not evidence about real tools.** The catalog is fictional (`SYN-*`), its source texts are invented, and no public source validates the mapping. Passing fixture tests prove the mechanism, not clinical accuracy and not SERV performance.
-- **Physician/operator sign-off is pending** for what counts as an assessment obligation and for any capability interpretation. No clinical rule here is signed.
+- **The physician/operator signed the five engineering rules on 2026-11-11** ([SIGNOFF.md](SIGNOFF.md)): what counts as an assessment obligation, honest "not assessed" disclosures, negated sources, and SERV as advice only. None of them is a clinical threshold. The catalog itself is fictional and stays unsigned.
 - **Call arguments are validated by value** against the catalog's `args_schema` (own `study_id`, bounded numbers, bounded lists with a summed limit). Those bounds are engineering limits of synthetic mock tools, not clinical thresholds (`data/DATA_CARD.md`).
 - **Receipts are mock-tool receipts**: a digest check detects edited output, not a forged receipt.
 - **Capability matching is a deliberate strict string rule** (non-empty quote verbatim in an unchanged source, naming the entry's own modality and finding class). It will say `uncertain` for wording a human would accept. That is the safe direction; interpreting such cases is the job reserved for an authenticated SERV step, advisory only.

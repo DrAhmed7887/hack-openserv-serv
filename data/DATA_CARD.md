@@ -3,7 +3,7 @@
 **Everything here is synthetic and fictional. No real patients, images, DICOM, devices or products.**
 The catalog is an engineering stand-in for the mechanism spike. It does not describe any real device's intended use, and no public source validates it.
 
-**Sign-off status: PENDING.** Physician/operator sign-off is pending for (a) what counts as an assessment obligation and (b) how a capability description maps to a finding class. Nothing in `data/` is presented as signed.
+**Sign-off status: engineering rules signed 2026-11-11 ([SIGNOFF.md](../SIGNOFF.md)); catalog unsigned.** The physician/operator signed the five engineering rules, including what counts as an assessment obligation. The catalog's capability descriptions are fictional, so nothing in `data/` is presented as signed (`catalog.json` keeps `"status": "pending"`).
 
 ## Files
 
